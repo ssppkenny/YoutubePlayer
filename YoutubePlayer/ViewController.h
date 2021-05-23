@@ -6,9 +6,38 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import <AVKit/AVKit.h>
+#import <mobileffmpeg/MobileFFmpegConfig.h>
+#import <mobileffmpeg/MobileFFmpeg.h>
+#import <SBJson/SBJson5.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<AVAudioPlayerDelegate>
+
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+
 
 
 @end
+
+
+@interface Mapper : NSObject
+@property (nonatomic, strong) NSRegularExpression *regex;;
+@property (nonatomic, strong) NSString *function;
+
+
+- (id)initWithregex:(NSRegularExpression *)regex function:(NSString *)function;
+
+@end
+
+
+
+
+struct sMappers
+{
+  NSRegularExpression *regex;
+  NSString *function;
+};
+
+typedef struct sMappers MappersDef;
 

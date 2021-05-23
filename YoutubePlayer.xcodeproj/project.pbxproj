@@ -3,23 +3,79 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A51013B0265A81550034C5AF /* base.js in Resources */ = {isa = PBXBuildFile; fileRef = A51013AF265A81550034C5AF /* base.js */; };
 		A584BBCC26592A180068C290 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBCB26592A180068C290 /* AppDelegate.m */; };
 		A584BBCF26592A180068C290 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBCE26592A180068C290 /* SceneDelegate.m */; };
 		A584BBD226592A180068C290 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBD126592A180068C290 /* ViewController.m */; };
 		A584BBD526592A180068C290 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A584BBD326592A180068C290 /* Main.storyboard */; };
 		A584BBD826592A180068C290 /* YoutubePlayer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A584BBD626592A180068C290 /* YoutubePlayer.xcdatamodeld */; };
 		A584BBDA26592A190068C290 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A584BBD926592A190068C290 /* Assets.xcassets */; };
-		A584BBDD26592A190068C290 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A584BBDB26592A190068C290 /* LaunchScreen.storyboard */; };
 		A584BBE026592A190068C290 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBDF26592A190068C290 /* main.m */; };
 		A584BBEA26592A190068C290 /* YoutubePlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBE926592A190068C290 /* YoutubePlayerTests.m */; };
 		A584BBF526592A190068C290 /* YoutubePlayerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBF426592A190068C290 /* YoutubePlayerUITests.m */; };
+		A584BD6826592C8B0068C290 /* expat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4426592C6C0068C290 /* expat.xcframework */; };
+		A584BD6A26592C8B0068C290 /* fontconfig.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4C26592C6C0068C290 /* fontconfig.xcframework */; };
+		A584BD6C26592C8B0068C290 /* freetype.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4026592C6C0068C290 /* freetype.xcframework */; };
+		A584BD6E26592C8B0068C290 /* fribidi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4226592C6C0068C290 /* fribidi.xcframework */; };
+		A584BD7026592C8B0068C290 /* giflib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5B26592C6C0068C290 /* giflib.xcframework */; };
+		A584BD7226592C8B0068C290 /* gmp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3B26592C6C0068C290 /* gmp.xcframework */; };
+		A584BD7426592C8B0068C290 /* gnutls.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3E26592C6C0068C290 /* gnutls.xcframework */; };
+		A584BD7626592C8B0068C290 /* jpeg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6726592C6C0068C290 /* jpeg.xcframework */; };
+		A584BD7826592C8B0068C290 /* kvazaar.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6626592C6C0068C290 /* kvazaar.xcframework */; };
+		A584BD7A26592C8B0068C290 /* lame.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5326592C6C0068C290 /* lame.xcframework */; };
+		A584BD7C26592C8B0068C290 /* libaom.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6126592C6C0068C290 /* libaom.xcframework */; };
+		A584BD7E26592C8B0068C290 /* libass.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5726592C6C0068C290 /* libass.xcframework */; };
+		A584BD8026592C8C0068C290 /* libavcodec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5E26592C6C0068C290 /* libavcodec.xcframework */; };
+		A584BD8226592C8C0068C290 /* libavdevice.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3A26592C6C0068C290 /* libavdevice.xcframework */; };
+		A584BD8426592C8C0068C290 /* libavfilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6526592C6C0068C290 /* libavfilter.xcframework */; };
+		A584BD8626592C8C0068C290 /* libavformat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3D26592C6C0068C290 /* libavformat.xcframework */; };
+		A584BD8826592C8C0068C290 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5126592C6C0068C290 /* libavutil.xcframework */; };
+		A584BD8A26592C8C0068C290 /* libhogweed.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5826592C6C0068C290 /* libhogweed.xcframework */; };
+		A584BD8C26592C8C0068C290 /* libilbc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5026592C6C0068C290 /* libilbc.xcframework */; };
+		A584BD8E26592C8C0068C290 /* libnettle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3C26592C6C0068C290 /* libnettle.xcframework */; };
+		A584BD9026592C8C0068C290 /* libogg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4126592C6C0068C290 /* libogg.xcframework */; };
+		A584BD9226592C8C0068C290 /* libopencore-amrnb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5A26592C6C0068C290 /* libopencore-amrnb.xcframework */; };
+		A584BD9426592C8C0068C290 /* libpng.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5526592C6C0068C290 /* libpng.xcframework */; };
+		A584BD9626592C8C0068C290 /* libsndfile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4526592C6C0068C290 /* libsndfile.xcframework */; };
+		A584BD9826592C8C0068C290 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6226592C6C0068C290 /* libswresample.xcframework */; };
+		A584BD9A26592C8C0068C290 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6426592C6C0068C290 /* libswscale.xcframework */; };
+		A584BD9C26592C8C0068C290 /* libtheora.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5D26592C6C0068C290 /* libtheora.xcframework */; };
+		A584BD9E26592C8D0068C290 /* libtheoradec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4E26592C6C0068C290 /* libtheoradec.xcframework */; };
+		A584BDA026592C8D0068C290 /* libtheoraenc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6026592C6C0068C290 /* libtheoraenc.xcframework */; };
+		A584BDA226592C8D0068C290 /* libvorbis.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD6326592C6C0068C290 /* libvorbis.xcframework */; };
+		A584BDA426592C8D0068C290 /* libvorbisenc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5926592C6C0068C290 /* libvorbisenc.xcframework */; };
+		A584BDA626592C8D0068C290 /* libvorbisfile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4A26592C6C0068C290 /* libvorbisfile.xcframework */; };
+		A584BDA826592C8D0068C290 /* libvpx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4D26592C6C0068C290 /* libvpx.xcframework */; };
+		A584BDAA26592C8D0068C290 /* libwebp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4726592C6C0068C290 /* libwebp.xcframework */; };
+		A584BDAC26592C8D0068C290 /* libwebpdemux.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5626592C6C0068C290 /* libwebpdemux.xcframework */; };
+		A584BDAE26592C8D0068C290 /* libwebpmux.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4626592C6C0068C290 /* libwebpmux.xcframework */; };
+		A584BDB026592C8D0068C290 /* libxml2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4326592C6C0068C290 /* libxml2.xcframework */; };
+		A584BDB426592C8D0068C290 /* opus.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5F26592C6C0068C290 /* opus.xcframework */; };
+		A584BDB626592C8E0068C290 /* shine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5226592C6C0068C290 /* shine.xcframework */; };
+		A584BDB826592C8E0068C290 /* snappy.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4B26592C6C0068C290 /* snappy.xcframework */; };
+		A584BDBA26592C8E0068C290 /* soxr.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5426592C6C0068C290 /* soxr.xcframework */; };
+		A584BDBC26592C8E0068C290 /* speex.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3926592C6C0068C290 /* speex.xcframework */; };
+		A584BDBE26592C8E0068C290 /* tiff.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD5C26592C6C0068C290 /* tiff.xcframework */; };
+		A584BDC026592C8E0068C290 /* twolame.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4F26592C6C0068C290 /* twolame.xcframework */; };
+		A584BDC226592C8E0068C290 /* vo-amrwbenc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3F26592C6C0068C290 /* vo-amrwbenc.xcframework */; };
+		A584BDC426592C8E0068C290 /* wavpack.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4926592C6C0068C290 /* wavpack.xcframework */; };
+		A584BDF82659303E0068C290 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BDF72659303E0068C290 /* AVFoundation.framework */; };
+		A584BDFB2659394C0068C290 /* out.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A584BDFA2659394C0068C290 /* out.mp3 */; };
+		FF67805945003646C5907B6D /* Pods_YoutubePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 098D84454CCD89CB48B26DEB /* Pods_YoutubePlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A51013AD265A50FD0034C5AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A584BCEE26592C5E0068C290 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DDF6A31DFFDAE17F80A34E666AA79832;
+			remoteInfo = SBJson;
+		};
 		A584BBE626592A190068C290 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A584BBBF26592A180068C290 /* Project object */;
@@ -34,9 +90,32 @@
 			remoteGlobalIDString = A584BBC626592A180068C290;
 			remoteInfo = YoutubePlayer;
 		};
+		A584BD3626592C5E0068C290 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A584BCEE26592C5E0068C290 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 01DD203BAEF6ADA6C993E024748D1977;
+			remoteInfo = "Pods-YoutubePlayer";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		098D84454CCD89CB48B26DEB /* Pods_YoutubePlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YoutubePlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E6A90CFB887C5E257B9A4D9 /* Pods-YoutubePlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubePlayer.release.xcconfig"; path = "Target Support Files/Pods-YoutubePlayer/Pods-YoutubePlayer.release.xcconfig"; sourceTree = "<group>"; };
+		A510139C265A50FD0034C5AF /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A510139E265A50FD0034C5AF /* SBJson5StreamWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5StreamWriter.m; sourceTree = "<group>"; };
+		A510139F265A50FD0034C5AF /* SBJson5Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5Parser.h; sourceTree = "<group>"; };
+		A51013A0265A50FD0034C5AF /* SBJson5Writer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5Writer.m; sourceTree = "<group>"; };
+		A51013A1265A50FD0034C5AF /* SBJson5StreamParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5StreamParser.h; sourceTree = "<group>"; };
+		A51013A2265A50FD0034C5AF /* SBJson5StreamTokeniser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5StreamTokeniser.m; sourceTree = "<group>"; };
+		A51013A3265A50FD0034C5AF /* SBJson5StreamWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5StreamWriter.h; sourceTree = "<group>"; };
+		A51013A4265A50FD0034C5AF /* SBJson5Parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5Parser.m; sourceTree = "<group>"; };
+		A51013A5265A50FD0034C5AF /* SBJson5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5.h; sourceTree = "<group>"; };
+		A51013A6265A50FD0034C5AF /* SBJson5Writer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5Writer.h; sourceTree = "<group>"; };
+		A51013A7265A50FD0034C5AF /* SBJson5StreamTokeniser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5StreamTokeniser.h; sourceTree = "<group>"; };
+		A51013A8265A50FD0034C5AF /* SBJson5StreamParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5StreamParser.m; sourceTree = "<group>"; };
+		A51013A9265A50FD0034C5AF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A51013AF265A81550034C5AF /* base.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base.js; sourceTree = "<group>"; };
 		A584BBC726592A180068C290 /* YoutubePlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubePlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A584BBCA26592A180068C290 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A584BBCB26592A180068C290 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,7 +126,6 @@
 		A584BBD426592A180068C290 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A584BBD726592A180068C290 /* YoutubePlayer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = YoutubePlayer.xcdatamodel; sourceTree = "<group>"; };
 		A584BBD926592A190068C290 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A584BBDC26592A190068C290 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A584BBDE26592A190068C290 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A584BBDF26592A190068C290 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A584BBE526592A190068C290 /* YoutubePlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YoutubePlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +134,305 @@
 		A584BBF026592A190068C290 /* YoutubePlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YoutubePlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A584BBF426592A190068C290 /* YoutubePlayerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YoutubePlayerUITests.m; sourceTree = "<group>"; };
 		A584BBF626592A190068C290 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A584BC0226592AB40068C290 /* fontconfig.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = fontconfig.xcframework; path = "Pods/mobile-ffmpeg-full/fontconfig.xcframework"; sourceTree = "<group>"; };
+		A584BC0626592AD10068C290 /* freetype.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = freetype.xcframework; path = "Pods/mobile-ffmpeg-full/freetype.xcframework"; sourceTree = "<group>"; };
+		A584BC0926592AEE0068C290 /* fribidi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = fribidi.xcframework; path = "Pods/mobile-ffmpeg-full/fribidi.xcframework"; sourceTree = "<group>"; };
+		A584BC0C26592B0B0068C290 /* giflib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = giflib.xcframework; path = "Pods/mobile-ffmpeg-full/giflib.xcframework"; sourceTree = "<group>"; };
+		A584BC0F26592B230068C290 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = gmp.xcframework; path = "Pods/mobile-ffmpeg-full/gmp.xcframework"; sourceTree = "<group>"; };
+		A584BC1226592B370068C290 /* gnutls.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = gnutls.xcframework; path = "Pods/mobile-ffmpeg-full/gnutls.xcframework"; sourceTree = "<group>"; };
+		A584BC1526592B440068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = jpeg.xcframework; path = "Pods/mobile-ffmpeg-full/jpeg.xcframework"; sourceTree = "<group>"; };
+		A584BC1826592B530068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = kvazaar.xcframework; path = "Pods/mobile-ffmpeg-full/kvazaar.xcframework"; sourceTree = "<group>"; };
+		A584BC1B26592B5F0068C290 /* lame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = lame.xcframework; path = "Pods/mobile-ffmpeg-full/lame.xcframework"; sourceTree = "<group>"; };
+		A584BC1E26592B860068C290 /* libass.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libass.xcframework; path = "Pods/mobile-ffmpeg-full/libass.xcframework"; sourceTree = "<group>"; };
+		A584BC1F26592B860068C290 /* libwebpdemux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libwebpdemux.xcframework; path = "Pods/mobile-ffmpeg-full/libwebpdemux.xcframework"; sourceTree = "<group>"; };
+		A584BC2026592B870068C290 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavutil.xcframework; path = "Pods/mobile-ffmpeg-full/libavutil.xcframework"; sourceTree = "<group>"; };
+		A584BC2126592B870068C290 /* libpng.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libpng.xcframework; path = "Pods/mobile-ffmpeg-full/libpng.xcframework"; sourceTree = "<group>"; };
+		A584BC2226592B870068C290 /* shine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = shine.xcframework; path = "Pods/mobile-ffmpeg-full/shine.xcframework"; sourceTree = "<group>"; };
+		A584BC2326592B870068C290 /* snappy.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = snappy.xcframework; path = "Pods/mobile-ffmpeg-full/snappy.xcframework"; sourceTree = "<group>"; };
+		A584BC2426592B870068C290 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libswscale.xcframework; path = "Pods/mobile-ffmpeg-full/libswscale.xcframework"; sourceTree = "<group>"; };
+		A584BC2526592B870068C290 /* libaom.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libaom.xcframework; path = "Pods/mobile-ffmpeg-full/libaom.xcframework"; sourceTree = "<group>"; };
+		A584BC2626592B870068C290 /* speex.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = speex.xcframework; path = "Pods/mobile-ffmpeg-full/speex.xcframework"; sourceTree = "<group>"; };
+		A584BC2726592B870068C290 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavdevice.xcframework; path = "Pods/mobile-ffmpeg-full/libavdevice.xcframework"; sourceTree = "<group>"; };
+		A584BC2826592B870068C290 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libswresample.xcframework; path = "Pods/mobile-ffmpeg-full/libswresample.xcframework"; sourceTree = "<group>"; };
+		A584BC2926592B870068C290 /* mobileffmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mobileffmpeg.xcframework; path = "Pods/mobile-ffmpeg-full/mobileffmpeg.xcframework"; sourceTree = "<group>"; };
+		A584BC2A26592B870068C290 /* libogg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libogg.xcframework; path = "Pods/mobile-ffmpeg-full/libogg.xcframework"; sourceTree = "<group>"; };
+		A584BC2B26592B870068C290 /* libhogweed.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libhogweed.xcframework; path = "Pods/mobile-ffmpeg-full/libhogweed.xcframework"; sourceTree = "<group>"; };
+		A584BC2C26592B870068C290 /* soxr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = soxr.xcframework; path = "Pods/mobile-ffmpeg-full/soxr.xcframework"; sourceTree = "<group>"; };
+		A584BC2D26592B870068C290 /* libvpx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libvpx.xcframework; path = "Pods/mobile-ffmpeg-full/libvpx.xcframework"; sourceTree = "<group>"; };
+		A584BC2E26592B870068C290 /* libwebpmux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libwebpmux.xcframework; path = "Pods/mobile-ffmpeg-full/libwebpmux.xcframework"; sourceTree = "<group>"; };
+		A584BC2F26592B870068C290 /* libvorbis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libvorbis.xcframework; path = "Pods/mobile-ffmpeg-full/libvorbis.xcframework"; sourceTree = "<group>"; };
+		A584BC3026592B870068C290 /* libilbc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libilbc.xcframework; path = "Pods/mobile-ffmpeg-full/libilbc.xcframework"; sourceTree = "<group>"; };
+		A584BC3126592B880068C290 /* libvorbisenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libvorbisenc.xcframework; path = "Pods/mobile-ffmpeg-full/libvorbisenc.xcframework"; sourceTree = "<group>"; };
+		A584BC3226592B880068C290 /* libwebp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libwebp.xcframework; path = "Pods/mobile-ffmpeg-full/libwebp.xcframework"; sourceTree = "<group>"; };
+		A584BC3326592B880068C290 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavcodec.xcframework; path = "Pods/mobile-ffmpeg-full/libavcodec.xcframework"; sourceTree = "<group>"; };
+		A584BC3426592B880068C290 /* libvorbisfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libvorbisfile.xcframework; path = "Pods/mobile-ffmpeg-full/libvorbisfile.xcframework"; sourceTree = "<group>"; };
+		A584BC3526592B880068C290 /* tiff.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = tiff.xcframework; path = "Pods/mobile-ffmpeg-full/tiff.xcframework"; sourceTree = "<group>"; };
+		A584BC3626592B880068C290 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavformat.xcframework; path = "Pods/mobile-ffmpeg-full/libavformat.xcframework"; sourceTree = "<group>"; };
+		A584BC3726592B880068C290 /* twolame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = twolame.xcframework; path = "Pods/mobile-ffmpeg-full/twolame.xcframework"; sourceTree = "<group>"; };
+		A584BC3826592B880068C290 /* libtheora.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libtheora.xcframework; path = "Pods/mobile-ffmpeg-full/libtheora.xcframework"; sourceTree = "<group>"; };
+		A584BC3926592B880068C290 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavfilter.xcframework; path = "Pods/mobile-ffmpeg-full/libavfilter.xcframework"; sourceTree = "<group>"; };
+		A584BC3A26592B880068C290 /* libtheoraenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libtheoraenc.xcframework; path = "Pods/mobile-ffmpeg-full/libtheoraenc.xcframework"; sourceTree = "<group>"; };
+		A584BC3B26592B880068C290 /* libnettle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libnettle.xcframework; path = "Pods/mobile-ffmpeg-full/libnettle.xcframework"; sourceTree = "<group>"; };
+		A584BC3C26592B880068C290 /* opus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = opus.xcframework; path = "Pods/mobile-ffmpeg-full/opus.xcframework"; sourceTree = "<group>"; };
+		A584BC3D26592B880068C290 /* vo-amrwbenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "vo-amrwbenc.xcframework"; path = "Pods/mobile-ffmpeg-full/vo-amrwbenc.xcframework"; sourceTree = "<group>"; };
+		A584BC3E26592B880068C290 /* wavpack.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = wavpack.xcframework; path = "Pods/mobile-ffmpeg-full/wavpack.xcframework"; sourceTree = "<group>"; };
+		A584BC3F26592B880068C290 /* libopencore-amrnb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "libopencore-amrnb.xcframework"; path = "Pods/mobile-ffmpeg-full/libopencore-amrnb.xcframework"; sourceTree = "<group>"; };
+		A584BC4026592B880068C290 /* libtheoradec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libtheoradec.xcframework; path = "Pods/mobile-ffmpeg-full/libtheoradec.xcframework"; sourceTree = "<group>"; };
+		A584BC4126592B880068C290 /* libsndfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libsndfile.xcframework; path = "Pods/mobile-ffmpeg-full/libsndfile.xcframework"; sourceTree = "<group>"; };
+		A584BC4226592B880068C290 /* libxml2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libxml2.xcframework; path = "Pods/mobile-ffmpeg-full/libxml2.xcframework"; sourceTree = "<group>"; };
+		A584BC8E26592BCC0068C290 /* speex.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = speex.xcframework; sourceTree = "<group>"; };
+		A584BC8F26592BCC0068C290 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavdevice.xcframework; sourceTree = "<group>"; };
+		A584BC9026592BCC0068C290 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gmp.xcframework; sourceTree = "<group>"; };
+		A584BC9126592BCC0068C290 /* libnettle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libnettle.xcframework; sourceTree = "<group>"; };
+		A584BC9226592BCC0068C290 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavformat.xcframework; sourceTree = "<group>"; };
+		A584BC9326592BCC0068C290 /* gnutls.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gnutls.xcframework; sourceTree = "<group>"; };
+		A584BC9426592BCC0068C290 /* vo-amrwbenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vo-amrwbenc.xcframework"; sourceTree = "<group>"; };
+		A584BC9526592BCC0068C290 /* freetype.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = freetype.xcframework; sourceTree = "<group>"; };
+		A584BC9626592BCC0068C290 /* libogg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libogg.xcframework; sourceTree = "<group>"; };
+		A584BC9726592BCC0068C290 /* fribidi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fribidi.xcframework; sourceTree = "<group>"; };
+		A584BC9826592BCC0068C290 /* libxml2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libxml2.xcframework; sourceTree = "<group>"; };
+		A584BC9926592BCC0068C290 /* expat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = expat.xcframework; sourceTree = "<group>"; };
+		A584BC9A26592BCC0068C290 /* libsndfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libsndfile.xcframework; sourceTree = "<group>"; };
+		A584BC9B26592BCC0068C290 /* libwebpmux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpmux.xcframework; sourceTree = "<group>"; };
+		A584BC9C26592BCC0068C290 /* libwebp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebp.xcframework; sourceTree = "<group>"; };
+		A584BC9D26592BCC0068C290 /* mobileffmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = mobileffmpeg.xcframework; sourceTree = "<group>"; };
+		A584BC9E26592BCC0068C290 /* wavpack.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = wavpack.xcframework; sourceTree = "<group>"; };
+		A584BC9F26592BCC0068C290 /* libvorbisfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisfile.xcframework; sourceTree = "<group>"; };
+		A584BCA026592BCC0068C290 /* snappy.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = snappy.xcframework; sourceTree = "<group>"; };
+		A584BCA126592BCC0068C290 /* fontconfig.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fontconfig.xcframework; sourceTree = "<group>"; };
+		A584BCA226592BCC0068C290 /* libvpx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvpx.xcframework; sourceTree = "<group>"; };
+		A584BCA326592BCC0068C290 /* libtheoradec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoradec.xcframework; sourceTree = "<group>"; };
+		A584BCA426592BCC0068C290 /* twolame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = twolame.xcframework; sourceTree = "<group>"; };
+		A584BCA526592BCC0068C290 /* libilbc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libilbc.xcframework; sourceTree = "<group>"; };
+		A584BCA626592BCC0068C290 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavutil.xcframework; sourceTree = "<group>"; };
+		A584BCA726592BCC0068C290 /* shine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = shine.xcframework; sourceTree = "<group>"; };
+		A584BCA826592BCC0068C290 /* lame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = lame.xcframework; sourceTree = "<group>"; };
+		A584BCA926592BCC0068C290 /* soxr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = soxr.xcframework; sourceTree = "<group>"; };
+		A584BCAA26592BCC0068C290 /* libpng.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libpng.xcframework; sourceTree = "<group>"; };
+		A584BCAB26592BCC0068C290 /* libwebpdemux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpdemux.xcframework; sourceTree = "<group>"; };
+		A584BCAC26592BCC0068C290 /* libass.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libass.xcframework; sourceTree = "<group>"; };
+		A584BCAD26592BCC0068C290 /* libhogweed.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libhogweed.xcframework; sourceTree = "<group>"; };
+		A584BCAE26592BCC0068C290 /* libvorbisenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisenc.xcframework; sourceTree = "<group>"; };
+		A584BCAF26592BCC0068C290 /* libopencore-amrnb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "libopencore-amrnb.xcframework"; sourceTree = "<group>"; };
+		A584BCB026592BCC0068C290 /* giflib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = giflib.xcframework; sourceTree = "<group>"; };
+		A584BCB126592BCC0068C290 /* tiff.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = tiff.xcframework; sourceTree = "<group>"; };
+		A584BCB226592BCC0068C290 /* libtheora.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheora.xcframework; sourceTree = "<group>"; };
+		A584BCB326592BCC0068C290 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavcodec.xcframework; sourceTree = "<group>"; };
+		A584BCB426592BCC0068C290 /* opus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = opus.xcframework; sourceTree = "<group>"; };
+		A584BCB526592BCC0068C290 /* libtheoraenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoraenc.xcframework; sourceTree = "<group>"; };
+		A584BCB626592BCC0068C290 /* libaom.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libaom.xcframework; sourceTree = "<group>"; };
+		A584BCB726592BCC0068C290 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
+		A584BCB826592BCC0068C290 /* libvorbis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbis.xcframework; sourceTree = "<group>"; };
+		A584BCB926592BCC0068C290 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		A584BCBA26592BCC0068C290 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavfilter.xcframework; sourceTree = "<group>"; };
+		A584BCBB26592BCC0068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = kvazaar.xcframework; sourceTree = "<group>"; };
+		A584BCBC26592BCC0068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = jpeg.xcframework; sourceTree = "<group>"; };
+		A584BCBE26592C490068C290 /* speex.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = speex.xcframework; sourceTree = "<group>"; };
+		A584BCBF26592C4A0068C290 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavdevice.xcframework; sourceTree = "<group>"; };
+		A584BCC026592C4A0068C290 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gmp.xcframework; sourceTree = "<group>"; };
+		A584BCC126592C4A0068C290 /* libnettle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libnettle.xcframework; sourceTree = "<group>"; };
+		A584BCC226592C4A0068C290 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavformat.xcframework; sourceTree = "<group>"; };
+		A584BCC326592C4A0068C290 /* gnutls.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gnutls.xcframework; sourceTree = "<group>"; };
+		A584BCC426592C4A0068C290 /* vo-amrwbenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vo-amrwbenc.xcframework"; sourceTree = "<group>"; };
+		A584BCC526592C4A0068C290 /* freetype.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = freetype.xcframework; sourceTree = "<group>"; };
+		A584BCC626592C4A0068C290 /* libogg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libogg.xcframework; sourceTree = "<group>"; };
+		A584BCC726592C4A0068C290 /* fribidi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fribidi.xcframework; sourceTree = "<group>"; };
+		A584BCC826592C4A0068C290 /* libxml2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libxml2.xcframework; sourceTree = "<group>"; };
+		A584BCC926592C4A0068C290 /* expat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = expat.xcframework; sourceTree = "<group>"; };
+		A584BCCA26592C4A0068C290 /* libsndfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libsndfile.xcframework; sourceTree = "<group>"; };
+		A584BCCB26592C4A0068C290 /* libwebpmux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpmux.xcframework; sourceTree = "<group>"; };
+		A584BCCC26592C4A0068C290 /* libwebp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebp.xcframework; sourceTree = "<group>"; };
+		A584BCCD26592C4A0068C290 /* mobileffmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = mobileffmpeg.xcframework; sourceTree = "<group>"; };
+		A584BCCE26592C4A0068C290 /* wavpack.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = wavpack.xcframework; sourceTree = "<group>"; };
+		A584BCCF26592C4A0068C290 /* libvorbisfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisfile.xcframework; sourceTree = "<group>"; };
+		A584BCD026592C4A0068C290 /* snappy.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = snappy.xcframework; sourceTree = "<group>"; };
+		A584BCD126592C4A0068C290 /* fontconfig.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fontconfig.xcframework; sourceTree = "<group>"; };
+		A584BCD226592C4A0068C290 /* libvpx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvpx.xcframework; sourceTree = "<group>"; };
+		A584BCD326592C4A0068C290 /* libtheoradec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoradec.xcframework; sourceTree = "<group>"; };
+		A584BCD426592C4A0068C290 /* twolame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = twolame.xcframework; sourceTree = "<group>"; };
+		A584BCD526592C4A0068C290 /* libilbc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libilbc.xcframework; sourceTree = "<group>"; };
+		A584BCD626592C4A0068C290 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavutil.xcframework; sourceTree = "<group>"; };
+		A584BCD726592C4A0068C290 /* shine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = shine.xcframework; sourceTree = "<group>"; };
+		A584BCD826592C4A0068C290 /* lame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = lame.xcframework; sourceTree = "<group>"; };
+		A584BCD926592C4A0068C290 /* soxr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = soxr.xcframework; sourceTree = "<group>"; };
+		A584BCDA26592C4A0068C290 /* libpng.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libpng.xcframework; sourceTree = "<group>"; };
+		A584BCDB26592C4A0068C290 /* libwebpdemux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpdemux.xcframework; sourceTree = "<group>"; };
+		A584BCDC26592C4A0068C290 /* libass.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libass.xcframework; sourceTree = "<group>"; };
+		A584BCDD26592C4A0068C290 /* libhogweed.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libhogweed.xcframework; sourceTree = "<group>"; };
+		A584BCDE26592C4A0068C290 /* libvorbisenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisenc.xcframework; sourceTree = "<group>"; };
+		A584BCDF26592C4A0068C290 /* libopencore-amrnb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "libopencore-amrnb.xcframework"; sourceTree = "<group>"; };
+		A584BCE026592C4A0068C290 /* giflib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = giflib.xcframework; sourceTree = "<group>"; };
+		A584BCE126592C4A0068C290 /* tiff.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = tiff.xcframework; sourceTree = "<group>"; };
+		A584BCE226592C4A0068C290 /* libtheora.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheora.xcframework; sourceTree = "<group>"; };
+		A584BCE326592C4A0068C290 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavcodec.xcframework; sourceTree = "<group>"; };
+		A584BCE426592C4A0068C290 /* opus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = opus.xcframework; sourceTree = "<group>"; };
+		A584BCE526592C4A0068C290 /* libtheoraenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoraenc.xcframework; sourceTree = "<group>"; };
+		A584BCE626592C4A0068C290 /* libaom.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libaom.xcframework; sourceTree = "<group>"; };
+		A584BCE726592C4A0068C290 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
+		A584BCE826592C4A0068C290 /* libvorbis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbis.xcframework; sourceTree = "<group>"; };
+		A584BCE926592C4A0068C290 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		A584BCEA26592C4A0068C290 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavfilter.xcframework; sourceTree = "<group>"; };
+		A584BCEB26592C4A0068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = kvazaar.xcframework; sourceTree = "<group>"; };
+		A584BCEC26592C4A0068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = jpeg.xcframework; sourceTree = "<group>"; };
+		A584BCEE26592C5E0068C290 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
+		A584BCF226592C5E0068C290 /* speex.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = speex.xcframework; sourceTree = "<group>"; };
+		A584BCF326592C5E0068C290 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavdevice.xcframework; sourceTree = "<group>"; };
+		A584BCF426592C5E0068C290 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gmp.xcframework; sourceTree = "<group>"; };
+		A584BCF526592C5E0068C290 /* libnettle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libnettle.xcframework; sourceTree = "<group>"; };
+		A584BCF626592C5E0068C290 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavformat.xcframework; sourceTree = "<group>"; };
+		A584BCF726592C5E0068C290 /* gnutls.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gnutls.xcframework; sourceTree = "<group>"; };
+		A584BCF826592C5E0068C290 /* vo-amrwbenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vo-amrwbenc.xcframework"; sourceTree = "<group>"; };
+		A584BCF926592C5E0068C290 /* freetype.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = freetype.xcframework; sourceTree = "<group>"; };
+		A584BCFA26592C5E0068C290 /* libogg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libogg.xcframework; sourceTree = "<group>"; };
+		A584BCFB26592C5E0068C290 /* fribidi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fribidi.xcframework; sourceTree = "<group>"; };
+		A584BCFC26592C5E0068C290 /* libxml2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libxml2.xcframework; sourceTree = "<group>"; };
+		A584BCFD26592C5E0068C290 /* expat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = expat.xcframework; sourceTree = "<group>"; };
+		A584BCFE26592C5E0068C290 /* libsndfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libsndfile.xcframework; sourceTree = "<group>"; };
+		A584BCFF26592C5E0068C290 /* libwebpmux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpmux.xcframework; sourceTree = "<group>"; };
+		A584BD0026592C5E0068C290 /* libwebp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebp.xcframework; sourceTree = "<group>"; };
+		A584BD0126592C5E0068C290 /* mobileffmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = mobileffmpeg.xcframework; sourceTree = "<group>"; };
+		A584BD0226592C5E0068C290 /* wavpack.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = wavpack.xcframework; sourceTree = "<group>"; };
+		A584BD0326592C5E0068C290 /* libvorbisfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisfile.xcframework; sourceTree = "<group>"; };
+		A584BD0426592C5E0068C290 /* snappy.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = snappy.xcframework; sourceTree = "<group>"; };
+		A584BD0526592C5E0068C290 /* fontconfig.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fontconfig.xcframework; sourceTree = "<group>"; };
+		A584BD0626592C5E0068C290 /* libvpx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvpx.xcframework; sourceTree = "<group>"; };
+		A584BD0726592C5E0068C290 /* libtheoradec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoradec.xcframework; sourceTree = "<group>"; };
+		A584BD0826592C5E0068C290 /* twolame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = twolame.xcframework; sourceTree = "<group>"; };
+		A584BD0926592C5E0068C290 /* libilbc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libilbc.xcframework; sourceTree = "<group>"; };
+		A584BD0A26592C5E0068C290 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavutil.xcframework; sourceTree = "<group>"; };
+		A584BD0B26592C5E0068C290 /* shine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = shine.xcframework; sourceTree = "<group>"; };
+		A584BD0C26592C5E0068C290 /* lame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = lame.xcframework; sourceTree = "<group>"; };
+		A584BD0D26592C5E0068C290 /* soxr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = soxr.xcframework; sourceTree = "<group>"; };
+		A584BD0E26592C5E0068C290 /* libpng.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libpng.xcframework; sourceTree = "<group>"; };
+		A584BD0F26592C5E0068C290 /* libwebpdemux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpdemux.xcframework; sourceTree = "<group>"; };
+		A584BD1026592C5E0068C290 /* libass.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libass.xcframework; sourceTree = "<group>"; };
+		A584BD1126592C5E0068C290 /* libhogweed.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libhogweed.xcframework; sourceTree = "<group>"; };
+		A584BD1226592C5E0068C290 /* libvorbisenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisenc.xcframework; sourceTree = "<group>"; };
+		A584BD1326592C5E0068C290 /* libopencore-amrnb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "libopencore-amrnb.xcframework"; sourceTree = "<group>"; };
+		A584BD1426592C5E0068C290 /* giflib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = giflib.xcframework; sourceTree = "<group>"; };
+		A584BD1526592C5E0068C290 /* tiff.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = tiff.xcframework; sourceTree = "<group>"; };
+		A584BD1626592C5E0068C290 /* libtheora.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheora.xcframework; sourceTree = "<group>"; };
+		A584BD1726592C5E0068C290 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavcodec.xcframework; sourceTree = "<group>"; };
+		A584BD1826592C5E0068C290 /* opus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = opus.xcframework; sourceTree = "<group>"; };
+		A584BD1926592C5E0068C290 /* libtheoraenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoraenc.xcframework; sourceTree = "<group>"; };
+		A584BD1A26592C5E0068C290 /* libaom.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libaom.xcframework; sourceTree = "<group>"; };
+		A584BD1B26592C5E0068C290 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
+		A584BD1C26592C5E0068C290 /* libvorbis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbis.xcframework; sourceTree = "<group>"; };
+		A584BD1D26592C5E0068C290 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		A584BD1E26592C5E0068C290 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavfilter.xcframework; sourceTree = "<group>"; };
+		A584BD1F26592C5E0068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = kvazaar.xcframework; sourceTree = "<group>"; };
+		A584BD2026592C5E0068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = jpeg.xcframework; sourceTree = "<group>"; };
+		A584BD2326592C5E0068C290 /* mobile-ffmpeg-full-xcframeworks-output-files.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = "mobile-ffmpeg-full-xcframeworks-output-files.xcfilelist"; sourceTree = "<group>"; };
+		A584BD2426592C5E0068C290 /* mobile-ffmpeg-full-xcframeworks.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "mobile-ffmpeg-full-xcframeworks.sh"; sourceTree = "<group>"; };
+		A584BD2526592C5E0068C290 /* mobile-ffmpeg-full.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "mobile-ffmpeg-full.debug.xcconfig"; sourceTree = "<group>"; };
+		A584BD2626592C5E0068C290 /* mobile-ffmpeg-full-xcframeworks-input-files.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = "mobile-ffmpeg-full-xcframeworks-input-files.xcfilelist"; sourceTree = "<group>"; };
+		A584BD2726592C5E0068C290 /* mobile-ffmpeg-full.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "mobile-ffmpeg-full.release.xcconfig"; sourceTree = "<group>"; };
+		A584BD2926592C5E0068C290 /* Pods-YoutubePlayer-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pods-YoutubePlayer-acknowledgements.plist"; sourceTree = "<group>"; };
+		A584BD2A26592C5E0068C290 /* Pods-YoutubePlayer-umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pods-YoutubePlayer-umbrella.h"; sourceTree = "<group>"; };
+		A584BD2B26592C5E0068C290 /* Pods-YoutubePlayer.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Pods-YoutubePlayer.release.xcconfig"; sourceTree = "<group>"; };
+		A584BD2C26592C5E0068C290 /* Pods-YoutubePlayer.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = "Pods-YoutubePlayer.modulemap"; sourceTree = "<group>"; };
+		A584BD2D26592C5E0068C290 /* Pods-YoutubePlayer-dummy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Pods-YoutubePlayer-dummy.m"; sourceTree = "<group>"; };
+		A584BD2E26592C5E0068C290 /* Pods-YoutubePlayer.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Pods-YoutubePlayer.debug.xcconfig"; sourceTree = "<group>"; };
+		A584BD2F26592C5E0068C290 /* Pods-YoutubePlayer-acknowledgements.markdown */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Pods-YoutubePlayer-acknowledgements.markdown"; sourceTree = "<group>"; };
+		A584BD3026592C5E0068C290 /* Pods-YoutubePlayer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pods-YoutubePlayer-Info.plist"; sourceTree = "<group>"; };
+		A584BD3126592C5E0068C290 /* Manifest.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Manifest.lock; sourceTree = "<group>"; };
+		A584BD3926592C6C0068C290 /* speex.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = speex.xcframework; sourceTree = "<group>"; };
+		A584BD3A26592C6C0068C290 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavdevice.xcframework; sourceTree = "<group>"; };
+		A584BD3B26592C6C0068C290 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gmp.xcframework; sourceTree = "<group>"; };
+		A584BD3C26592C6C0068C290 /* libnettle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libnettle.xcframework; sourceTree = "<group>"; };
+		A584BD3D26592C6C0068C290 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavformat.xcframework; sourceTree = "<group>"; };
+		A584BD3E26592C6C0068C290 /* gnutls.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gnutls.xcframework; sourceTree = "<group>"; };
+		A584BD3F26592C6C0068C290 /* vo-amrwbenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vo-amrwbenc.xcframework"; sourceTree = "<group>"; };
+		A584BD4026592C6C0068C290 /* freetype.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = freetype.xcframework; sourceTree = "<group>"; };
+		A584BD4126592C6C0068C290 /* libogg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libogg.xcframework; sourceTree = "<group>"; };
+		A584BD4226592C6C0068C290 /* fribidi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fribidi.xcframework; sourceTree = "<group>"; };
+		A584BD4326592C6C0068C290 /* libxml2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libxml2.xcframework; sourceTree = "<group>"; };
+		A584BD4426592C6C0068C290 /* expat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = expat.xcframework; sourceTree = "<group>"; };
+		A584BD4526592C6C0068C290 /* libsndfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libsndfile.xcframework; sourceTree = "<group>"; };
+		A584BD4626592C6C0068C290 /* libwebpmux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpmux.xcframework; sourceTree = "<group>"; };
+		A584BD4726592C6C0068C290 /* libwebp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebp.xcframework; sourceTree = "<group>"; };
+		A584BD4826592C6C0068C290 /* mobileffmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = mobileffmpeg.xcframework; sourceTree = "<group>"; };
+		A584BD4926592C6C0068C290 /* wavpack.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = wavpack.xcframework; sourceTree = "<group>"; };
+		A584BD4A26592C6C0068C290 /* libvorbisfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisfile.xcframework; sourceTree = "<group>"; };
+		A584BD4B26592C6C0068C290 /* snappy.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = snappy.xcframework; sourceTree = "<group>"; };
+		A584BD4C26592C6C0068C290 /* fontconfig.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fontconfig.xcframework; sourceTree = "<group>"; };
+		A584BD4D26592C6C0068C290 /* libvpx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvpx.xcframework; sourceTree = "<group>"; };
+		A584BD4E26592C6C0068C290 /* libtheoradec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoradec.xcframework; sourceTree = "<group>"; };
+		A584BD4F26592C6C0068C290 /* twolame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = twolame.xcframework; sourceTree = "<group>"; };
+		A584BD5026592C6C0068C290 /* libilbc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libilbc.xcframework; sourceTree = "<group>"; };
+		A584BD5126592C6C0068C290 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavutil.xcframework; sourceTree = "<group>"; };
+		A584BD5226592C6C0068C290 /* shine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = shine.xcframework; sourceTree = "<group>"; };
+		A584BD5326592C6C0068C290 /* lame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = lame.xcframework; sourceTree = "<group>"; };
+		A584BD5426592C6C0068C290 /* soxr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = soxr.xcframework; sourceTree = "<group>"; };
+		A584BD5526592C6C0068C290 /* libpng.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libpng.xcframework; sourceTree = "<group>"; };
+		A584BD5626592C6C0068C290 /* libwebpdemux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpdemux.xcframework; sourceTree = "<group>"; };
+		A584BD5726592C6C0068C290 /* libass.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libass.xcframework; sourceTree = "<group>"; };
+		A584BD5826592C6C0068C290 /* libhogweed.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libhogweed.xcframework; sourceTree = "<group>"; };
+		A584BD5926592C6C0068C290 /* libvorbisenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisenc.xcframework; sourceTree = "<group>"; };
+		A584BD5A26592C6C0068C290 /* libopencore-amrnb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "libopencore-amrnb.xcframework"; sourceTree = "<group>"; };
+		A584BD5B26592C6C0068C290 /* giflib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = giflib.xcframework; sourceTree = "<group>"; };
+		A584BD5C26592C6C0068C290 /* tiff.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = tiff.xcframework; sourceTree = "<group>"; };
+		A584BD5D26592C6C0068C290 /* libtheora.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheora.xcframework; sourceTree = "<group>"; };
+		A584BD5E26592C6C0068C290 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavcodec.xcframework; sourceTree = "<group>"; };
+		A584BD5F26592C6C0068C290 /* opus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = opus.xcframework; sourceTree = "<group>"; };
+		A584BD6026592C6C0068C290 /* libtheoraenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoraenc.xcframework; sourceTree = "<group>"; };
+		A584BD6126592C6C0068C290 /* libaom.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libaom.xcframework; sourceTree = "<group>"; };
+		A584BD6226592C6C0068C290 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
+		A584BD6326592C6C0068C290 /* libvorbis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbis.xcframework; sourceTree = "<group>"; };
+		A584BD6426592C6C0068C290 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		A584BD6526592C6C0068C290 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavfilter.xcframework; sourceTree = "<group>"; };
+		A584BD6626592C6C0068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = kvazaar.xcframework; sourceTree = "<group>"; };
+		A584BD6726592C6C0068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = jpeg.xcframework; sourceTree = "<group>"; };
+		A584BDC826592C990068C290 /* speex.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = speex.xcframework; sourceTree = "<group>"; };
+		A584BDC926592C990068C290 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavdevice.xcframework; sourceTree = "<group>"; };
+		A584BDCA26592C990068C290 /* gmp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gmp.xcframework; sourceTree = "<group>"; };
+		A584BDCB26592C990068C290 /* libnettle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libnettle.xcframework; sourceTree = "<group>"; };
+		A584BDCC26592C990068C290 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavformat.xcframework; sourceTree = "<group>"; };
+		A584BDCD26592C990068C290 /* gnutls.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = gnutls.xcframework; sourceTree = "<group>"; };
+		A584BDCE26592C990068C290 /* vo-amrwbenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vo-amrwbenc.xcframework"; sourceTree = "<group>"; };
+		A584BDCF26592C990068C290 /* freetype.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = freetype.xcframework; sourceTree = "<group>"; };
+		A584BDD026592C990068C290 /* libogg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libogg.xcframework; sourceTree = "<group>"; };
+		A584BDD126592C990068C290 /* fribidi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fribidi.xcframework; sourceTree = "<group>"; };
+		A584BDD226592C990068C290 /* libxml2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libxml2.xcframework; sourceTree = "<group>"; };
+		A584BDD326592C990068C290 /* expat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = expat.xcframework; sourceTree = "<group>"; };
+		A584BDD426592C990068C290 /* libsndfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libsndfile.xcframework; sourceTree = "<group>"; };
+		A584BDD526592C990068C290 /* libwebpmux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpmux.xcframework; sourceTree = "<group>"; };
+		A584BDD626592C990068C290 /* libwebp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebp.xcframework; sourceTree = "<group>"; };
+		A584BDD726592C990068C290 /* mobileffmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = mobileffmpeg.xcframework; sourceTree = "<group>"; };
+		A584BDD826592C990068C290 /* wavpack.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = wavpack.xcframework; sourceTree = "<group>"; };
+		A584BDD926592C990068C290 /* libvorbisfile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisfile.xcframework; sourceTree = "<group>"; };
+		A584BDDA26592C990068C290 /* snappy.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = snappy.xcframework; sourceTree = "<group>"; };
+		A584BDDB26592C990068C290 /* fontconfig.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = fontconfig.xcframework; sourceTree = "<group>"; };
+		A584BDDC26592C990068C290 /* libvpx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvpx.xcframework; sourceTree = "<group>"; };
+		A584BDDD26592C990068C290 /* libtheoradec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoradec.xcframework; sourceTree = "<group>"; };
+		A584BDDE26592C990068C290 /* twolame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = twolame.xcframework; sourceTree = "<group>"; };
+		A584BDDF26592C990068C290 /* libilbc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libilbc.xcframework; sourceTree = "<group>"; };
+		A584BDE026592C990068C290 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavutil.xcframework; sourceTree = "<group>"; };
+		A584BDE126592C990068C290 /* shine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = shine.xcframework; sourceTree = "<group>"; };
+		A584BDE226592C990068C290 /* lame.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = lame.xcframework; sourceTree = "<group>"; };
+		A584BDE326592C990068C290 /* soxr.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = soxr.xcframework; sourceTree = "<group>"; };
+		A584BDE426592C990068C290 /* libpng.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libpng.xcframework; sourceTree = "<group>"; };
+		A584BDE526592C990068C290 /* libwebpdemux.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libwebpdemux.xcframework; sourceTree = "<group>"; };
+		A584BDE626592C990068C290 /* libass.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libass.xcframework; sourceTree = "<group>"; };
+		A584BDE726592C990068C290 /* libhogweed.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libhogweed.xcframework; sourceTree = "<group>"; };
+		A584BDE826592C990068C290 /* libvorbisenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbisenc.xcframework; sourceTree = "<group>"; };
+		A584BDE926592C990068C290 /* libopencore-amrnb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "libopencore-amrnb.xcframework"; sourceTree = "<group>"; };
+		A584BDEA26592C990068C290 /* giflib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = giflib.xcframework; sourceTree = "<group>"; };
+		A584BDEB26592C990068C290 /* tiff.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = tiff.xcframework; sourceTree = "<group>"; };
+		A584BDEC26592C990068C290 /* libtheora.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheora.xcframework; sourceTree = "<group>"; };
+		A584BDED26592C990068C290 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavcodec.xcframework; sourceTree = "<group>"; };
+		A584BDEE26592C990068C290 /* opus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = opus.xcframework; sourceTree = "<group>"; };
+		A584BDEF26592C990068C290 /* libtheoraenc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libtheoraenc.xcframework; sourceTree = "<group>"; };
+		A584BDF026592C990068C290 /* libaom.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libaom.xcframework; sourceTree = "<group>"; };
+		A584BDF126592C990068C290 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
+		A584BDF226592C990068C290 /* libvorbis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libvorbis.xcframework; sourceTree = "<group>"; };
+		A584BDF326592C990068C290 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		A584BDF426592C990068C290 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavfilter.xcframework; sourceTree = "<group>"; };
+		A584BDF526592C990068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = kvazaar.xcframework; sourceTree = "<group>"; };
+		A584BDF626592C990068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = jpeg.xcframework; sourceTree = "<group>"; };
+		A584BDF72659303E0068C290 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A584BDFA2659394C0068C290 /* out.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = out.mp3; sourceTree = "<group>"; };
+		EFC0AA9848086277C63AA3A1 /* Pods-YoutubePlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubePlayer.debug.xcconfig"; path = "Target Support Files/Pods-YoutubePlayer/Pods-YoutubePlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +440,54 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A584BDA226592C8D0068C290 /* libvorbis.xcframework in Frameworks */,
+				A584BDBC26592C8E0068C290 /* speex.xcframework in Frameworks */,
+				A584BDC426592C8E0068C290 /* wavpack.xcframework in Frameworks */,
+				A584BDAC26592C8D0068C290 /* libwebpdemux.xcframework in Frameworks */,
+				A584BDB826592C8E0068C290 /* snappy.xcframework in Frameworks */,
+				A584BD8226592C8C0068C290 /* libavdevice.xcframework in Frameworks */,
+				A584BDA426592C8D0068C290 /* libvorbisenc.xcframework in Frameworks */,
+				A584BDA026592C8D0068C290 /* libtheoraenc.xcframework in Frameworks */,
+				A584BD7826592C8B0068C290 /* kvazaar.xcframework in Frameworks */,
+				A584BD9A26592C8C0068C290 /* libswscale.xcframework in Frameworks */,
+				A584BD6A26592C8B0068C290 /* fontconfig.xcframework in Frameworks */,
+				A584BD8E26592C8C0068C290 /* libnettle.xcframework in Frameworks */,
+				A584BD8A26592C8C0068C290 /* libhogweed.xcframework in Frameworks */,
+				A584BD8426592C8C0068C290 /* libavfilter.xcframework in Frameworks */,
+				A584BD7C26592C8B0068C290 /* libaom.xcframework in Frameworks */,
+				A584BDB026592C8D0068C290 /* libxml2.xcframework in Frameworks */,
+				A584BDB426592C8D0068C290 /* opus.xcframework in Frameworks */,
+				A584BDBE26592C8E0068C290 /* tiff.xcframework in Frameworks */,
+				A584BD9226592C8C0068C290 /* libopencore-amrnb.xcframework in Frameworks */,
+				A584BDB626592C8E0068C290 /* shine.xcframework in Frameworks */,
+				A584BD8626592C8C0068C290 /* libavformat.xcframework in Frameworks */,
+				A584BD8026592C8C0068C290 /* libavcodec.xcframework in Frameworks */,
+				A584BD8C26592C8C0068C290 /* libilbc.xcframework in Frameworks */,
+				A584BD7E26592C8B0068C290 /* libass.xcframework in Frameworks */,
+				A584BD9426592C8C0068C290 /* libpng.xcframework in Frameworks */,
+				A584BD7426592C8B0068C290 /* gnutls.xcframework in Frameworks */,
+				A584BD6826592C8B0068C290 /* expat.xcframework in Frameworks */,
+				A584BDAE26592C8D0068C290 /* libwebpmux.xcframework in Frameworks */,
+				A584BD7026592C8B0068C290 /* giflib.xcframework in Frameworks */,
+				A584BD9C26592C8C0068C290 /* libtheora.xcframework in Frameworks */,
+				A584BDBA26592C8E0068C290 /* soxr.xcframework in Frameworks */,
+				A584BD6C26592C8B0068C290 /* freetype.xcframework in Frameworks */,
+				A584BDF82659303E0068C290 /* AVFoundation.framework in Frameworks */,
+				A584BDC026592C8E0068C290 /* twolame.xcframework in Frameworks */,
+				A584BD9626592C8C0068C290 /* libsndfile.xcframework in Frameworks */,
+				A584BD7A26592C8B0068C290 /* lame.xcframework in Frameworks */,
+				A584BD7626592C8B0068C290 /* jpeg.xcframework in Frameworks */,
+				A584BDAA26592C8D0068C290 /* libwebp.xcframework in Frameworks */,
+				A584BDC226592C8E0068C290 /* vo-amrwbenc.xcframework in Frameworks */,
+				A584BD7226592C8B0068C290 /* gmp.xcframework in Frameworks */,
+				A584BDA826592C8D0068C290 /* libvpx.xcframework in Frameworks */,
+				A584BD9826592C8C0068C290 /* libswresample.xcframework in Frameworks */,
+				A584BD8826592C8C0068C290 /* libavutil.xcframework in Frameworks */,
+				A584BDA626592C8D0068C290 /* libvorbisfile.xcframework in Frameworks */,
+				A584BD9E26592C8D0068C290 /* libtheoradec.xcframework in Frameworks */,
+				A584BD6E26592C8B0068C290 /* fribidi.xcframework in Frameworks */,
+				A584BD9026592C8C0068C290 /* libogg.xcframework in Frameworks */,
+				FF67805945003646C5907B6D /* Pods_YoutubePlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +508,105 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		312A21C4F4A139AEB57335CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A510139B265A50FD0034C5AF /* SBJson */,
+				A584BDF72659303E0068C290 /* AVFoundation.framework */,
+				A584BD3826592C6C0068C290 /* mobile-ffmpeg-full */,
+				A584BDC726592C990068C290 /* mobile-ffmpeg-full */,
+				A584BCED26592C5E0068C290 /* Pods */,
+				A584BC8D26592BCC0068C290 /* mobile-ffmpeg-full */,
+				A584BCBD26592C490068C290 /* mobile-ffmpeg-full */,
+				A584BC2526592B870068C290 /* libaom.xcframework */,
+				A584BC1E26592B860068C290 /* libass.xcframework */,
+				A584BC3326592B880068C290 /* libavcodec.xcframework */,
+				A584BC2726592B870068C290 /* libavdevice.xcframework */,
+				A584BC3926592B880068C290 /* libavfilter.xcframework */,
+				A584BC3626592B880068C290 /* libavformat.xcframework */,
+				A584BC2026592B870068C290 /* libavutil.xcframework */,
+				A584BC2B26592B870068C290 /* libhogweed.xcframework */,
+				A584BC3026592B870068C290 /* libilbc.xcframework */,
+				A584BC3B26592B880068C290 /* libnettle.xcframework */,
+				A584BC2A26592B870068C290 /* libogg.xcframework */,
+				A584BC3F26592B880068C290 /* libopencore-amrnb.xcframework */,
+				A584BC2126592B870068C290 /* libpng.xcframework */,
+				A584BC4126592B880068C290 /* libsndfile.xcframework */,
+				A584BC2826592B870068C290 /* libswresample.xcframework */,
+				A584BC2426592B870068C290 /* libswscale.xcframework */,
+				A584BC3826592B880068C290 /* libtheora.xcframework */,
+				A584BC4026592B880068C290 /* libtheoradec.xcframework */,
+				A584BC3A26592B880068C290 /* libtheoraenc.xcframework */,
+				A584BC2F26592B870068C290 /* libvorbis.xcframework */,
+				A584BC3126592B880068C290 /* libvorbisenc.xcframework */,
+				A584BC3426592B880068C290 /* libvorbisfile.xcframework */,
+				A584BC2D26592B870068C290 /* libvpx.xcframework */,
+				A584BC3226592B880068C290 /* libwebp.xcframework */,
+				A584BC1F26592B860068C290 /* libwebpdemux.xcframework */,
+				A584BC2E26592B870068C290 /* libwebpmux.xcframework */,
+				A584BC4226592B880068C290 /* libxml2.xcframework */,
+				A584BC2926592B870068C290 /* mobileffmpeg.xcframework */,
+				A584BC3C26592B880068C290 /* opus.xcframework */,
+				A584BC2226592B870068C290 /* shine.xcframework */,
+				A584BC2326592B870068C290 /* snappy.xcframework */,
+				A584BC2C26592B870068C290 /* soxr.xcframework */,
+				A584BC2626592B870068C290 /* speex.xcframework */,
+				A584BC3526592B880068C290 /* tiff.xcframework */,
+				A584BC3726592B880068C290 /* twolame.xcframework */,
+				A584BC3D26592B880068C290 /* vo-amrwbenc.xcframework */,
+				A584BC3E26592B880068C290 /* wavpack.xcframework */,
+				A584BC1B26592B5F0068C290 /* lame.xcframework */,
+				A584BC1826592B530068C290 /* kvazaar.xcframework */,
+				A584BC1526592B440068C290 /* jpeg.xcframework */,
+				A584BC1226592B370068C290 /* gnutls.xcframework */,
+				A584BC0F26592B230068C290 /* gmp.xcframework */,
+				A584BC0C26592B0B0068C290 /* giflib.xcframework */,
+				A584BC0926592AEE0068C290 /* fribidi.xcframework */,
+				A584BC0626592AD10068C290 /* freetype.xcframework */,
+				A584BC0226592AB40068C290 /* fontconfig.xcframework */,
+				098D84454CCD89CB48B26DEB /* Pods_YoutubePlayer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		74CB779F6FF27477AE86BBA8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EFC0AA9848086277C63AA3A1 /* Pods-YoutubePlayer.debug.xcconfig */,
+				6E6A90CFB887C5E257B9A4D9 /* Pods-YoutubePlayer.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A510139B265A50FD0034C5AF /* SBJson */ = {
+			isa = PBXGroup;
+			children = (
+				A510139C265A50FD0034C5AF /* LICENSE */,
+				A510139D265A50FD0034C5AF /* Classes */,
+				A51013A9265A50FD0034C5AF /* README.md */,
+			);
+			name = SBJson;
+			path = Pods/SBJson;
+			sourceTree = "<group>";
+		};
+		A510139D265A50FD0034C5AF /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A510139E265A50FD0034C5AF /* SBJson5StreamWriter.m */,
+				A510139F265A50FD0034C5AF /* SBJson5Parser.h */,
+				A51013A0265A50FD0034C5AF /* SBJson5Writer.m */,
+				A51013A1265A50FD0034C5AF /* SBJson5StreamParser.h */,
+				A51013A2265A50FD0034C5AF /* SBJson5StreamTokeniser.m */,
+				A51013A3265A50FD0034C5AF /* SBJson5StreamWriter.h */,
+				A51013A4265A50FD0034C5AF /* SBJson5Parser.m */,
+				A51013A5265A50FD0034C5AF /* SBJson5.h */,
+				A51013A6265A50FD0034C5AF /* SBJson5Writer.h */,
+				A51013A7265A50FD0034C5AF /* SBJson5StreamTokeniser.h */,
+				A51013A8265A50FD0034C5AF /* SBJson5StreamParser.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		A584BBBE26592A180068C290 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +614,8 @@
 				A584BBE826592A190068C290 /* YoutubePlayerTests */,
 				A584BBF326592A190068C290 /* YoutubePlayerUITests */,
 				A584BBC826592A180068C290 /* Products */,
+				74CB779F6FF27477AE86BBA8 /* Pods */,
+				312A21C4F4A139AEB57335CB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -106,6 +632,7 @@
 		A584BBC926592A180068C290 /* YoutubePlayer */ = {
 			isa = PBXGroup;
 			children = (
+				A584BDF92659305F0068C290 /* Resources */,
 				A584BBCA26592A180068C290 /* AppDelegate.h */,
 				A584BBCB26592A180068C290 /* AppDelegate.m */,
 				A584BBCD26592A180068C290 /* SceneDelegate.h */,
@@ -114,7 +641,6 @@
 				A584BBD126592A180068C290 /* ViewController.m */,
 				A584BBD326592A180068C290 /* Main.storyboard */,
 				A584BBD926592A190068C290 /* Assets.xcassets */,
-				A584BBDB26592A190068C290 /* LaunchScreen.storyboard */,
 				A584BBDE26592A190068C290 /* Info.plist */,
 				A584BBDF26592A190068C290 /* main.m */,
 				A584BBD626592A180068C290 /* YoutubePlayer.xcdatamodeld */,
@@ -140,6 +666,361 @@
 			path = YoutubePlayerUITests;
 			sourceTree = "<group>";
 		};
+		A584BC8D26592BCC0068C290 /* mobile-ffmpeg-full */ = {
+			isa = PBXGroup;
+			children = (
+				A584BC8E26592BCC0068C290 /* speex.xcframework */,
+				A584BC8F26592BCC0068C290 /* libavdevice.xcframework */,
+				A584BC9026592BCC0068C290 /* gmp.xcframework */,
+				A584BC9126592BCC0068C290 /* libnettle.xcframework */,
+				A584BC9226592BCC0068C290 /* libavformat.xcframework */,
+				A584BC9326592BCC0068C290 /* gnutls.xcframework */,
+				A584BC9426592BCC0068C290 /* vo-amrwbenc.xcframework */,
+				A584BC9526592BCC0068C290 /* freetype.xcframework */,
+				A584BC9626592BCC0068C290 /* libogg.xcframework */,
+				A584BC9726592BCC0068C290 /* fribidi.xcframework */,
+				A584BC9826592BCC0068C290 /* libxml2.xcframework */,
+				A584BC9926592BCC0068C290 /* expat.xcframework */,
+				A584BC9A26592BCC0068C290 /* libsndfile.xcframework */,
+				A584BC9B26592BCC0068C290 /* libwebpmux.xcframework */,
+				A584BC9C26592BCC0068C290 /* libwebp.xcframework */,
+				A584BC9D26592BCC0068C290 /* mobileffmpeg.xcframework */,
+				A584BC9E26592BCC0068C290 /* wavpack.xcframework */,
+				A584BC9F26592BCC0068C290 /* libvorbisfile.xcframework */,
+				A584BCA026592BCC0068C290 /* snappy.xcframework */,
+				A584BCA126592BCC0068C290 /* fontconfig.xcframework */,
+				A584BCA226592BCC0068C290 /* libvpx.xcframework */,
+				A584BCA326592BCC0068C290 /* libtheoradec.xcframework */,
+				A584BCA426592BCC0068C290 /* twolame.xcframework */,
+				A584BCA526592BCC0068C290 /* libilbc.xcframework */,
+				A584BCA626592BCC0068C290 /* libavutil.xcframework */,
+				A584BCA726592BCC0068C290 /* shine.xcframework */,
+				A584BCA826592BCC0068C290 /* lame.xcframework */,
+				A584BCA926592BCC0068C290 /* soxr.xcframework */,
+				A584BCAA26592BCC0068C290 /* libpng.xcframework */,
+				A584BCAB26592BCC0068C290 /* libwebpdemux.xcframework */,
+				A584BCAC26592BCC0068C290 /* libass.xcframework */,
+				A584BCAD26592BCC0068C290 /* libhogweed.xcframework */,
+				A584BCAE26592BCC0068C290 /* libvorbisenc.xcframework */,
+				A584BCAF26592BCC0068C290 /* libopencore-amrnb.xcframework */,
+				A584BCB026592BCC0068C290 /* giflib.xcframework */,
+				A584BCB126592BCC0068C290 /* tiff.xcframework */,
+				A584BCB226592BCC0068C290 /* libtheora.xcframework */,
+				A584BCB326592BCC0068C290 /* libavcodec.xcframework */,
+				A584BCB426592BCC0068C290 /* opus.xcframework */,
+				A584BCB526592BCC0068C290 /* libtheoraenc.xcframework */,
+				A584BCB626592BCC0068C290 /* libaom.xcframework */,
+				A584BCB726592BCC0068C290 /* libswresample.xcframework */,
+				A584BCB826592BCC0068C290 /* libvorbis.xcframework */,
+				A584BCB926592BCC0068C290 /* libswscale.xcframework */,
+				A584BCBA26592BCC0068C290 /* libavfilter.xcframework */,
+				A584BCBB26592BCC0068C290 /* kvazaar.xcframework */,
+				A584BCBC26592BCC0068C290 /* jpeg.xcframework */,
+			);
+			name = "mobile-ffmpeg-full";
+			path = "Pods/mobile-ffmpeg-full";
+			sourceTree = "<group>";
+		};
+		A584BCBD26592C490068C290 /* mobile-ffmpeg-full */ = {
+			isa = PBXGroup;
+			children = (
+				A584BCBE26592C490068C290 /* speex.xcframework */,
+				A584BCBF26592C4A0068C290 /* libavdevice.xcframework */,
+				A584BCC026592C4A0068C290 /* gmp.xcframework */,
+				A584BCC126592C4A0068C290 /* libnettle.xcframework */,
+				A584BCC226592C4A0068C290 /* libavformat.xcframework */,
+				A584BCC326592C4A0068C290 /* gnutls.xcframework */,
+				A584BCC426592C4A0068C290 /* vo-amrwbenc.xcframework */,
+				A584BCC526592C4A0068C290 /* freetype.xcframework */,
+				A584BCC626592C4A0068C290 /* libogg.xcframework */,
+				A584BCC726592C4A0068C290 /* fribidi.xcframework */,
+				A584BCC826592C4A0068C290 /* libxml2.xcframework */,
+				A584BCC926592C4A0068C290 /* expat.xcframework */,
+				A584BCCA26592C4A0068C290 /* libsndfile.xcframework */,
+				A584BCCB26592C4A0068C290 /* libwebpmux.xcframework */,
+				A584BCCC26592C4A0068C290 /* libwebp.xcframework */,
+				A584BCCD26592C4A0068C290 /* mobileffmpeg.xcframework */,
+				A584BCCE26592C4A0068C290 /* wavpack.xcframework */,
+				A584BCCF26592C4A0068C290 /* libvorbisfile.xcframework */,
+				A584BCD026592C4A0068C290 /* snappy.xcframework */,
+				A584BCD126592C4A0068C290 /* fontconfig.xcframework */,
+				A584BCD226592C4A0068C290 /* libvpx.xcframework */,
+				A584BCD326592C4A0068C290 /* libtheoradec.xcframework */,
+				A584BCD426592C4A0068C290 /* twolame.xcframework */,
+				A584BCD526592C4A0068C290 /* libilbc.xcframework */,
+				A584BCD626592C4A0068C290 /* libavutil.xcframework */,
+				A584BCD726592C4A0068C290 /* shine.xcframework */,
+				A584BCD826592C4A0068C290 /* lame.xcframework */,
+				A584BCD926592C4A0068C290 /* soxr.xcframework */,
+				A584BCDA26592C4A0068C290 /* libpng.xcframework */,
+				A584BCDB26592C4A0068C290 /* libwebpdemux.xcframework */,
+				A584BCDC26592C4A0068C290 /* libass.xcframework */,
+				A584BCDD26592C4A0068C290 /* libhogweed.xcframework */,
+				A584BCDE26592C4A0068C290 /* libvorbisenc.xcframework */,
+				A584BCDF26592C4A0068C290 /* libopencore-amrnb.xcframework */,
+				A584BCE026592C4A0068C290 /* giflib.xcframework */,
+				A584BCE126592C4A0068C290 /* tiff.xcframework */,
+				A584BCE226592C4A0068C290 /* libtheora.xcframework */,
+				A584BCE326592C4A0068C290 /* libavcodec.xcframework */,
+				A584BCE426592C4A0068C290 /* opus.xcframework */,
+				A584BCE526592C4A0068C290 /* libtheoraenc.xcframework */,
+				A584BCE626592C4A0068C290 /* libaom.xcframework */,
+				A584BCE726592C4A0068C290 /* libswresample.xcframework */,
+				A584BCE826592C4A0068C290 /* libvorbis.xcframework */,
+				A584BCE926592C4A0068C290 /* libswscale.xcframework */,
+				A584BCEA26592C4A0068C290 /* libavfilter.xcframework */,
+				A584BCEB26592C4A0068C290 /* kvazaar.xcframework */,
+				A584BCEC26592C4A0068C290 /* jpeg.xcframework */,
+			);
+			name = "mobile-ffmpeg-full";
+			path = "Pods/mobile-ffmpeg-full";
+			sourceTree = "<group>";
+		};
+		A584BCED26592C5E0068C290 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A584BCEE26592C5E0068C290 /* Pods.xcodeproj */,
+				A584BCF126592C5E0068C290 /* mobile-ffmpeg-full */,
+				A584BD2126592C5E0068C290 /* Target Support Files */,
+				A584BD3126592C5E0068C290 /* Manifest.lock */,
+				A584BD3226592C5E0068C290 /* Local Podspecs */,
+				A584BD3326592C5E0068C290 /* Headers */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A584BCEF26592C5E0068C290 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A584BD3726592C5E0068C290 /* Pods_YoutubePlayer.framework */,
+				A51013AE265A50FD0034C5AF /* SBJson.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A584BCF126592C5E0068C290 /* mobile-ffmpeg-full */ = {
+			isa = PBXGroup;
+			children = (
+				A584BCF226592C5E0068C290 /* speex.xcframework */,
+				A584BCF326592C5E0068C290 /* libavdevice.xcframework */,
+				A584BCF426592C5E0068C290 /* gmp.xcframework */,
+				A584BCF526592C5E0068C290 /* libnettle.xcframework */,
+				A584BCF626592C5E0068C290 /* libavformat.xcframework */,
+				A584BCF726592C5E0068C290 /* gnutls.xcframework */,
+				A584BCF826592C5E0068C290 /* vo-amrwbenc.xcframework */,
+				A584BCF926592C5E0068C290 /* freetype.xcframework */,
+				A584BCFA26592C5E0068C290 /* libogg.xcframework */,
+				A584BCFB26592C5E0068C290 /* fribidi.xcframework */,
+				A584BCFC26592C5E0068C290 /* libxml2.xcframework */,
+				A584BCFD26592C5E0068C290 /* expat.xcframework */,
+				A584BCFE26592C5E0068C290 /* libsndfile.xcframework */,
+				A584BCFF26592C5E0068C290 /* libwebpmux.xcframework */,
+				A584BD0026592C5E0068C290 /* libwebp.xcframework */,
+				A584BD0126592C5E0068C290 /* mobileffmpeg.xcframework */,
+				A584BD0226592C5E0068C290 /* wavpack.xcframework */,
+				A584BD0326592C5E0068C290 /* libvorbisfile.xcframework */,
+				A584BD0426592C5E0068C290 /* snappy.xcframework */,
+				A584BD0526592C5E0068C290 /* fontconfig.xcframework */,
+				A584BD0626592C5E0068C290 /* libvpx.xcframework */,
+				A584BD0726592C5E0068C290 /* libtheoradec.xcframework */,
+				A584BD0826592C5E0068C290 /* twolame.xcframework */,
+				A584BD0926592C5E0068C290 /* libilbc.xcframework */,
+				A584BD0A26592C5E0068C290 /* libavutil.xcframework */,
+				A584BD0B26592C5E0068C290 /* shine.xcframework */,
+				A584BD0C26592C5E0068C290 /* lame.xcframework */,
+				A584BD0D26592C5E0068C290 /* soxr.xcframework */,
+				A584BD0E26592C5E0068C290 /* libpng.xcframework */,
+				A584BD0F26592C5E0068C290 /* libwebpdemux.xcframework */,
+				A584BD1026592C5E0068C290 /* libass.xcframework */,
+				A584BD1126592C5E0068C290 /* libhogweed.xcframework */,
+				A584BD1226592C5E0068C290 /* libvorbisenc.xcframework */,
+				A584BD1326592C5E0068C290 /* libopencore-amrnb.xcframework */,
+				A584BD1426592C5E0068C290 /* giflib.xcframework */,
+				A584BD1526592C5E0068C290 /* tiff.xcframework */,
+				A584BD1626592C5E0068C290 /* libtheora.xcframework */,
+				A584BD1726592C5E0068C290 /* libavcodec.xcframework */,
+				A584BD1826592C5E0068C290 /* opus.xcframework */,
+				A584BD1926592C5E0068C290 /* libtheoraenc.xcframework */,
+				A584BD1A26592C5E0068C290 /* libaom.xcframework */,
+				A584BD1B26592C5E0068C290 /* libswresample.xcframework */,
+				A584BD1C26592C5E0068C290 /* libvorbis.xcframework */,
+				A584BD1D26592C5E0068C290 /* libswscale.xcframework */,
+				A584BD1E26592C5E0068C290 /* libavfilter.xcframework */,
+				A584BD1F26592C5E0068C290 /* kvazaar.xcframework */,
+				A584BD2026592C5E0068C290 /* jpeg.xcframework */,
+			);
+			path = "mobile-ffmpeg-full";
+			sourceTree = "<group>";
+		};
+		A584BD2126592C5E0068C290 /* Target Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A584BD2226592C5E0068C290 /* mobile-ffmpeg-full */,
+				A584BD2826592C5E0068C290 /* Pods-YoutubePlayer */,
+			);
+			path = "Target Support Files";
+			sourceTree = "<group>";
+		};
+		A584BD2226592C5E0068C290 /* mobile-ffmpeg-full */ = {
+			isa = PBXGroup;
+			children = (
+				A584BD2326592C5E0068C290 /* mobile-ffmpeg-full-xcframeworks-output-files.xcfilelist */,
+				A584BD2426592C5E0068C290 /* mobile-ffmpeg-full-xcframeworks.sh */,
+				A584BD2526592C5E0068C290 /* mobile-ffmpeg-full.debug.xcconfig */,
+				A584BD2626592C5E0068C290 /* mobile-ffmpeg-full-xcframeworks-input-files.xcfilelist */,
+				A584BD2726592C5E0068C290 /* mobile-ffmpeg-full.release.xcconfig */,
+			);
+			path = "mobile-ffmpeg-full";
+			sourceTree = "<group>";
+		};
+		A584BD2826592C5E0068C290 /* Pods-YoutubePlayer */ = {
+			isa = PBXGroup;
+			children = (
+				A584BD2926592C5E0068C290 /* Pods-YoutubePlayer-acknowledgements.plist */,
+				A584BD2A26592C5E0068C290 /* Pods-YoutubePlayer-umbrella.h */,
+				A584BD2B26592C5E0068C290 /* Pods-YoutubePlayer.release.xcconfig */,
+				A584BD2C26592C5E0068C290 /* Pods-YoutubePlayer.modulemap */,
+				A584BD2D26592C5E0068C290 /* Pods-YoutubePlayer-dummy.m */,
+				A584BD2E26592C5E0068C290 /* Pods-YoutubePlayer.debug.xcconfig */,
+				A584BD2F26592C5E0068C290 /* Pods-YoutubePlayer-acknowledgements.markdown */,
+				A584BD3026592C5E0068C290 /* Pods-YoutubePlayer-Info.plist */,
+			);
+			path = "Pods-YoutubePlayer";
+			sourceTree = "<group>";
+		};
+		A584BD3226592C5E0068C290 /* Local Podspecs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Local Podspecs";
+			sourceTree = "<group>";
+		};
+		A584BD3326592C5E0068C290 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		A584BD3826592C6C0068C290 /* mobile-ffmpeg-full */ = {
+			isa = PBXGroup;
+			children = (
+				A584BD3926592C6C0068C290 /* speex.xcframework */,
+				A584BD3A26592C6C0068C290 /* libavdevice.xcframework */,
+				A584BD3B26592C6C0068C290 /* gmp.xcframework */,
+				A584BD3C26592C6C0068C290 /* libnettle.xcframework */,
+				A584BD3D26592C6C0068C290 /* libavformat.xcframework */,
+				A584BD3E26592C6C0068C290 /* gnutls.xcframework */,
+				A584BD3F26592C6C0068C290 /* vo-amrwbenc.xcframework */,
+				A584BD4026592C6C0068C290 /* freetype.xcframework */,
+				A584BD4126592C6C0068C290 /* libogg.xcframework */,
+				A584BD4226592C6C0068C290 /* fribidi.xcframework */,
+				A584BD4326592C6C0068C290 /* libxml2.xcframework */,
+				A584BD4426592C6C0068C290 /* expat.xcframework */,
+				A584BD4526592C6C0068C290 /* libsndfile.xcframework */,
+				A584BD4626592C6C0068C290 /* libwebpmux.xcframework */,
+				A584BD4726592C6C0068C290 /* libwebp.xcframework */,
+				A584BD4826592C6C0068C290 /* mobileffmpeg.xcframework */,
+				A584BD4926592C6C0068C290 /* wavpack.xcframework */,
+				A584BD4A26592C6C0068C290 /* libvorbisfile.xcframework */,
+				A584BD4B26592C6C0068C290 /* snappy.xcframework */,
+				A584BD4C26592C6C0068C290 /* fontconfig.xcframework */,
+				A584BD4D26592C6C0068C290 /* libvpx.xcframework */,
+				A584BD4E26592C6C0068C290 /* libtheoradec.xcframework */,
+				A584BD4F26592C6C0068C290 /* twolame.xcframework */,
+				A584BD5026592C6C0068C290 /* libilbc.xcframework */,
+				A584BD5126592C6C0068C290 /* libavutil.xcframework */,
+				A584BD5226592C6C0068C290 /* shine.xcframework */,
+				A584BD5326592C6C0068C290 /* lame.xcframework */,
+				A584BD5426592C6C0068C290 /* soxr.xcframework */,
+				A584BD5526592C6C0068C290 /* libpng.xcframework */,
+				A584BD5626592C6C0068C290 /* libwebpdemux.xcframework */,
+				A584BD5726592C6C0068C290 /* libass.xcframework */,
+				A584BD5826592C6C0068C290 /* libhogweed.xcframework */,
+				A584BD5926592C6C0068C290 /* libvorbisenc.xcframework */,
+				A584BD5A26592C6C0068C290 /* libopencore-amrnb.xcframework */,
+				A584BD5B26592C6C0068C290 /* giflib.xcframework */,
+				A584BD5C26592C6C0068C290 /* tiff.xcframework */,
+				A584BD5D26592C6C0068C290 /* libtheora.xcframework */,
+				A584BD5E26592C6C0068C290 /* libavcodec.xcframework */,
+				A584BD5F26592C6C0068C290 /* opus.xcframework */,
+				A584BD6026592C6C0068C290 /* libtheoraenc.xcframework */,
+				A584BD6126592C6C0068C290 /* libaom.xcframework */,
+				A584BD6226592C6C0068C290 /* libswresample.xcframework */,
+				A584BD6326592C6C0068C290 /* libvorbis.xcframework */,
+				A584BD6426592C6C0068C290 /* libswscale.xcframework */,
+				A584BD6526592C6C0068C290 /* libavfilter.xcframework */,
+				A584BD6626592C6C0068C290 /* kvazaar.xcframework */,
+				A584BD6726592C6C0068C290 /* jpeg.xcframework */,
+			);
+			name = "mobile-ffmpeg-full";
+			path = "Pods/mobile-ffmpeg-full";
+			sourceTree = "<group>";
+		};
+		A584BDC726592C990068C290 /* mobile-ffmpeg-full */ = {
+			isa = PBXGroup;
+			children = (
+				A584BDC826592C990068C290 /* speex.xcframework */,
+				A584BDC926592C990068C290 /* libavdevice.xcframework */,
+				A584BDCA26592C990068C290 /* gmp.xcframework */,
+				A584BDCB26592C990068C290 /* libnettle.xcframework */,
+				A584BDCC26592C990068C290 /* libavformat.xcframework */,
+				A584BDCD26592C990068C290 /* gnutls.xcframework */,
+				A584BDCE26592C990068C290 /* vo-amrwbenc.xcframework */,
+				A584BDCF26592C990068C290 /* freetype.xcframework */,
+				A584BDD026592C990068C290 /* libogg.xcframework */,
+				A584BDD126592C990068C290 /* fribidi.xcframework */,
+				A584BDD226592C990068C290 /* libxml2.xcframework */,
+				A584BDD326592C990068C290 /* expat.xcframework */,
+				A584BDD426592C990068C290 /* libsndfile.xcframework */,
+				A584BDD526592C990068C290 /* libwebpmux.xcframework */,
+				A584BDD626592C990068C290 /* libwebp.xcframework */,
+				A584BDD726592C990068C290 /* mobileffmpeg.xcframework */,
+				A584BDD826592C990068C290 /* wavpack.xcframework */,
+				A584BDD926592C990068C290 /* libvorbisfile.xcframework */,
+				A584BDDA26592C990068C290 /* snappy.xcframework */,
+				A584BDDB26592C990068C290 /* fontconfig.xcframework */,
+				A584BDDC26592C990068C290 /* libvpx.xcframework */,
+				A584BDDD26592C990068C290 /* libtheoradec.xcframework */,
+				A584BDDE26592C990068C290 /* twolame.xcframework */,
+				A584BDDF26592C990068C290 /* libilbc.xcframework */,
+				A584BDE026592C990068C290 /* libavutil.xcframework */,
+				A584BDE126592C990068C290 /* shine.xcframework */,
+				A584BDE226592C990068C290 /* lame.xcframework */,
+				A584BDE326592C990068C290 /* soxr.xcframework */,
+				A584BDE426592C990068C290 /* libpng.xcframework */,
+				A584BDE526592C990068C290 /* libwebpdemux.xcframework */,
+				A584BDE626592C990068C290 /* libass.xcframework */,
+				A584BDE726592C990068C290 /* libhogweed.xcframework */,
+				A584BDE826592C990068C290 /* libvorbisenc.xcframework */,
+				A584BDE926592C990068C290 /* libopencore-amrnb.xcframework */,
+				A584BDEA26592C990068C290 /* giflib.xcframework */,
+				A584BDEB26592C990068C290 /* tiff.xcframework */,
+				A584BDEC26592C990068C290 /* libtheora.xcframework */,
+				A584BDED26592C990068C290 /* libavcodec.xcframework */,
+				A584BDEE26592C990068C290 /* opus.xcframework */,
+				A584BDEF26592C990068C290 /* libtheoraenc.xcframework */,
+				A584BDF026592C990068C290 /* libaom.xcframework */,
+				A584BDF126592C990068C290 /* libswresample.xcframework */,
+				A584BDF226592C990068C290 /* libvorbis.xcframework */,
+				A584BDF326592C990068C290 /* libswscale.xcframework */,
+				A584BDF426592C990068C290 /* libavfilter.xcframework */,
+				A584BDF526592C990068C290 /* kvazaar.xcframework */,
+				A584BDF626592C990068C290 /* jpeg.xcframework */,
+			);
+			name = "mobile-ffmpeg-full";
+			path = "Pods/mobile-ffmpeg-full";
+			sourceTree = "<group>";
+		};
+		A584BDF92659305F0068C290 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A51013AF265A81550034C5AF /* base.js */,
+				A584BDFA2659394C0068C290 /* out.mp3 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,9 +1028,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A584BBF926592A190068C290 /* Build configuration list for PBXNativeTarget "YoutubePlayer" */;
 			buildPhases = (
+				1097546F9DE43E3A0AA42E57 /* [CP] Check Pods Manifest.lock */,
 				A584BBC326592A180068C290 /* Sources */,
 				A584BBC426592A180068C290 /* Frameworks */,
 				A584BBC526592A180068C290 /* Resources */,
+				6018DFF140C0E73D2A19620E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -228,6 +1111,12 @@
 			mainGroup = A584BBBE26592A180068C290;
 			productRefGroup = A584BBC826592A180068C290 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A584BCEF26592C5E0068C290 /* Products */;
+					ProjectRef = A584BCEE26592C5E0068C290 /* Pods.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A584BBC626592A180068C290 /* YoutubePlayer */,
@@ -237,12 +1126,30 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		A51013AE265A50FD0034C5AF /* SBJson.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SBJson.framework;
+			remoteRef = A51013AD265A50FD0034C5AF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A584BD3726592C5E0068C290 /* Pods_YoutubePlayer.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Pods_YoutubePlayer.framework;
+			remoteRef = A584BD3626592C5E0068C290 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		A584BBC526592A180068C290 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A584BBDD26592A190068C290 /* LaunchScreen.storyboard in Resources */,
+				A584BDFB2659394C0068C290 /* out.mp3 in Resources */,
+				A51013B0265A81550034C5AF /* base.js in Resources */,
 				A584BBDA26592A190068C290 /* Assets.xcassets in Resources */,
 				A584BBD526592A180068C290 /* Main.storyboard in Resources */,
 			);
@@ -263,6 +1170,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1097546F9DE43E3A0AA42E57 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-YoutubePlayer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6018DFF140C0E73D2A19620E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-YoutubePlayer/Pods-YoutubePlayer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-YoutubePlayer/Pods-YoutubePlayer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YoutubePlayer/Pods-YoutubePlayer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A584BBC326592A180068C290 /* Sources */ = {
@@ -315,14 +1264,6 @@
 				A584BBD426592A180068C290 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		A584BBDB26592A190068C290 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A584BBDC26592A190068C290 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -442,6 +1383,7 @@
 		};
 		A584BBFA26592A190068C290 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EFC0AA9848086277C63AA3A1 /* Pods-YoutubePlayer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -452,14 +1394,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = YoutubePlayer.YoutubePlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = YoutubePlayer.YoutubePlayer1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		A584BBFB26592A190068C290 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E6A90CFB887C5E257B9A4D9 /* Pods-YoutubePlayer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -470,9 +1413,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = YoutubePlayer.YoutubePlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = YoutubePlayer.YoutubePlayer1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
