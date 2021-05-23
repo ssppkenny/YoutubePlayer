@@ -1,20 +1,16 @@
 PODS:
   - mobile-ffmpeg-full (4.4)
-  - SBJson (5.0.3)
 
 DEPENDENCIES:
   - mobile-ffmpeg-full (~> 4.4)
-  - SBJson (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
     - mobile-ffmpeg-full
-    - SBJson
 
 SPEC CHECKSUMS:
   mobile-ffmpeg-full: 505c583d91ac1c4fb2b015787e69d83f83fb8f29
-  SBJson: 31813d1508edec904663cd59e71e0225d9dd8e07
 
-PODFILE CHECKSUM: 4163e7f07f575ff703d1eaec8d054eb22e4ec41d
+PODFILE CHECKSUM: de690f3875380acf257f0ef5f0ab59e0a0561676
 
 COCOAPODS: 1.10.1
