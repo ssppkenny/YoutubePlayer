@@ -55,7 +55,7 @@ NSArray* reverse(NSArray* arr, int pos) {
 }
 
 NSArray* splice(NSArray*arr, int pos) {
-    int length = [arr count];
+    NSUInteger length = [arr count];
     NSArray* result = [arr subarrayWithRange:NSMakeRange(pos, length - pos)];
     return result;
 }
@@ -97,9 +97,9 @@ NSArray* parse_function(NSString* js_func) {
 
 NSMutableString* get_signature(NSArray *a_array)
 {
-    unsigned count = [a_array count];
+    NSUInteger count = [a_array count];
     NSMutableString *mutableString = [NSMutableString stringWithCapacity:count];
-
+    
     for (unsigned i = 0; i < count; i++)
     {
         [mutableString appendString:[a_array objectAtIndex:i]] ;
@@ -124,9 +124,9 @@ NSMutableString* get_signature(NSArray *a_array)
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-
+    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-               NSUserDomainMask, YES);
+                                                            NSUserDomainMask, YES);
     
     NSString *docsDir = [dirPaths objectAtIndex:0];
     NSString* outPath = [NSString stringWithFormat:@"%@/out.mp3", docsDir];
@@ -135,10 +135,10 @@ NSMutableString* get_signature(NSArray *a_array)
     NSURL *base_url = [NSURL fileURLWithPath:[[NSBundle mainBundle]
                                               pathForResource:@"base"
                                               ofType:@"js"]];
-    
-    NSString *fileContents = [NSString stringWithContentsOfFile:[base_url absoluteURL]];
-    
     NSError* error;
+    NSString *fileContents = [NSString stringWithContentsOfFile:[base_url absoluteURL] encoding:NSUTF8StringEncoding error:&error];
+    
+   
     NSArray *transform_plan = nil;
     
     Mapper* mapper1 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.reverse\\(\\)\\}"
@@ -220,13 +220,15 @@ NSMutableString* get_signature(NSArray *a_array)
         }
     }
     
-    NSString *yurl = @"https://youtube.com/get_video_info?video_id=16y1AkoZkmQ&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis.com%2Fv%2FAh392lnFHxM&hl=en_US";
-   // NSString *yurl = //@"https://youtube.com/get_video_info?video_id=Ah392lnFHxM&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis////.com%2Fv%2FAh392lnFHxM&hl=en_US";
     
-    NSString *r = [self getDataFrom:yurl];
+    NSString* video_id = @"unfzfe8f9NI";
     
-    NSString *urlString = [r stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", video_id];
     
+    // NSString *yurl = //@"https://youtube.com/get_video_info?video_id=Ah392lnFHxM&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis////.com%2Fv%2FAh392lnFHxM&hl=en_US";
+    
+    NSString *request = [self getDataFrom:yurl];
+    NSString *urlString = [request stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
     
     NSDictionary* format = nil;
@@ -277,15 +279,12 @@ NSMutableString* get_signature(NSArray *a_array)
                             }
                         }
                     }
-                    
-                    
-                    
                 }
             }
             
-          
+            
             NSString* signatureCipher = [format objectForKey:@"signatureCipher"];
-           
+            
             NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
             NSArray *urlComponents = [signatureCipher componentsSeparatedByString:@"&"];
             
@@ -293,7 +292,7 @@ NSMutableString* get_signature(NSArray *a_array)
                 NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
                 NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
                 NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
-
+                
                 [queryStringDictionary setObject:value forKey:key];
             }
             
@@ -309,7 +308,7 @@ NSMutableString* get_signature(NSArray *a_array)
                 NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
                 
                 NSMutableString *mutableString = [NSMutableString stringWithCapacity:100];
-                int size =[pairComponents count];
+                NSUInteger size =[pairComponents count];
                 for (int i=1; i<size; i++) {
                     NSString* part = [pairComponents objectAtIndex:i];
                     if (i<size-1) {
@@ -319,12 +318,12 @@ NSMutableString* get_signature(NSArray *a_array)
                         NSString* s = [NSString stringWithFormat:@"%@", part];
                         [mutableString appendString:s];
                     }
-                   
+                    
                 }
                 
                 NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
                 NSString *value = [mutableString stringByRemovingPercentEncoding];
-
+                
                 [queryStringDictionary setObject:value forKey:key];
             }
             
@@ -342,8 +341,7 @@ NSMutableString* get_signature(NSArray *a_array)
                     signature = splice(signature, arg);
                 }
             }
-            
-            NSLog(@"Test");
+
             
             NSMutableString* sig = get_signature(signature);
             
@@ -363,15 +361,13 @@ NSMutableString* get_signature(NSArray *a_array)
                     [mutableString appendString:c];
                 }
             }
-
+            
             
             NSString* new_query = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
-            NSLog(@"%@", new_query);
-           
             NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", new_query, outPath];
             
-            long executionId = [MobileFFmpeg executeAsync:command withCallback:self];
-        
+            [MobileFFmpeg executeAsync:command withCallback:self];
+            
             NSURL* mp3url = [NSURL URLWithString:outPath];
             
             _audioPlayer = [[AVAudioPlayer alloc]
