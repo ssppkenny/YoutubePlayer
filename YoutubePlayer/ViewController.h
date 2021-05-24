@@ -10,7 +10,7 @@
 #import <AVKit/AVKit.h>
 #import <mobileffmpeg/MobileFFmpeg.h>
 
-@interface ViewController : UIViewController<AVAudioPlayerDelegate>
+@interface ViewController : UIViewController<AVAudioPlayerDelegate,ExecuteDelegate>
 
 @property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 
