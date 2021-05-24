@@ -20,15 +20,7 @@
     return self;
 }
 
-- (void)executeCallback:(long)executionId :(int)rc {
-    if (rc == RETURN_CODE_SUCCESS) {
-        NSLog(@"Async command execution completed successfully.\n");
-    } else if (rc == RETURN_CODE_CANCEL) {
-        NSLog(@"Async command execution cancelled by user.\n");
-    } else {
-        NSLog(@"Async command execution failed with rc=%d.\n", rc);
-    }
-}
+
 
 @end
 
@@ -119,14 +111,26 @@ NSMutableString* get_signature(NSArray *a_array)
 
 
 @implementation ViewController
-
+- (void)executeCallback:(long)executionId :(int)rc {
+    if (rc == RETURN_CODE_SUCCESS) {
+        NSLog(@"Async command execution completed successfully.\n");
+    } else if (rc == RETURN_CODE_CANCEL) {
+        NSLog(@"Async command execution cancelled by user.\n");
+    } else {
+        NSLog(@"Async command execution failed with rc=%d.\n", rc);
+    }
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle]
-                                         pathForResource:@"out"
-                                         ofType:@"mp3"]];
+
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+               NSUserDomainMask, YES);
+    
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    NSString* outPath = [NSString stringWithFormat:@"%@/out.mp3", docsDir];
+    
     
     NSURL *base_url = [NSURL fileURLWithPath:[[NSBundle mainBundle]
                                               pathForResource:@"base"
@@ -134,20 +138,7 @@ NSMutableString* get_signature(NSArray *a_array)
     
     NSString *fileContents = [NSString stringWithContentsOfFile:[base_url absoluteURL]];
     
-    NSError *error;
-    _audioPlayer = [[AVAudioPlayer alloc]
-                    initWithContentsOfURL:url
-                    error:&error];
-    
-    if (error)
-    {
-        NSLog(@"Error in audioPlayer: %@",
-              [error localizedDescription]);
-    } else {
-        _audioPlayer.delegate = self;
-        [_audioPlayer prepareToPlay];
-    }
-    
+    NSError* error;
     NSArray *transform_plan = nil;
     
     Mapper* mapper1 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.reverse\\(\\)\\}"
@@ -229,7 +220,8 @@ NSMutableString* get_signature(NSArray *a_array)
         }
     }
     
-    NSString *yurl = @"https://youtube.com/get_video_info?video_id=Ah392lnFHxM&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis.com%2Fv%2FAh392lnFHxM&hl=en_US";
+    NSString *yurl = @"https://youtube.com/get_video_info?video_id=16y1AkoZkmQ&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis.com%2Fv%2FAh392lnFHxM&hl=en_US";
+   // NSString *yurl = //@"https://youtube.com/get_video_info?video_id=Ah392lnFHxM&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis////.com%2Fv%2FAh392lnFHxM&hl=en_US";
     
     NSString *r = [self getDataFrom:yurl];
     
@@ -375,23 +367,27 @@ NSMutableString* get_signature(NSArray *a_array)
             
             NSString* new_query = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
             NSLog(@"%@", new_query);
-            
-            NSString* command = [NSString stringWithFormat:@"-i \"%@\" out.mp3", new_query];
-            
-            
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-            [request setHTTPMethod:@"GET"];
-            [request setURL:[NSURL URLWithString:new_query]];
-
-            NSHTTPURLResponse *responseCode = nil;
-
-            NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-
-            if([responseCode statusCode] != 200){
-                NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
-            }
            
+            NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", new_query, outPath];
+            
+            long executionId = [MobileFFmpeg executeAsync:command withCallback:self];
         
+            NSURL* mp3url = [NSURL URLWithString:outPath];
+            
+            _audioPlayer = [[AVAudioPlayer alloc]
+                            initWithContentsOfURL:mp3url
+                            error:&error];
+            
+            if (error)
+            {
+                NSLog(@"Error in audioPlayer: %@",
+                      [error localizedDescription]);
+            } else {
+                _audioPlayer.delegate = self;
+                [_audioPlayer prepareToPlay];
+            }
+            
+            
         }
         
         
