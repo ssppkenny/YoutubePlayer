@@ -374,6 +374,10 @@ NSMutableString* get_signature(NSArray *a_array)
                             initWithContentsOfURL:mp3url
                             error:&error];
             
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+                [[AVAudioSession sharedInstance] setActive: YES error: nil];
+                [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+            
             if (error)
             {
                 NSLog(@"Error in audioPlayer: %@",
