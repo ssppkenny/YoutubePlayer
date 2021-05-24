@@ -13,11 +13,11 @@
 
 - (id)initWithregex:(NSRegularExpression *)regex function:(NSString *)function
 {
-  if (self = [super init]) {
-    self.regex = regex;
-    self.function = function;
-  }
-  return self;
+    if (self = [super init]) {
+        self.regex = regex;
+        self.function = function;
+    }
+    return self;
 }
 
 @end
@@ -27,6 +27,17 @@
 
 @end
 
+
+void find_function(Mapper* mapper, NSDictionary* dict, NSString* key, NSString* value) {
+    NSArray* matches =[mapper.regex matchesInString:value options:0 range:NSMakeRange(0, [value length])];
+    for (NSTextCheckingResult *match in matches) {
+        [dict setValue:mapper.function forKey:key];
+        return;
+    }
+    return;
+}
+
+
 @implementation ViewController
 
 - (void)viewDidLoad {
@@ -34,24 +45,24 @@
     // Do any additional setup after loading the view.
     
     NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle]
-                pathForResource:@"out"
-                ofType:@"mp3"]];
+                                         pathForResource:@"out"
+                                         ofType:@"mp3"]];
     
     NSURL *base_url = [NSURL fileURLWithPath:[[NSBundle mainBundle]
-                pathForResource:@"base"
-                ofType:@"js"]];
+                                              pathForResource:@"base"
+                                              ofType:@"js"]];
     
     NSString *fileContents = [NSString stringWithContentsOfFile:[base_url absoluteURL]];
-
+    
     NSError *error;
     _audioPlayer = [[AVAudioPlayer alloc]
-                             initWithContentsOfURL:url
-                             error:&error];
+                    initWithContentsOfURL:url
+                    error:&error];
     
     if (error)
     {
         NSLog(@"Error in audioPlayer: %@",
-                          [error localizedDescription]);
+              [error localizedDescription]);
     } else {
         _audioPlayer.delegate = self;
         [_audioPlayer prepareToPlay];
@@ -67,7 +78,7 @@
     Mapper* mapper3 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\]=\\w\\}"
                                                                                                      options:0 error:&error] function:@"swap" ];
     
-    Mapper* mapper4 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\%\\w.length\\]=\\w}"
+    Mapper* mapper4 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\%\\w.length\\]=\\w\\}"
                                                                                                      options:0 error:&error] function:@"swap" ];
     
     NSArray *mappers = @[ mapper1, mapper2, mapper3, mapper4];
@@ -116,32 +127,27 @@
                     NSLog(@"%@", matchString);
                     
                     matchString =  [matchString stringByReplacingOccurrencesOfString:@"\n"
-                                                         withString:@" "];
+                                                                          withString:@" "];
                     NSLog(@"%@", matchString);
                     
                     NSArray* components = [matchString componentsSeparatedByString:@", "];
                     
-                    NSLog(@"test");
-                    
                     NSMutableDictionary *dict = [[NSMutableDictionary alloc]initWithCapacity:10];
                     
+                  
                     for (NSString* s in components) {
                         NSArray* mapparts = [s componentsSeparatedByString:@":"];
                         NSString* value = [mapparts objectAtIndex:1];
                         NSString* key = [mapparts objectAtIndex:0];
-                        [dict setValue:value forKey:key];
+                        
+                        for (Mapper* mapper in mappers) {
+                            find_function(mapper, dict, key, value);
+                        }
                     }
                     
-                    NSLog(@"test");
-                    
                 }
-                
             }
-            
-            
         }
-       
-        
     }
     
     NSString *yurl = @"https://youtube.com/get_video_info?video_id=Ah392lnFHxM&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis.com%2Fv%2FAh392lnFHxM&hl=en_US";
@@ -165,8 +171,8 @@
             
             NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
             NSError *error;
-
-               //    Note that JSONObjectWithData will return either an NSDictionary or an NSArray, depending whether your JSON string represents an a dictionary or an array.
+            
+            //    Note that JSONObjectWithData will return either an NSDictionary or an NSArray, depending whether your JSON string represents an a dictionary or an array.
             id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
             
             if ([jsonObject isKindOfClass:[NSDictionary class]]) {
@@ -180,12 +186,12 @@
                     if ([formats isKindOfClass:[NSArray class]]) {
                         NSArray* a1 = (NSArray*)formats;
                         for (id e in a1) {
-                           NSDictionary* d =  (NSDictionary*)e;
-                           NSString* mimeType =[d objectForKey:@"mimeType"];
-                           if ([mimeType containsString:@"audio"]) {
-                               format = d;
-                               break;
-                           }
+                            NSDictionary* d =  (NSDictionary*)e;
+                            NSString* mimeType =[d objectForKey:@"mimeType"];
+                            if ([mimeType containsString:@"audio"]) {
+                                format = d;
+                                break;
+                            }
                         }
                     }
                     
@@ -201,13 +207,27 @@
                         }
                     }
                     
-                   
+                    
                     
                 }
             }
             
-                NSLog(format);
+          
+            NSString* signatureCipher = [format objectForKey:@"signatureCipher"];
+            
+            NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
+            NSArray *urlComponents = [signatureCipher componentsSeparatedByString:@"&"];
+            
+            for (NSString *keyValuePair in urlComponents) {
+                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
+                NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
 
+                [queryStringDictionary setObject:value forKey:key];
+            }
+            
+            NSLog(format);
+            
             
             
         }
@@ -217,13 +237,13 @@
     
 }
 - (IBAction)onClick:(UIButton *)sender forEvent:(UIEvent *)event {
-
+    
     [_audioPlayer play];
     
 }
 
 - (IBAction)onClickStop:(UIButton *)sender forEvent:(UIEvent *)event {
-
+    
     [_audioPlayer stop];
     
 }
@@ -250,17 +270,17 @@
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setHTTPMethod:@"GET"];
     [request setURL:[NSURL URLWithString:url]];
-
+    
     NSError *error = nil;
     NSHTTPURLResponse *responseCode = nil;
-
+    
     NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-
+    
     if([responseCode statusCode] != 200){
         NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
         return nil;
     }
-
+    
     return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
 

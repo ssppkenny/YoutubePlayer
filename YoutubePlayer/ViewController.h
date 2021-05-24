@@ -8,9 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
-#import <mobileffmpeg/MobileFFmpegConfig.h>
 #import <mobileffmpeg/MobileFFmpeg.h>
-#import <SBJson/SBJson5.h>
 
 @interface ViewController : UIViewController<AVAudioPlayerDelegate>
 
