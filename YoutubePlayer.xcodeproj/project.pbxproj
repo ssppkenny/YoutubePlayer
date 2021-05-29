@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A51013B0265A81550034C5AF /* base.js in Resources */ = {isa = PBXBuildFile; fileRef = A51013AF265A81550034C5AF /* base.js */; };
+		A51013B0265A81550034C5AF /* base1.js in Resources */ = {isa = PBXBuildFile; fileRef = A51013AF265A81550034C5AF /* base1.js */; };
+		A574107A26623BF40054C445 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A574107926623BF40054C445 /* TableViewController.m */; };
 		A584BBCC26592A180068C290 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBCB26592A180068C290 /* AppDelegate.m */; };
 		A584BBCF26592A180068C290 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBCE26592A180068C290 /* SceneDelegate.m */; };
 		A584BBD226592A180068C290 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBD126592A180068C290 /* ViewController.m */; };
@@ -64,18 +65,10 @@
 		A584BDC226592C8E0068C290 /* vo-amrwbenc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3F26592C6C0068C290 /* vo-amrwbenc.xcframework */; };
 		A584BDC426592C8E0068C290 /* wavpack.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4926592C6C0068C290 /* wavpack.xcframework */; };
 		A584BDF82659303E0068C290 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BDF72659303E0068C290 /* AVFoundation.framework */; };
-		A584BDFB2659394C0068C290 /* out.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A584BDFA2659394C0068C290 /* out.mp3 */; };
 		FF67805945003646C5907B6D /* Pods_YoutubePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 098D84454CCD89CB48B26DEB /* Pods_YoutubePlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A51013AD265A50FD0034C5AF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A584BCEE26592C5E0068C290 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DDF6A31DFFDAE17F80A34E666AA79832;
-			remoteInfo = SBJson;
-		};
 		A584BBE626592A190068C290 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A584BBBF26592A180068C290 /* Project object */;
@@ -115,7 +108,9 @@
 		A51013A7265A50FD0034C5AF /* SBJson5StreamTokeniser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5StreamTokeniser.h; sourceTree = "<group>"; };
 		A51013A8265A50FD0034C5AF /* SBJson5StreamParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5StreamParser.m; sourceTree = "<group>"; };
 		A51013A9265A50FD0034C5AF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		A51013AF265A81550034C5AF /* base.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base.js; sourceTree = "<group>"; };
+		A51013AF265A81550034C5AF /* base1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base1.js; sourceTree = "<group>"; };
+		A574107926623BF40054C445 /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		A574107D26623C150054C445 /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		A584BBC726592A180068C290 /* YoutubePlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubePlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A584BBCA26592A180068C290 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A584BBCB26592A180068C290 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -431,7 +426,6 @@
 		A584BDF526592C990068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = kvazaar.xcframework; sourceTree = "<group>"; };
 		A584BDF626592C990068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = jpeg.xcframework; sourceTree = "<group>"; };
 		A584BDF72659303E0068C290 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		A584BDFA2659394C0068C290 /* out.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = out.mp3; sourceTree = "<group>"; };
 		EFC0AA9848086277C63AA3A1 /* Pods-YoutubePlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubePlayer.debug.xcconfig"; path = "Target Support Files/Pods-YoutubePlayer/Pods-YoutubePlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -644,6 +638,8 @@
 				A584BBDE26592A190068C290 /* Info.plist */,
 				A584BBDF26592A190068C290 /* main.m */,
 				A584BBD626592A180068C290 /* YoutubePlayer.xcdatamodeld */,
+				A574107926623BF40054C445 /* TableViewController.m */,
+				A574107D26623C150054C445 /* TableViewController.h */,
 			);
 			path = YoutubePlayer;
 			sourceTree = "<group>";
@@ -793,7 +789,6 @@
 			isa = PBXGroup;
 			children = (
 				A584BD3726592C5E0068C290 /* Pods_YoutubePlayer.framework */,
-				A51013AE265A50FD0034C5AF /* SBJson.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1015,8 +1010,7 @@
 		A584BDF92659305F0068C290 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A51013AF265A81550034C5AF /* base.js */,
-				A584BDFA2659394C0068C290 /* out.mp3 */,
+				A51013AF265A81550034C5AF /* base1.js */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1126,13 +1120,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		A51013AE265A50FD0034C5AF /* SBJson.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SBJson.framework;
-			remoteRef = A51013AD265A50FD0034C5AF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		A584BD3726592C5E0068C290 /* Pods_YoutubePlayer.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1147,8 +1134,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A584BDFB2659394C0068C290 /* out.mp3 in Resources */,
-				A51013B0265A81550034C5AF /* base.js in Resources */,
+				A51013B0265A81550034C5AF /* base1.js in Resources */,
 				A584BBDA26592A190068C290 /* Assets.xcassets in Resources */,
 				A584BBD526592A180068C290 /* Main.storyboard in Resources */,
 			);
@@ -1201,6 +1187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A584BBE026592A190068C290 /* main.m in Sources */,
+				A574107A26623BF40054C445 /* TableViewController.m in Sources */,
 				A584BBD826592A180068C290 /* YoutubePlayer.xcdatamodeld in Sources */,
 				A584BBD226592A180068C290 /* ViewController.m in Sources */,
 				A584BBCC26592A180068C290 /* AppDelegate.m in Sources */,

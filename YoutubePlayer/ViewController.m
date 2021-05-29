@@ -124,19 +124,32 @@ NSMutableString* get_signature(NSArray *a_array)
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                             NSUserDomainMask, YES);
     
     NSString *docsDir = [dirPaths objectAtIndex:0];
     NSString* outPath = [NSString stringWithFormat:@"%@/out.mp3", docsDir];
+    NSString* base_js_path = [NSString stringWithFormat:@"%@/base.js", docsDir];
     
-    
-    NSURL *base_url = [NSURL fileURLWithPath:[[NSBundle mainBundle]
-                                              pathForResource:@"base"
-                                              ofType:@"js"]];
+
     NSError* error;
-    NSString *fileContents = [NSString stringWithContentsOfFile:[base_url absoluteURL] encoding:NSUTF8StringEncoding error:&error];
+    
+    NSString* watch_url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", self.videoId];
+    NSString *html= [self getDataFrom:watch_url];
+    
+    NSRegularExpression *base_js_regex = [NSRegularExpression regularExpressionWithPattern:@"(/s/player/[\\w\\d]+/[\\w\\d\\_\\-\\.]+/base\\.js)" options:1 << 3 error:&error];
+    
+
+    NSArray* base_url_matches = [base_js_regex matchesInString:html options:0 range:NSMakeRange(0, [html length])];
+    for (NSTextCheckingResult *match in base_url_matches) {
+        NSRange matchRange = [match rangeAtIndex:1];
+        NSString *matchString = [html substringWithRange:matchRange];
+        NSString* my_base_url = [NSString stringWithFormat:@"https://www.youtube.com%@", matchString];
+        [self downloadFrom:my_base_url toFile:base_js_path];
+        break;
+    }
+    
+    NSString *fileContents = [NSString stringWithContentsOfFile:base_js_path encoding:NSUTF8StringEncoding error:&error];
     
    
     NSArray *transform_plan = nil;
@@ -221,9 +234,8 @@ NSMutableString* get_signature(NSArray *a_array)
     }
     
     
-    NSString* video_id = @"unfzfe8f9NI";
     
-    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", video_id];
+    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", self.videoId];
     
     // NSString *yurl = //@"https://youtube.com/get_video_info?video_id=Ah392lnFHxM&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis////.com%2Fv%2FAh392lnFHxM&hl=en_US";
     
@@ -251,6 +263,10 @@ NSMutableString* get_signature(NSArray *a_array)
             if ([jsonObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
                 id streamingData =[jsonDictionary objectForKey:@"streamingData"];
+                NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
+                _songTitle.text = [[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                _songTitle.lineBreakMode = NSLineBreakByWordWrapping;
+                _songTitle.numberOfLines = 0;
                 if ([streamingData isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *jsonDictionary = (NSDictionary*)streamingData;
                     id formats =[jsonDictionary objectForKey:@"formats"];
@@ -364,15 +380,18 @@ NSMutableString* get_signature(NSArray *a_array)
             
             
             NSString* new_query = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
-            NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", new_query, outPath];
+            NSString* command = [NSString stringWithFormat:@"-y -flush_packets 1 -packetsize 512k  -i \"%@\" \"%@\"", new_query, outPath];
             
             [MobileFFmpeg executeAsync:command withCallback:self];
             
+           
             NSURL* mp3url = [NSURL URLWithString:outPath];
             
             _audioPlayer = [[AVAudioPlayer alloc]
+                            
                             initWithContentsOfURL:mp3url
                             error:&error];
+            
             
             [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
                 [[AVAudioSession sharedInstance] setActive: YES error: nil];
@@ -409,6 +428,7 @@ NSMutableString* get_signature(NSArray *a_array)
 -(void)audioPlayerDidFinishPlaying:
 (AVAudioPlayer *)player successfully:(BOOL)flag
 {
+    NSLog(@"finished playing");
 }
 
 -(void)audioPlayerDecodeErrorDidOccur:
@@ -418,10 +438,12 @@ NSMutableString* get_signature(NSArray *a_array)
 
 -(void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
 {
+    NSLog(@"begin interruption");
 }
 
 -(void)audioPlayerEndInterruption:(AVAudioPlayer *)player
 {
+    NSLog(@"end interruption");
 }
 
 - (NSString *) getDataFrom:(NSString *)url{
@@ -429,19 +451,36 @@ NSMutableString* get_signature(NSArray *a_array)
     [request setHTTPMethod:@"GET"];
     [request setURL:[NSURL URLWithString:url]];
     
+    
+    [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
+    
     NSError *error = nil;
     NSHTTPURLResponse *responseCode = nil;
-    
+
     NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
     
     if([responseCode statusCode] != 200){
         NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
         return nil;
     }
-    
     return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
 
+- (void) downloadFrom:(NSString *)url toFile:(NSString*)path {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    
+    
+    [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
+    
+    NSError *error = nil;
+    NSHTTPURLResponse *responseCode = nil;
+
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    [oResponseData writeToFile:path atomically:TRUE];
+    
+}
 
 
 

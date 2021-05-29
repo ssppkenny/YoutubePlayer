@@ -14,6 +14,8 @@
 @interface ViewController : UIViewController<AVAudioPlayerDelegate,ExecuteDelegate>
 
 @property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+@property (strong, nonatomic) IBOutlet UILabel *songTitle;
+@property (strong, nonatomic) NSString *videoId;
 
 @end
 
