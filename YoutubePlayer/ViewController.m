@@ -288,8 +288,6 @@ NSMutableString* get_signature(NSArray *a_array)
     
     NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", self.videoId];
     
-    // NSString *yurl = //@"https://youtube.com/get_video_info?video_id=Ah392lnFHxM&ps=default&html5=1&eurl=https%3A%2F%2Fyoutube.googleapis////.com%2Fv%2FAh392lnFHxM&hl=en_US";
-    
     NSString *request = [self getDataFrom:yurl];
     NSString *urlString = [request stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
