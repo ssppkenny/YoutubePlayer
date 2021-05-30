@@ -152,6 +152,7 @@ NSMutableString* get_signature(NSArray *a_array)
         MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
         [pauseCommand addTarget:self action: @selector(onClickStop:forEvent:)];
         
+        
        
         if (error)
         {
@@ -467,6 +468,13 @@ NSMutableString* get_signature(NSArray *a_array)
     
     [center setNowPlayingInfo:info];
     
+    MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+   
+    MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
+    [pauseCommand setEnabled:YES];
+    MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
+    [playCommand setEnabled:NO];
+    
 }
 
 - (IBAction)onClickStop:(UIButton *)sender forEvent:(UIEvent *)event {
@@ -484,6 +492,13 @@ NSMutableString* get_signature(NSArray *a_array)
     [info setValue:self.duration forKey:MPMediaItemPropertyPlaybackDuration];
     
     [center setNowPlayingInfo:info];
+    
+    MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+   
+    MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
+    [pauseCommand setEnabled:NO];
+    MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
+    [playCommand setEnabled:YES];
     
     
 }

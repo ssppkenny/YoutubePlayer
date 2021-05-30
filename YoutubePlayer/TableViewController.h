@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface TableViewController : UITableViewController
+@interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate>
 @property (strong) NSMutableArray *songs;
 @end
 

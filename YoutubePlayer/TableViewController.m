@@ -17,7 +17,6 @@
     NSLog(@"Loaded");
     _songs = [NSMutableArray arrayWithArray: @[@"unfzfe8f9NI", @"16y1AkoZkmQ", @"HX_j5Ls0PZA"]];
     
-    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -53,6 +52,66 @@
     NSLog(@"seque");
 }
 
+- (UIContextMenuConfiguration*)tableView:(UITableView*)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath*)indexPath point:(CGPoint)point {
+    
+    UIContextMenuConfiguration* config = [UIContextMenuConfiguration configurationWithIdentifier:nil
+                                                                                     previewProvider:nil
+                                                                                      actionProvider:^UIMenu* _Nullable(NSArray<UIMenuElement*>* _Nonnull suggestedActions) {
+        NSMutableArray* actions = [[NSMutableArray alloc] init];
+        
+        [actions addObject:[UIAction actionWithTitle:@"Paste" image:[UIImage systemImageNamed:@"paste"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            NSString *string = pasteboard.string;
+            if (string!=nil) {
+               
+                NSError *error;
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http[s]+://youtu\\.be/(.+)" options:0 error:&error];
+                
+                NSArray* matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+                for (NSTextCheckingResult *match in matches) {
+                    NSRange matchRange = [match rangeAtIndex:1];
+                    NSString *matchString = [string substringWithRange:matchRange];
+                    [self.songs addObject:matchString];
+                    [tableView reloadData];
+                    break;
+                }
+                
+                
+               
+            }
+          
+        }]];
+        
+        UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
+                return menu;
+        
+    }];
+    
+    
+    return config;
+    
+}
+
+- (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location {
+    [interaction view];
+    
+    UIContextMenuConfiguration* config = [UIContextMenuConfiguration configurationWithIdentifier:nil
+                                                                                     previewProvider:nil
+                                                                                      actionProvider:^UIMenu* _Nullable(NSArray<UIMenuElement*>* _Nonnull suggestedActions) {
+        NSMutableArray* actions = [[NSMutableArray alloc] init];
+        
+        [actions addObject:[UIAction actionWithTitle:@"Paste" image:[UIImage systemImageNamed:@"paste"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
+            NSLog(@"Test Action");
+        }]];
+        
+        UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
+                return menu;
+        
+    }];
+    
+    
+    return config;
+}
 
 
 
