@@ -75,11 +75,14 @@
                     [tableView reloadData];
                     break;
                 }
-                
-                
-               
             }
-          
+        }]];
+        
+        [actions addObject:[UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"delete"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+            NSString *cellText = cell.text;
+            [self.songs removeObject:cellText];
+            [tableView reloadData];
         }]];
         
         UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
@@ -91,28 +94,6 @@
     return config;
     
 }
-
-- (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location {
-    [interaction view];
-    
-    UIContextMenuConfiguration* config = [UIContextMenuConfiguration configurationWithIdentifier:nil
-                                                                                     previewProvider:nil
-                                                                                      actionProvider:^UIMenu* _Nullable(NSArray<UIMenuElement*>* _Nonnull suggestedActions) {
-        NSMutableArray* actions = [[NSMutableArray alloc] init];
-        
-        [actions addObject:[UIAction actionWithTitle:@"Paste" image:[UIImage systemImageNamed:@"paste"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
-            NSLog(@"Test Action");
-        }]];
-        
-        UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
-                return menu;
-        
-    }];
-    
-    
-    return config;
-}
-
 
 
 
