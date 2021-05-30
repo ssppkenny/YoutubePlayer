@@ -113,7 +113,57 @@ NSMutableString* get_signature(NSArray *a_array)
 @implementation ViewController
 - (void)executeCallback:(long)executionId :(int)rc {
     if (rc == RETURN_CODE_SUCCESS) {
+        NSError *error;
         NSLog(@"Async command execution completed successfully.\n");
+        _audioPlayer = [[AVAudioPlayer alloc]
+                        initWithContentsOfURL:self.mp3url
+                        error:&error];
+      
+        MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
+        NSDictionary* info = [[NSMutableDictionary alloc] init];
+       
+        AudioFileID fileID;
+        OSStatus result = AudioFileOpenURL((__bridge CFURLRef)self.mp3url, kAudioFileReadPermission, 0, &fileID);
+        Float64 outDataSize = 0;
+        UInt32 thePropSize = sizeof(Float64);
+        result = AudioFileGetProperty(fileID, kAudioFilePropertyEstimatedDuration, &thePropSize, &outDataSize);
+        AudioFileClose(fileID);
+        
+        self.duration = [NSNumber numberWithFloat:outDataSize];
+        
+        
+        [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
+      
+        
+        [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [info setValue:[NSNumber numberWithFloat:outDataSize] forKey:MPMediaItemPropertyPlaybackDuration];
+        [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+        
+        
+        [center setNowPlayingInfo:info];
+        
+        NSLog(@"duration %f", outDataSize);
+        
+        MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+        MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
+        [playCommand addTarget:self action: @selector(onClick:forEvent:)];
+        
+        MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
+        [pauseCommand addTarget:self action: @selector(onClickStop:forEvent:)];
+        
+       
+        if (error)
+        {
+            NSLog(@"Error in audioPlayer: %@",
+                  [error localizedDescription]);
+        } else {
+            
+            _audioPlayer.delegate = self;
+            [_audioPlayer prepareToPlay];
+        }
+        
+        
     } else if (rc == RETURN_CODE_CANCEL) {
         NSLog(@"Async command execution cancelled by user.\n");
     } else {
@@ -265,6 +315,7 @@ NSMutableString* get_signature(NSArray *a_array)
                 id streamingData =[jsonDictionary objectForKey:@"streamingData"];
                 NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
                 _songTitle.text = [[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                _songName = _songTitle.text;
                 _songTitle.lineBreakMode = NSLineBreakByWordWrapping;
                 _songTitle.numberOfLines = 0;
                 if ([streamingData isKindOfClass:[NSDictionary class]]) {
@@ -385,27 +436,14 @@ NSMutableString* get_signature(NSArray *a_array)
             [MobileFFmpeg executeAsync:command withCallback:self];
             
            
-            NSURL* mp3url = [NSURL URLWithString:outPath];
+            self.mp3url = [NSURL URLWithString:outPath];
             
-            _audioPlayer = [[AVAudioPlayer alloc]
-                            
-                            initWithContentsOfURL:mp3url
-                            error:&error];
+            AVAudioSession *session = [AVAudioSession sharedInstance];
+            [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+            [session setActive: YES error: nil];
+            [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
             
-            
-            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-                [[AVAudioSession sharedInstance] setActive: YES error: nil];
-                [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-            
-            if (error)
-            {
-                NSLog(@"Error in audioPlayer: %@",
-                      [error localizedDescription]);
-            } else {
-                _audioPlayer.delegate = self;
-                [_audioPlayer prepareToPlay];
-            }
-            
+         
             
         }
         
@@ -416,12 +454,37 @@ NSMutableString* get_signature(NSArray *a_array)
 - (IBAction)onClick:(UIButton *)sender forEvent:(UIEvent *)event {
     
     [_audioPlayer play];
+    MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
+    NSDictionary* info = [[NSMutableDictionary alloc] init];
+    [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
+    
+    double currentTime = [_audioPlayer currentTime];
+    
+    [info setValue:[NSNumber numberWithDouble:currentTime] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+    [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+    [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+    [info setValue:self.duration forKey:MPMediaItemPropertyPlaybackDuration];
+    
+    [center setNowPlayingInfo:info];
     
 }
 
 - (IBAction)onClickStop:(UIButton *)sender forEvent:(UIEvent *)event {
     
     [_audioPlayer stop];
+    MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
+    NSDictionary* info = [[NSMutableDictionary alloc] init];
+    
+    double currentTime = [_audioPlayer currentTime];
+    
+    [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
+    [info setValue:[NSNumber numberWithDouble:currentTime] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+    [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+    [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+    [info setValue:self.duration forKey:MPMediaItemPropertyPlaybackDuration];
+    
+    [center setNowPlayingInfo:info];
+    
     
 }
 

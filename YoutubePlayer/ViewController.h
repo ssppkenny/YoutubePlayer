@@ -16,6 +16,10 @@
 @property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 @property (strong, nonatomic) IBOutlet UILabel *songTitle;
 @property (strong, nonatomic) NSString *videoId;
+@property (strong, nonatomic) NSString *songName;
+@property (strong, nonatomic) NSURL* mp3url;
+@property (strong, nonatomic) NSNumber* duration;
+
 
 @end
 
