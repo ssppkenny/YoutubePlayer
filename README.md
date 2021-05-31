@@ -1,3 +1,3 @@
 # YoutubePlayer
 
-Play youtube items in backgound.
+Play youtube items in background.
