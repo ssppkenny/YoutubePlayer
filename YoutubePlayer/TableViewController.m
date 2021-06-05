@@ -186,8 +186,9 @@
         
         [actions addObject:[UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"delete"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-            NSString *cellText = cell.text;
-            [self.songs removeObject:cellText];
+            NSString *videoId = cell.detailTextLabel.text;
+            [self.songsMap removeObjectForKey:videoId];
+            [self.songs removeObject:videoId];
             [tableView reloadData];
         }]];
         
