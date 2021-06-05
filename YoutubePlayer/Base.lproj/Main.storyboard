@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fjq-Zc-VE3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BjI-qG-ZAb">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -31,68 +31,97 @@
                             <outlet property="delegate" destination="fjq-Zc-VE3" id="9wf-C0-Ap5"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="3NN-SX-EO0"/>
                     <connections>
                         <segue destination="gZ2-Pv-dLx" kind="show" identifier="Player" id="6V5-Rx-eMg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iJw-dg-n6L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1751" y="124"/>
+            <point key="canvasLocation" x="-842.02898550724649" y="123.88392857142857"/>
         </scene>
         <!--Title-->
         <scene sceneID="L95-JH-n2d">
             <objects>
                 <viewController id="gZ2-Pv-dLx" customClass="ViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="z0f-Bp-hlk">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                    <view key="view" contentMode="bottom" id="z0f-Bp-hlk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ls-nu-hlD">
-                                <rect key="frame" x="20" y="170" width="173" height="53"/>
+                                <rect key="frame" x="20" y="244" width="173" height="53"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemPurpleColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Play" image="play" catalog="system"/>
+                                <state key="normal" title="Play/Pause" image="play.fill" catalog="system"/>
                                 <connections>
                                     <action selector="newPlay:forEvent:" destination="bsm-i7-dVN" eventType="touchDown" id="hLi-8n-0zF"/>
                                     <action selector="onClick:forEvent:" destination="gZ2-Pv-dLx" eventType="touchDown" id="hE1-zt-Mi2"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cKb-qr-NCA">
-                                <rect key="frame" x="216" y="170" width="178" height="53"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemPurpleColor"/>
-                                <state key="normal" title="Stop" image="stop" catalog="system"/>
-                                <connections>
-                                    <action selector="onClickStop:forEvent:" destination="gZ2-Pv-dLx" eventType="touchDown" id="Q6a-Yx-xiT"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4yV-xV-Kts">
-                                <rect key="frame" x="20" y="20" width="374" height="87"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4yV-xV-Kts">
+                                <rect key="frame" x="20" y="110" width="374" height="87"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemPurpleColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
+                                <color key="highlightedColor" systemColor="secondarySystemGroupedBackgroundColor"/>
                             </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HzT-XW-wDP">
+                                <rect key="frame" x="20" y="216" width="374" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cKb-qr-NCA">
+                                <rect key="frame" x="216" y="244" width="178" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemPurpleColor"/>
+                                <state key="normal" title="Forward" image="forward.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="onClickStop:forEvent:" destination="gZ2-Pv-dLx" eventType="touchDown" id="Q6a-Yx-xiT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xcR-JG-yzj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="fcE-ZJ-HZv"/>
                     <connections>
+                        <outlet property="forwardButton" destination="cKb-qr-NCA" id="fo7-00-QtG"/>
+                        <outlet property="playButton" destination="7Ls-nu-hlD" id="OkL-6N-lro"/>
+                        <outlet property="progressView" destination="HzT-XW-wDP" id="prt-Tz-Wgt"/>
                         <outlet property="songTitle" destination="4yV-xV-Kts" id="FNG-jM-r6m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P9N-cj-m5x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="bsm-i7-dVN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-686.95652173913049" y="142.63392857142856"/>
+            <point key="canvasLocation" x="223.18840579710147" y="142.63392857142856"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="1dG-oV-lV7">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="BjI-qG-ZAb" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jlj-wr-AKe">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="fjq-Zc-VE3" kind="relationship" relationship="rootViewController" id="UxC-hU-TOt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TId-EL-g05" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1752.1739130434785" y="123.88392857142857"/>
         </scene>
     </scenes>
     <resources>
-        <image name="play" catalog="system" width="120" height="128"/>
-        <image name="stop" catalog="system" width="128" height="113"/>
+        <image name="forward.fill" catalog="system" width="128" height="79"/>
+        <image name="play.fill" catalog="system" width="116" height="128"/>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

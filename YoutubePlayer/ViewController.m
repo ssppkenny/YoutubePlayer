@@ -162,6 +162,8 @@ NSMutableString* get_signature(NSArray *a_array)
             
             _audioPlayer.delegate = self;
             [_audioPlayer prepareToPlay];
+            [_audioPlayer play];
+         
         }
         
         
@@ -171,8 +173,8 @@ NSMutableString* get_signature(NSArray *a_array)
         NSLog(@"Async command execution failed with rc=%d.\n", rc);
     }
 }
-- (void)viewDidLoad {
-    [super viewDidLoad];
+
+- (void)loadSong {
     // Do any additional setup after loading the view.
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
@@ -209,13 +211,10 @@ NSMutableString* get_signature(NSArray *a_array)
                                                                                                      options:0 error:&error] function:@"reverse" ];
     Mapper* mapper2 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.splice\\(0,\\w\\)\\}"
                                                                                                      options:0 error:&error] function:@"splice" ];
-    
     Mapper* mapper3 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\]=\\w\\}"
                                                                                                      options:0 error:&error] function:@"swap" ];
-    
     Mapper* mapper4 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\%\\w.length\\]=\\w\\}"
                                                                                                      options:0 error:&error] function:@"swap" ];
-    
     NSArray *mappers = @[ mapper1, mapper2, mapper3, mapper4];
     
     NSMutableDictionary *transform_map = [[NSMutableDictionary alloc]initWithCapacity:10];
@@ -313,7 +312,8 @@ NSMutableString* get_signature(NSArray *a_array)
                 NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
                 id streamingData =[jsonDictionary objectForKey:@"streamingData"];
                 NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                _songTitle.text = [[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                _songTitle.text = [[[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                   stringByReplacingOccurrencesOfString: @"+" withString:@" "];
                 _songName = _songTitle.text;
                 _songTitle.lineBreakMode = NSLineBreakByWordWrapping;
                 _songTitle.numberOfLines = 0;
@@ -442,62 +442,88 @@ NSMutableString* get_signature(NSArray *a_array)
             [session setActive: YES error: nil];
             [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
             
+            CADisplayLink* updater = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateProgress)];
+            updater.frameInterval = 1;
+            [updater addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes] ;
+            
          
             
         }
-        
-        
     }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self loadSong];
+
     
+}
+
+-(void)updateProgress {
+    float progress = _audioPlayer.currentTime / _audioPlayer.duration;
+    _progressView.progress = progress;
 }
 - (IBAction)onClick:(UIButton *)sender forEvent:(UIEvent *)event {
     
-    [_audioPlayer play];
-    MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
-    NSDictionary* info = [[NSMutableDictionary alloc] init];
-    [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
+    BOOL playing = [_audioPlayer isPlaying];
     
-    double currentTime = [_audioPlayer currentTime];
+    if (playing) {
+        [_audioPlayer stop];
+        MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
+        NSDictionary* info = [[NSMutableDictionary alloc] init];
+        
+        double currentTime = [_audioPlayer currentTime];
+        
+        [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
+        [info setValue:[NSNumber numberWithDouble:currentTime] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+        [info setValue:self.duration forKey:MPMediaItemPropertyPlaybackDuration];
+        
+        [center setNowPlayingInfo:info];
+        
+        MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+       
+        MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
+        [pauseCommand setEnabled:NO];
+        MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
+        [playCommand setEnabled:YES];
+    } else {
     
-    [info setValue:[NSNumber numberWithDouble:currentTime] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
-    [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];
-    [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
-    [info setValue:self.duration forKey:MPMediaItemPropertyPlaybackDuration];
-    
-    [center setNowPlayingInfo:info];
-    
-    MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-   
-    MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
-    [pauseCommand setEnabled:YES];
-    MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
-    [playCommand setEnabled:NO];
+        [_audioPlayer play];
+        MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
+        NSDictionary* info = [[NSMutableDictionary alloc] init];
+        [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
+        
+        double currentTime = [_audioPlayer currentTime];
+        
+        [info setValue:[NSNumber numberWithDouble:currentTime] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        [info setValue:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+        [info setValue:self.duration forKey:MPMediaItemPropertyPlaybackDuration];
+        
+        [center setNowPlayingInfo:info];
+        
+        MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+       
+        MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
+        [pauseCommand setEnabled:YES];
+        MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
+        [playCommand setEnabled:NO];
+    }
     
 }
 
 - (IBAction)onClickStop:(UIButton *)sender forEvent:(UIEvent *)event {
     
     [_audioPlayer stop];
-    MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
-    NSDictionary* info = [[NSMutableDictionary alloc] init];
-    
-    double currentTime = [_audioPlayer currentTime];
-    
-    [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
-    [info setValue:[NSNumber numberWithDouble:currentTime] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
-    [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];
-    [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
-    [info setValue:self.duration forKey:MPMediaItemPropertyPlaybackDuration];
-    
-    [center setNowPlayingInfo:info];
-    
-    MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-   
-    MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
-    [pauseCommand setEnabled:NO];
-    MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
-    [playCommand setEnabled:YES];
-    
+    NSUInteger len = [_songs count];
+    if (_currentIndex < len - 1) {
+        _currentIndex += 1;
+        self.videoId = _songs[_currentIndex];
+        [self loadSong];
+        
+    }
     
 }
 
@@ -505,6 +531,14 @@ NSMutableString* get_signature(NSArray *a_array)
 (AVAudioPlayer *)player successfully:(BOOL)flag
 {
     NSLog(@"finished playing");
+    _progressView.progress = 0;
+    NSUInteger len = [_songs count];
+    if (_currentIndex < len - 1) {
+        _currentIndex += 1;
+        self.videoId = _songs[_currentIndex];
+        [self loadSong];
+        
+    }
 }
 
 -(void)audioPlayerDecodeErrorDidOccur:

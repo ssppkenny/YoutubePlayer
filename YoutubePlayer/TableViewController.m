@@ -10,8 +10,13 @@
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
 
-@implementation ListModel
-@synthesize data;
+
+
+@implementation PlayList
+ 
+@synthesize key;
+@synthesize value;
+
 @end
 
 @implementation SongTuple
@@ -23,6 +28,7 @@
 @implementation TableViewController
 
 @synthesize songs = _songs;
+@synthesize songsMap = _songsMap;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,36 +37,43 @@
     
     NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
     
-    NSEntityDescription* description = [NSEntityDescription entityForName:@"ListModel" inManagedObjectContext:context];
-    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"ListModel"];
+    NSEntityDescription* description = [NSEntityDescription entityForName:@"PlayList" inManagedObjectContext:context];
+    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
     
     NSArray* array =[context executeFetchRequest:request error:&error];
-    //for (NSManagedObject* o in array) {
-    //    [context deleteObject:o];
-    //}
-    //[context save:&error];
+   // for (NSManagedObject* o in array) {
+   //     [context deleteObject:o];
+   // }
+  //  [context save:&error];
+  //   array =[context executeFetchRequest:request error:&error];
     
-    int length = [array count];
+    NSUInteger length = [array count];
     
     if (length > 0) {
         
-        ListModel* listModel = (ListModel*)[array objectAtIndex:0];
-        NSData* data = listModel.data;
-        _songsMap = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSMutableDictionary class] fromData:data error:&error];
-        _songs=  [NSMutableArray arrayWithArray:[_songsMap allKeys]];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        for (PlayList *model in array) {
+            NSString *k = model.key;
+            NSString *v = model.value;
+            [dict setObject:v forKey:k];
+        }
+        self.songsMap = [NSMutableDictionary dictionaryWithDictionary: dict];
+        self.songs =  [NSMutableArray arrayWithArray:[self.songsMap allKeys]];
         
     } else {
        
-    _songs = [NSMutableArray arrayWithArray: @[@"unfzfe8f9NI", @"16y1AkoZkmQ", @"HX_j5Ls0PZA"]];
+        self.songs = [NSMutableArray arrayWithArray: @[@"unfzfe8f9NI", @"16y1AkoZkmQ", @"HX_j5Ls0PZA"]];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"ABBA Song", @"unfzfe8f9NI", @"Boney M Rasputin", @"16y1AkoZkmQ", @"Winter Rose Aquarium", @"HX_j5Ls0PZA", nil];
-    _songsMap = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+        self.songsMap = [NSMutableDictionary dictionaryWithDictionary:dictionary];
         
-      
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_songsMap];
-        ListModel *listModel = (ListModel*)[NSEntityDescription insertNewObjectForEntityForName:@"ListModel" inManagedObjectContext:context];
-        listModel.data = data;
+        for(NSString* key in self.songsMap) {
+            PlayList *listModel = (PlayList*)[NSEntityDescription insertNewObjectForEntityForName:@"PlayList" inManagedObjectContext:context];
+            listModel.key = key;
+            listModel.value = [self.songsMap objectForKey:key];
+        }
         
         [context save:&error];
+        NSLog(@"test");
         
         
     }
@@ -99,6 +112,9 @@
     NSString *text = cell.detailTextLabel.text;
     ViewController *vc = (ViewController*)[segue destinationViewController];
     vc.videoId = text;
+    vc.currentIndex = [path row];
+    vc.songs = _songs;
+    vc.songsMap = _songsMap;
     NSLog(@"seque");
 }
 
@@ -150,7 +166,8 @@
                             if ([jsonObject isKindOfClass:[NSDictionary class]]) {
                                 NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
                                 NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                                title = [[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                                title = [[[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                         stringByReplacingOccurrencesOfString: @"+" withString:@" "];
                                 break;
                             }
                             
@@ -164,18 +181,26 @@
                     [self.songs addObject:videoId];
                     [tableView reloadData];
                     
+                    NSLog(@"title = %@", title);
+                    NSLog(@"videoId = %@", videoId);
+                    
                     
                     NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
                     
-                    NSEntityDescription* description = [NSEntityDescription entityForName:@"ListModel" inManagedObjectContext:context];
-                    NSFetchRequest* managedrequest = [NSFetchRequest fetchRequestWithEntityName:@"ListModel"];
+                    NSEntityDescription* description = [NSEntityDescription entityForName:@"PlayList" inManagedObjectContext:context];
+                    //NSFetchRequest* managedrequest = [NSFetchRequest fetchRequestWithEntityName:@"PlayListModel"];
                     
-                    NSArray* array =[context executeFetchRequest:managedrequest error:&error];
+                    //NSArray* array =[context executeFetchRequest:managedrequest error:&error];
                     
-                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_songsMap];
-                    ListModel *listModel = [array objectAtIndex:0];
-                    listModel.data = data;
+                   // NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.songsMap requiringSecureCoding:NO error:&error];
+                    PlayList *listModel = (PlayList*)[NSEntityDescription insertNewObjectForEntityForName:@"PlayList" inManagedObjectContext:context];
+                    
+                    listModel.key = videoId;
+                    listModel.value = title;
+                    
                     [context save:&error];
+                    
+                    
                         
                     //
                     
@@ -187,9 +212,13 @@
         [actions addObject:[UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"delete"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
             NSString *videoId = cell.detailTextLabel.text;
-            [self.songsMap removeObjectForKey:videoId];
+         
+            NSMutableDictionary *copy = [NSMutableDictionary dictionaryWithDictionary:self.songsMap];
+            [copy removeObjectForKey:videoId];
+            self.songsMap = [copy copy];
             [self.songs removeObject:videoId];
             [tableView reloadData];
+            
         }]];
         
         UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];

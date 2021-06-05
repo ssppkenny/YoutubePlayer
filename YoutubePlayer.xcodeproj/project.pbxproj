@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A51CE7D72663FA2E00CD1D05 /* YoutubePlayer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A51CE7D52663FA2E00CD1D05 /* YoutubePlayer.xcdatamodeld */; };
 		A574107A26623BF40054C445 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A574107926623BF40054C445 /* TableViewController.m */; };
 		A584BBCC26592A180068C290 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBCB26592A180068C290 /* AppDelegate.m */; };
 		A584BBCF26592A180068C290 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A584BBCE26592A180068C290 /* SceneDelegate.m */; };
@@ -64,6 +63,7 @@
 		A584BDC226592C8E0068C290 /* vo-amrwbenc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD3F26592C6C0068C290 /* vo-amrwbenc.xcframework */; };
 		A584BDC426592C8E0068C290 /* wavpack.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BD4926592C6C0068C290 /* wavpack.xcframework */; };
 		A584BDF82659303E0068C290 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A584BDF72659303E0068C290 /* AVFoundation.framework */; };
+		A5E0819B266BC46C0087CD3C /* YoutubePlayer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5E08198266BC46C0087CD3C /* YoutubePlayer.xcdatamodeld */; };
 		FF67805945003646C5907B6D /* Pods_YoutubePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 098D84454CCD89CB48B26DEB /* Pods_YoutubePlayer.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,7 +107,6 @@
 		A51013A7265A50FD0034C5AF /* SBJson5StreamTokeniser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJson5StreamTokeniser.h; sourceTree = "<group>"; };
 		A51013A8265A50FD0034C5AF /* SBJson5StreamParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5StreamParser.m; sourceTree = "<group>"; };
 		A51013A9265A50FD0034C5AF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		A51CE7D62663FA2E00CD1D05 /* ListModel.xcdatamodel */ = {isa = PBXFileReference; explicitFileType = wrapper.xcdatamodel; path = ListModel.xcdatamodel; sourceTree = "<group>"; };
 		A574107926623BF40054C445 /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		A574107D26623C150054C445 /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		A584BBC726592A180068C290 /* YoutubePlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubePlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -424,6 +423,8 @@
 		A584BDF526592C990068C290 /* kvazaar.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = kvazaar.xcframework; sourceTree = "<group>"; };
 		A584BDF626592C990068C290 /* jpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = jpeg.xcframework; sourceTree = "<group>"; };
 		A584BDF72659303E0068C290 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A5E08199266BC46C0087CD3C /* YoutubePlayer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = YoutubePlayer.xcdatamodel; sourceTree = "<group>"; };
+		A5E0819A266BC46C0087CD3C /* ListModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ListModel.xcdatamodel; sourceTree = "<group>"; };
 		EFC0AA9848086277C63AA3A1 /* Pods-YoutubePlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubePlayer.debug.xcconfig"; path = "Target Support Files/Pods-YoutubePlayer/Pods-YoutubePlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -637,7 +638,7 @@
 				A584BBDF26592A190068C290 /* main.m */,
 				A574107926623BF40054C445 /* TableViewController.m */,
 				A574107D26623C150054C445 /* TableViewController.h */,
-				A51CE7D52663FA2E00CD1D05 /* YoutubePlayer.xcdatamodeld */,
+				A5E08198266BC46C0087CD3C /* YoutubePlayer.xcdatamodeld */,
 			);
 			path = YoutubePlayer;
 			sourceTree = "<group>";
@@ -1184,8 +1185,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A584BBE026592A190068C290 /* main.m in Sources */,
-				A51CE7D72663FA2E00CD1D05 /* YoutubePlayer.xcdatamodeld in Sources */,
 				A574107A26623BF40054C445 /* TableViewController.m in Sources */,
+				A5E0819B266BC46C0087CD3C /* YoutubePlayer.xcdatamodeld in Sources */,
 				A584BBD226592A180068C290 /* ViewController.m in Sources */,
 				A584BBCC26592A180068C290 /* AppDelegate.m in Sources */,
 				A584BBCF26592A180068C290 /* SceneDelegate.m in Sources */,
@@ -1508,12 +1509,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		A51CE7D52663FA2E00CD1D05 /* YoutubePlayer.xcdatamodeld */ = {
+		A5E08198266BC46C0087CD3C /* YoutubePlayer.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				A51CE7D62663FA2E00CD1D05 /* ListModel.xcdatamodel */,
+				A5E08199266BC46C0087CD3C /* YoutubePlayer.xcdatamodel */,
+				A5E0819A266BC46C0087CD3C /* ListModel.xcdatamodel */,
 			);
-			currentVersion = A51CE7D62663FA2E00CD1D05 /* ListModel.xcdatamodel */;
+			currentVersion = A5E08199266BC46C0087CD3C /* YoutubePlayer.xcdatamodel */;
 			path = YoutubePlayer.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

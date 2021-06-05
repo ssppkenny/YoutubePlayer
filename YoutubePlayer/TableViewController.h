@@ -12,6 +12,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+
+
 @interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate>
 @property (strong) NSMutableArray *songs;
 @property (strong) NSMutableDictionary *songsMap;
@@ -24,8 +26,10 @@
 
 @end
 
-@interface ListModel : NSManagedObject
-@property (strong) NSData *data;
+@interface PlayList : NSManagedObject
+@property  (strong) NSString *key;
+@property  (strong) NSString *value;
 @end
+
 
 #endif /* TableViewController_h */
