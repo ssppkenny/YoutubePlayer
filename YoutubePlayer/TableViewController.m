@@ -90,7 +90,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"Player" sender:self];
+    
+  [self performSegueWithIdentifier:@"Player" sender:self];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -112,7 +113,15 @@
     NSString *text = cell.detailTextLabel.text;
     ViewController *vc = (ViewController*)[segue destinationViewController];
     vc.videoId = text;
-    vc.currentIndex = [path row];
+    vc.songTitle.text = cell.textLabel.text;
+
+    BOOL change = [ViewController currentIndex] - [path row] != 0 ? TRUE : FALSE;
+    
+    NSLog(@"current index = %il", [ViewController currentIndex]);
+    NSLog(@"change = %d", change);
+
+    [ViewController setCurrentIndex:[path row]];
+    vc.change = change;
     vc.songs = _songs;
     vc.songsMap = _songsMap;
     NSLog(@"seque");

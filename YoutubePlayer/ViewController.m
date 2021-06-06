@@ -111,13 +111,53 @@ NSMutableString* get_signature(NSArray *a_array)
 
 
 @implementation ViewController
+
+static AVAudioPlayer* audioPlayer;
+
++(AVAudioPlayer*)audioPlayer:(NSURL *)url {
+    @synchronized (self) {
+        NSError *error;
+        audioPlayer = [[AVAudioPlayer alloc]
+                        initWithContentsOfURL:url
+                        error:&error];
+    }
+    return audioPlayer;
+}
+
++(AVAudioPlayer*)audioPlayer {
+    return audioPlayer;
+}
+
+static long currentIndex = -1L;
++(long)currentIndex {
+    @synchronized (self) {
+        return currentIndex;
+    }
+}
++(void)setCurrentIndex:(long)val {
+    @synchronized (self) {
+        currentIndex = val;
+    }
+}
+static NSString* currentTitle;
++(NSString*)currentTitle {
+    @synchronized (self) {
+        return currentTitle;
+    }
+}
+
++(void)setCurrentTitle:(NSString*)val {
+    @synchronized (self) {
+        currentTitle = val;
+    }
+}
+
+
 - (void)executeCallback:(long)executionId :(int)rc {
     if (rc == RETURN_CODE_SUCCESS) {
         NSError *error;
         NSLog(@"Async command execution completed successfully.\n");
-        _audioPlayer = [[AVAudioPlayer alloc]
-                        initWithContentsOfURL:self.mp3url
-                        error:&error];
+        audioPlayer = [ViewController audioPlayer:self.mp3url];
       
         MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
         NSDictionary* info = [[NSMutableDictionary alloc] init];
@@ -150,8 +190,25 @@ NSMutableString* get_signature(NSArray *a_array)
         [playCommand addTarget:self action: @selector(onClick:forEvent:)];
         
         MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
-        [pauseCommand addTarget:self action: @selector(onClickStop:forEvent:)];
+        [pauseCommand addTarget:self action: @selector(onClick:forEvent:)];
         
+        MPRemoteCommand *nextTackCommand = [sharedCommandCenter nextTrackCommand];
+        [nextTackCommand addTarget:self action:@selector(onClickStop:forEvent:)];
+        
+        [playCommand setEnabled:YES];
+        [pauseCommand setEnabled:YES];
+        [nextTackCommand setEnabled:YES];
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self.playButton setEnabled:TRUE] ;
+            [self.forwardButton setEnabled:TRUE] ;
+            [self.playButton setAlpha: 1.0];
+            [self.forwardButton setAlpha: 1.0];
+            if ([ViewController currentIndex]  == [self.songs count] - 1) {
+                [self.forwardButton setEnabled:FALSE];
+                [self.forwardButton setAlpha: 0.5];
+            }
+          }];
         
        
         if (error)
@@ -160,9 +217,9 @@ NSMutableString* get_signature(NSArray *a_array)
                   [error localizedDescription]);
         } else {
             
-            _audioPlayer.delegate = self;
-            [_audioPlayer prepareToPlay];
-            [_audioPlayer play];
+            audioPlayer.delegate = self;
+            [audioPlayer prepareToPlay];
+            [audioPlayer play];
          
         }
         
@@ -174,8 +231,20 @@ NSMutableString* get_signature(NSArray *a_array)
     }
 }
 
+-(void)completionHandler: (NSData *) data, NSURLResponse * response, NSError * error {
+    NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", s);
+}
+
 - (void)loadSong {
     // Do any additional setup after loading the view.
+    AVAudioPlayer* player = [ViewController audioPlayer];
+    if (player != nil) {
+        [player stop];
+        [player setCurrentTime:0];
+    }
+    NSLog(@"current index in load song %i", [ViewController currentIndex]);
+    
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                             NSUserDomainMask, YES);
@@ -189,6 +258,9 @@ NSMutableString* get_signature(NSArray *a_array)
     
     NSString* watch_url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", self.videoId];
     NSString *html= [self getDataFrom:watch_url];
+   // [self getDataFromUrl:watch_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) //{
+  //      [self completionHandler:data, response, error ];
+//    }];
     
     NSRegularExpression *base_js_regex = [NSRegularExpression regularExpressionWithPattern:@"(/s/player/[\\w\\d]+/[\\w\\d\\_\\-\\.]+/base\\.js)" options:1 << 3 error:&error];
     
@@ -240,7 +312,7 @@ NSMutableString* get_signature(NSArray *a_array)
         for (NSTextCheckingResult *match in matches) {
             NSRange matchRange = [match rangeAtIndex:1];
             NSString *matchString = [fileContents substringWithRange:matchRange];
-            NSLog(@"%@", matchString);
+            //NSLog(@"%@", matchString);
             transform_plan = [matchString componentsSeparatedByString:@";"];
             
             regex = [NSRegularExpression regularExpressionWithPattern:@"^\\w+\\W" options:0 error:&error];
@@ -252,7 +324,7 @@ NSMutableString* get_signature(NSArray *a_array)
                 NSRange matchRange = [match rangeAtIndex:0];
                 NSString *matchString = [m substringWithRange:matchRange];
                 matchString = [matchString substringToIndex:[matchString length] - 1];
-                NSLog(@"%@", matchString);
+                //NSLog(@"%@", matchString);
                 matchString = [NSString stringWithFormat:@"var %@=\\{(.*?)\\};", matchString];
                 
                 regex = [NSRegularExpression regularExpressionWithPattern:matchString options:1 << 3 error:&error];
@@ -260,11 +332,11 @@ NSMutableString* get_signature(NSArray *a_array)
                 for (NSTextCheckingResult *match in matches) {
                     NSRange matchRange = [match rangeAtIndex:1];
                     NSString *matchString = [fileContents substringWithRange:matchRange];
-                    NSLog(@"%@", matchString);
+                    //NSLog(@"%@", matchString);
                     
                     matchString =  [matchString stringByReplacingOccurrencesOfString:@"\n"
                                                                           withString:@" "];
-                    NSLog(@"%@", matchString);
+                    //NSLog(@"%@", matchString);
                     
                     NSArray* components = [matchString componentsSeparatedByString:@", "];
                     
@@ -317,6 +389,7 @@ NSMutableString* get_signature(NSArray *a_array)
                 _songName = _songTitle.text;
                 _songTitle.lineBreakMode = NSLineBreakByWordWrapping;
                 _songTitle.numberOfLines = 0;
+                [ViewController setCurrentTitle:_songTitle.text];
                 if ([streamingData isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *jsonDictionary = (NSDictionary*)streamingData;
                     id formats =[jsonDictionary objectForKey:@"formats"];
@@ -432,19 +505,14 @@ NSMutableString* get_signature(NSArray *a_array)
             NSString* new_query = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
             NSString* command = [NSString stringWithFormat:@"-y -flush_packets 1 -packetsize 512k  -i \"%@\" \"%@\"", new_query, outPath];
             
-            [MobileFFmpeg executeAsync:command withCallback:self];
-            
-           
+            [MobileFFmpegConfig setLogLevel:-8];
             self.mp3url = [NSURL URLWithString:outPath];
+            [MobileFFmpeg executeAsync:command withCallback:self];
             
             AVAudioSession *session = [AVAudioSession sharedInstance];
             [session setCategory:AVAudioSessionCategoryPlayback error:nil];
             [session setActive: YES error: nil];
             [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-            
-            CADisplayLink* updater = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateProgress)];
-            updater.frameInterval = 1;
-            [updater addToRunLoop:NSRunLoop.currentRunLoop forMode:NSRunLoopCommonModes] ;
             
          
             
@@ -454,22 +522,80 @@ NSMutableString* get_signature(NSArray *a_array)
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadSong];
+    
+    UIImage* stopImage = [UIImage systemImageNamed:@"stop.fill"];
+    [self.playButton setImage:stopImage forState:UIControlStateNormal];
+    
+    if ([ViewController currentIndex]  == [self.songs count]) {
+        [self.forwardButton setEnabled:FALSE];
+    }
+    
+    if ([self change]) {
+        NSLog(@"loading in viewDidLoad");
+       
+        [self.playButton setEnabled:FALSE];
+        [self.forwardButton setEnabled:FALSE];
+        [self.playButton setAlpha: 0.5];
+        [self.forwardButton setAlpha: 0.5];
+        [self loadSong];
+    } else {
+        AVAudioPlayer *player = [ViewController audioPlayer];
+        if ([player isPlaying]) {
+            UIImage* stopImage = [UIImage systemImageNamed:@"stop.fill"];
+            [self.playButton setImage:stopImage forState:UIControlStateNormal];
+        } else {
+            UIImage* playImage = [UIImage systemImageNamed:@"play.fill"];
+            [self.playButton setImage:playImage forState:UIControlStateNormal];
+        }
+        NSString *title = [ViewController currentTitle];
+        _songTitle.text = title;
+      
+        
+        
+    }
+    
+    [self.displayLink invalidate];
+    self.displayLink = [[UIScreen mainScreen] displayLinkWithTarget:self selector:@selector(updateProgress)];
+    self.displayLink.frameInterval = 1;
+    [self.displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSDefaultRunLoopMode] ;
+    
+   
 
     
 }
 
 -(void)updateProgress {
+    AVAudioPlayer *_audioPlayer = [ViewController audioPlayer];
     float progress = _audioPlayer.currentTime / _audioPlayer.duration;
     _progressView.progress = progress;
+    int minutes = progress*_audioPlayer.duration / 60;
+    int seconds = progress*_audioPlayer.duration - 60 * minutes;
+    NSString *progressText = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+    self.progressLabel.text = progressText;
+    minutes = _audioPlayer.duration / 60;
+    seconds = _audioPlayer.duration - 60 * minutes;
+    NSString *durationText = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+    self.durationLabel.text = durationText;
+    //NSLog(@"%d:%d:%f", minutes, seconds, progress);
+    
 }
 - (IBAction)onClick:(UIButton *)sender forEvent:(UIEvent *)event {
     
+    
+    UIImage* stopImage = [UIImage systemImageNamed:@"stop.fill"];
+    
+    UIImage* playImage = [UIImage systemImageNamed:@"play.fill"];
+    
+    AVAudioPlayer *_audioPlayer = [ViewController audioPlayer];
     BOOL playing = [_audioPlayer isPlaying];
     
+    MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
+    MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    
     if (playing) {
+        [sender setImage:playImage forState:UIControlStateNormal];
         [_audioPlayer stop];
-        MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
+       
         NSDictionary* info = [[NSMutableDictionary alloc] init];
         
         double currentTime = [_audioPlayer currentTime];
@@ -482,14 +608,14 @@ NSMutableString* get_signature(NSArray *a_array)
         
         [center setNowPlayingInfo:info];
         
-        MPRemoteCommandCenter* sharedCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
        
         MPRemoteCommand *pauseCommand = [sharedCommandCenter pauseCommand];
         [pauseCommand setEnabled:NO];
         MPRemoteCommand *playCommand = [sharedCommandCenter playCommand];
         [playCommand setEnabled:YES];
+        
     } else {
-    
+        [sender setImage:stopImage forState:UIControlStateNormal];
         [_audioPlayer play];
         MPNowPlayingInfoCenter *center = [MPNowPlayingInfoCenter defaultCenter];
         NSDictionary* info = [[NSMutableDictionary alloc] init];
@@ -512,17 +638,29 @@ NSMutableString* get_signature(NSArray *a_array)
         [playCommand setEnabled:NO];
     }
     
+    MPRemoteCommand *nextTackCommand = [sharedCommandCenter nextTrackCommand];
+    [nextTackCommand setEnabled:YES];
+    
 }
 
 - (IBAction)onClickStop:(UIButton *)sender forEvent:(UIEvent *)event {
     
+
+ 
+    
+    
+    AVAudioPlayer *_audioPlayer = [ViewController audioPlayer];
     [_audioPlayer stop];
+    long _currentIndex = ViewController.currentIndex;
     NSUInteger len = [_songs count];
     if (_currentIndex < len - 1) {
         _currentIndex += 1;
         self.videoId = _songs[_currentIndex];
+        [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
+        NSLog(@"loading in onStop");
+        [self.playButton setEnabled:FALSE];
+        [self.playButton setAlpha: 0.5];
         [self loadSong];
-        
     }
     
 }
@@ -530,20 +668,31 @@ NSMutableString* get_signature(NSArray *a_array)
 -(void)audioPlayerDidFinishPlaying:
 (AVAudioPlayer *)player successfully:(BOOL)flag
 {
+    double cur_time = player.currentTime;
+    double dur = [player duration];
     NSLog(@"finished playing");
-    _progressView.progress = 0;
-    NSUInteger len = [_songs count];
-    if (_currentIndex < len - 1) {
-        _currentIndex += 1;
-        self.videoId = _songs[_currentIndex];
-        [self loadSong];
-        
-    }
+    NSLog(@"current index %i", ViewController.currentIndex);
+    NSLog(@"flag =  %d", flag);
+    NSLog(@"current time %f", cur_time);
+    NSLog(@"duration %f", dur);
+    
+        _progressView.progress = 0;
+        long _currentIndex = ViewController.currentIndex;
+        NSUInteger len = [_songs count];
+        if (_currentIndex < len - 1) {
+            _currentIndex += 1;
+            self.videoId = _songs[_currentIndex];
+            [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
+            [self loadSong];
+            
+        }
+  
 }
 
 -(void)audioPlayerDecodeErrorDidOccur:
 (AVAudioPlayer *)player error:(NSError *)error
 {
+    NSLog(@"decode error");
 }
 
 -(void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
@@ -556,12 +705,27 @@ NSMutableString* get_signature(NSArray *a_array)
     NSLog(@"end interruption");
 }
 
+
+
+
+- (void) getDataFromUrl:(NSString*) url completionHandler:(void (^)(NSData * data, NSURLResponse * response, NSError * error))paramCompletionHandlerBlock{
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionDataTask *task  = [session dataTaskWithRequest:request completionHandler:paramCompletionHandlerBlock];
+    
+    [task resume];
+}
+
 - (NSString *) getDataFrom:(NSString *)url{
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setHTTPMethod:@"GET"];
     [request setURL:[NSURL URLWithString:url]];
-    
-    
     [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
     
     NSError *error = nil;
@@ -570,10 +734,11 @@ NSMutableString* get_signature(NSArray *a_array)
     NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
     
     if([responseCode statusCode] != 200){
-        NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
+        NSLog(@"Error getting %@, HTTP status code %li", url, [responseCode statusCode]);
         return nil;
     }
     return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
+    
 }
 
 - (void) downloadFrom:(NSString *)url toFile:(NSString*)path {

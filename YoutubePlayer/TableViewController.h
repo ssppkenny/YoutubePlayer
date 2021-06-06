@@ -17,6 +17,7 @@
 @interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate>
 @property (strong) NSMutableArray *songs;
 @property (strong) NSMutableDictionary *songsMap;
+@property (strong) CADisplayLink* displayLink;
 @end
 
 @interface SongTuple : NSObject
