@@ -30,6 +30,7 @@
 @interface PlayList : NSManagedObject
 @property  (strong) NSString *key;
 @property  (strong) NSString *value;
+@property  (strong) NSNumber *index;
 @end
 
 

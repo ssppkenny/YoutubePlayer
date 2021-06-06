@@ -16,6 +16,7 @@
  
 @synthesize key;
 @synthesize value;
+@synthesize index;
 
 @end
 
@@ -41,40 +42,53 @@
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
     
     NSArray* array =[context executeFetchRequest:request error:&error];
-   // for (NSManagedObject* o in array) {
-   //     [context deleteObject:o];
-   // }
-  //  [context save:&error];
-  //   array =[context executeFetchRequest:request error:&error];
+ //   for (NSManagedObject* o in array) {
+ //       [context deleteObject:o];
+ //   }
+ //  [context save:&error];
+ //    array =[context executeFetchRequest:request error:&error];
     
     NSUInteger length = [array count];
     
     if (length > 0) {
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        NSMutableArray *objects = [[NSMutableArray alloc] init];
+        
+        self.songs = [[NSMutableArray alloc] init];
         for (PlayList *model in array) {
             NSString *k = model.key;
             NSString *v = model.value;
             [dict setObject:v forKey:k];
+            [objects addObject:model];
         }
         self.songsMap = [NSMutableDictionary dictionaryWithDictionary: dict];
-        self.songs =  [NSMutableArray arrayWithArray:[self.songsMap allKeys]];
+        
+        [objects sortUsingComparator:^NSComparisonResult(PlayList* obj1, PlayList* obj2){
+            return [obj1.index compare:obj2.index];
+        }];
+        
+        for (PlayList *p in objects) {
+            [self.songs addObject:p.key];
+        }
+
         
     } else {
        
         self.songs = [NSMutableArray arrayWithArray: @[@"unfzfe8f9NI", @"16y1AkoZkmQ", @"HX_j5Ls0PZA"]];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"ABBA Song", @"unfzfe8f9NI", @"Boney M Rasputin", @"16y1AkoZkmQ", @"Winter Rose Aquarium", @"HX_j5Ls0PZA", nil];
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"ABBA Mamma Mia", @"unfzfe8f9NI", @"Boney M Rasputin", @"16y1AkoZkmQ", @"ЗИМНЯЯ РОЗА", @"HX_j5Ls0PZA", nil];
         self.songsMap = [NSMutableDictionary dictionaryWithDictionary:dictionary];
         
+        int i = 1;
         for(NSString* key in self.songsMap) {
             PlayList *listModel = (PlayList*)[NSEntityDescription insertNewObjectForEntityForName:@"PlayList" inManagedObjectContext:context];
             listModel.key = key;
             listModel.value = [self.songsMap objectForKey:key];
+            listModel.index = [NSNumber numberWithInt:i] ;
+            i++;
         }
         
         [context save:&error];
-        NSLog(@"test");
-        
         
     }
     
@@ -197,15 +211,23 @@
                     NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
                     
                     NSEntityDescription* description = [NSEntityDescription entityForName:@"PlayList" inManagedObjectContext:context];
-                    //NSFetchRequest* managedrequest = [NSFetchRequest fetchRequestWithEntityName:@"PlayListModel"];
+                    NSFetchRequest* managedrequest = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
                     
-                    //NSArray* array =[context executeFetchRequest:managedrequest error:&error];
+                    int max = 0;
+                    NSArray* array =[context executeFetchRequest:managedrequest error:&error];
+                    for (PlayList *p in array) {
+                        if ([p.index intValue] > max) {
+                            max = p.index.intValue;
+                        }
+                    }
+                    
                     
                    // NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.songsMap requiringSecureCoding:NO error:&error];
                     PlayList *listModel = (PlayList*)[NSEntityDescription insertNewObjectForEntityForName:@"PlayList" inManagedObjectContext:context];
                     
                     listModel.key = videoId;
                     listModel.value = title;
+                    listModel.index = [NSNumber numberWithInt:max+1];
                     
                     [context save:&error];
                     
@@ -227,6 +249,24 @@
             self.songsMap = [copy copy];
             [self.songs removeObject:videoId];
             [tableView reloadData];
+            
+            NSError *error;
+            NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+            
+            NSEntityDescription* description = [NSEntityDescription entityForName:@"PlayList" inManagedObjectContext:context];
+            NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
+            
+            NSArray* array =[context executeFetchRequest:request error:&error];
+            
+            for (PlayList *p in array) {
+                if ([p.key isEqualToString:videoId]) {
+                    [context deleteObject:p];
+                }
+            }
+            
+            [context save:&error];
+            
+            
             
         }]];
         
