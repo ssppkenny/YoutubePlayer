@@ -10,11 +10,11 @@
 #import <AVKit/AVKit.h>
 #import <mobileffmpeg/MobileFFmpeg.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "TableViewController.h"
 
 @interface ViewController : UIViewController<AVAudioPlayerDelegate,ExecuteDelegate>
 
 //@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
-@property (strong, nonatomic) IBOutlet UILabel *songTitle;
 @property (strong, nonatomic) IBOutlet UIButton *playButton;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UILabel *progressLabel;
@@ -28,6 +28,7 @@
 @property (strong) NSMutableArray *songs;
 @property (strong) NSMutableDictionary *songsMap;
 @property (strong) CADisplayLink* displayLink;
+@property (strong) TableViewController* tableViewController;
 
 +(AVAudioPlayer*)audioPlayer;
 +(AVAudioPlayer*)audioPlayer:(NSURL*)url;
@@ -36,6 +37,8 @@
 +(NSString*)currentTitle;
 +(void)setCurrentTitle:(NSString*)val;
 -(void)updateProgress;
+-(void)loadSong;
+-(void)onLoad;
 
 @end
 

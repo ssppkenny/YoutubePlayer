@@ -7,6 +7,7 @@
 
 #import "TableViewController.h"
 #import "ViewController.h"
+#import "RootViewController.h"
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
 
@@ -28,8 +29,8 @@
 
 @implementation TableViewController
 
-@synthesize songs = _songs;
-@synthesize songsMap = _songsMap;
+@synthesize songs;// = _songs;
+@synthesize songsMap;// = _songsMap;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -100,20 +101,49 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _songs.count;
+    return songs.count;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+   RootViewController *controller = (RootViewController*)[self parentViewController];
     
-  [self performSegueWithIdentifier:@"Player" sender:self];
+   NSArray *children = [controller childViewControllers];
+    ViewController *viewController = nil;
+    for (UIViewController *contrl in children) {
+        if ([contrl isKindOfClass:[ViewController class]]) {
+            viewController = (ViewController*)contrl;
+        }
+    }
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    viewController.videoId =cell.detailTextLabel.text;
+    viewController.songName =cell.textLabel.text;
+    
+    BOOL change = [ViewController currentIndex] - [indexPath row] != 0 ? TRUE : FALSE;
+    
+    [ViewController setCurrentIndex:[indexPath row]];
+    viewController.change = change;
+    viewController.songs = songs;
+    viewController.songsMap = songsMap;
+    viewController.tableViewController = self;
+    
+   // NSOperationQueue *myQueue = [[NSOperationQueue alloc] init];
+    
+    [viewController onLoad];
+    [viewController loadSong];
+    
+
+ //   [controller performSegueWithIdentifier:@"Player" sender:self];
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"];
-    NSString *song = [_songs objectAtIndex:indexPath.row];
-    NSString *title = [_songsMap objectForKey:song];
+    NSString *song = [songs objectAtIndex:indexPath.row];
+    NSString *title = [songsMap objectForKey:song];
+    cell.detailTextLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.text = song;
     cell.textLabel.text = title;
     return cell;
@@ -122,23 +152,22 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Assume self.view is the table view
-    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-    NSString *text = cell.detailTextLabel.text;
-    ViewController *vc = (ViewController*)[segue destinationViewController];
-    vc.videoId = text;
-    vc.songTitle.text = cell.textLabel.text;
-
-    BOOL change = [ViewController currentIndex] - [path row] != 0 ? TRUE : FALSE;
-    
-    NSLog(@"current index = %il", [ViewController currentIndex]);
-    NSLog(@"change = %d", change);
-
-    [ViewController setCurrentIndex:[path row]];
-    vc.change = change;
-    vc.songs = _songs;
-    vc.songsMap = _songsMap;
-    NSLog(@"seque");
+//    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+//    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+//    NSString *text = cell.detailTextLabel.text;
+//    ViewController *vc = (ViewController*)[segue destinationViewController];
+//    vc.videoId = text;
+//
+//    BOOL change = [ViewController currentIndex] - [path row] != 0 ? TRUE : FALSE;
+//    
+//    NSLog(@"current index = %il", [ViewController currentIndex]);
+//    NSLog(@"change = %d", change);
+//
+//    [ViewController setCurrentIndex:[path row]];
+//    vc.change = change;
+//    vc.songs = _songs;
+//    vc.songsMap = _songsMap;
+//    NSLog(@"seque");
 }
 
 - (UIContextMenuConfiguration*)tableView:(UITableView*)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath*)indexPath point:(CGPoint)point {
@@ -160,80 +189,81 @@
                 for (NSTextCheckingResult *match in matches) {
                     NSRange matchRange = [match rangeAtIndex:1];
                     NSString *videoId = [string substringWithRange:matchRange];
-                    
-                    //
-                    
-                    NSError* error;
-                    NSString*title;
-                    
+        
                     NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", videoId];
                     
-                    NSString *request = [self getDataFrom:yurl];
-                    NSString *urlString = [request stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                    NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
-                    
-                    
-                    for (id comp in origUrlComponents) {
+                    [self getDataFromUrl:yurl completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
                         
-                        NSString* s = (NSString*)comp;
-                        if ([s hasPrefix:@"player_response="]) {
-                            NSString* player_response =  [s substringFromIndex:16];
-                            //NSLog(player_response);
+                        NSString *title;
+                        
+                       NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                        
+                        NSString *urlString = [responseString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
+                        
+                        
+                        for (id comp in origUrlComponents) {
                             
-                            NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
-                            NSError *error;
-                            
-                            //    Note that JSONObjectWithData will return either an NSDictionary or an NSArray, depending whether your JSON string represents an a dictionary or an array.
-                            id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-                            
-                            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                                NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
-                                NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                                title = [[[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                         stringByReplacingOccurrencesOfString: @"+" withString:@" "];
-                                break;
+                            NSString* s = (NSString*)comp;
+                            if ([s hasPrefix:@"player_response="]) {
+                                NSString* player_response =  [s substringFromIndex:16];
+                                //NSLog(player_response);
+                                
+                                NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
+                                NSError *error;
+                                
+                                //    Note that JSONObjectWithData will return either an NSDictionary or an NSArray, depending whether your JSON string represents an a dictionary or an array.
+                                id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+                                
+                                if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+                                    NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
+                                    NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
+                                    title = [[[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                             stringByReplacingOccurrencesOfString: @"+" withString:@" "];
+                                    
+                                    [self.songsMap setValue:title forKey:videoId];
+                                    [self.songs addObject:videoId];
+                                    
+                                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                        [tableView reloadData];
+
+                                      }];
+                                    
+                                    NSError *error;
+                                    NSLog(@"title = %@", title);
+                                    NSLog(@"videoId = %@", videoId);
+                                    
+                        
+                                    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+                                    
+                                    NSFetchRequest* managedrequest = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
+                                    
+                                    int max = 0;
+                                    NSArray* array =[context executeFetchRequest:managedrequest error:&error];
+                                    for (PlayList *p in array) {
+                                        if ([p.index intValue] > max) {
+                                            max = p.index.intValue;
+                                        }
+                                    }
+                                    
+                                    PlayList *listModel = (PlayList*)[NSEntityDescription insertNewObjectForEntityForName:@"PlayList" inManagedObjectContext:context];
+                                    
+                                    listModel.key = videoId;
+                                    listModel.value = title;
+                                    listModel.index = [NSNumber numberWithInt:max+1];
+                                    
+                                    [context save:&error];
+                                    
+                                    
+                                    break;
+                                }
+                                
                             }
                             
                         }
                         
-                    }
-                    
-
-                    
-                    [self.songsMap setValue:title forKey:videoId];
-                    [self.songs addObject:videoId];
-                    [tableView reloadData];
-                    
-                    NSLog(@"title = %@", title);
-                    NSLog(@"videoId = %@", videoId);
-                    
-                    
-                    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
-                    
-                    NSEntityDescription* description = [NSEntityDescription entityForName:@"PlayList" inManagedObjectContext:context];
-                    NSFetchRequest* managedrequest = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
-                    
-                    int max = 0;
-                    NSArray* array =[context executeFetchRequest:managedrequest error:&error];
-                    for (PlayList *p in array) {
-                        if ([p.index intValue] > max) {
-                            max = p.index.intValue;
-                        }
-                    }
-                    
-                    
-                   // NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.songsMap requiringSecureCoding:NO error:&error];
-                    PlayList *listModel = (PlayList*)[NSEntityDescription insertNewObjectForEntityForName:@"PlayList" inManagedObjectContext:context];
-                    
-                    listModel.key = videoId;
-                    listModel.value = title;
-                    listModel.index = [NSNumber numberWithInt:max+1];
-                    
-                    [context save:&error];
-                    
-                    
-                        
-                    //
+                
+                     }];
                     
                     break;
                 }
@@ -244,9 +274,8 @@
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
             NSString *videoId = cell.detailTextLabel.text;
          
-            NSMutableDictionary *copy = [NSMutableDictionary dictionaryWithDictionary:self.songsMap];
-            [copy removeObjectForKey:videoId];
-            self.songsMap = [copy copy];
+
+            [self.songsMap removeObjectForKey:videoId];
             [self.songs removeObject:videoId];
             [tableView reloadData];
             
@@ -278,6 +307,20 @@
     
     return config;
     
+}
+
+- (void) getDataFromUrl:(NSString*) url completionHandler:(void (^)(NSData * data, NSURLResponse * response, NSError * error))paramCompletionHandlerBlock{
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionDataTask *task  = [session dataTaskWithRequest:request completionHandler:paramCompletionHandlerBlock];
+    
+    [task resume];
 }
 
 - (NSString *) getDataFrom:(NSString *)url{

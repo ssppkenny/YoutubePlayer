@@ -233,7 +233,7 @@ static NSString* currentTitle;
 
 -(void)completionHandler: (NSData *) data, NSURLResponse * response, NSError * error {
     NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"%@", s);
+    
 }
 
 - (void)loadSong {
@@ -258,9 +258,6 @@ static NSString* currentTitle;
     
     NSString* watch_url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", self.videoId];
     NSString *html= [self getDataFrom:watch_url];
-   // [self getDataFromUrl:watch_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) //{
-  //      [self completionHandler:data, response, error ];
-//    }];
     
     NSRegularExpression *base_js_regex = [NSRegularExpression regularExpressionWithPattern:@"(/s/player/[\\w\\d]+/[\\w\\d\\_\\-\\.]+/base\\.js)" options:1 << 3 error:&error];
     
@@ -296,8 +293,7 @@ static NSString* currentTitle;
     
     NSArray* matches = [regex matchesInString:fileContents options:0 range:NSMakeRange(0, [fileContents length])];
     
-    for (NSTextCheckingResult *match in matches)
-    {
+    for (NSTextCheckingResult *match in matches) {
         NSRange matchRange = [match rangeAtIndex:1];
         NSString *matchString = [fileContents substringWithRange:matchRange];
         
@@ -357,9 +353,10 @@ static NSString* currentTitle;
     
     
     
-    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", self.videoId];
+    NSString *video_url = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", self.videoId];
     
-    NSString *request = [self getDataFrom:yurl];
+    NSString *request = [self getDataFrom:video_url];
+    
     NSString *urlString = [request stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
     
@@ -369,7 +366,6 @@ static NSString* currentTitle;
         
         NSString* s = (NSString*)comp;
         if ([s hasPrefix:@"player_response="]) {
-            
             
             NSString* player_response =  [s substringFromIndex:16];
             //NSLog(player_response);
@@ -383,13 +379,8 @@ static NSString* currentTitle;
             if ([jsonObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
                 id streamingData =[jsonDictionary objectForKey:@"streamingData"];
-                NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                _songTitle.text = [[[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                   stringByReplacingOccurrencesOfString: @"+" withString:@" "];
-                _songName = _songTitle.text;
-                _songTitle.lineBreakMode = NSLineBreakByWordWrapping;
-                _songTitle.numberOfLines = 0;
-                [ViewController setCurrentTitle:_songTitle.text];
+                
+                [ViewController setCurrentTitle:_songName];
                 if ([streamingData isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *jsonDictionary = (NSDictionary*)streamingData;
                     id formats =[jsonDictionary objectForKey:@"formats"];
@@ -502,8 +493,9 @@ static NSString* currentTitle;
             }
             
             
-            NSString* new_query = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
-            NSString* command = [NSString stringWithFormat:@"-y -flush_packets 1 -packetsize 512k  -i \"%@\" \"%@\"", new_query, outPath];
+            NSString* audio_url = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
+            
+            NSString* command = [NSString stringWithFormat:@"-y -flush_packets 1 -packetsize 512k  -i \"%@\" \"%@\"", audio_url, outPath];
             
             [MobileFFmpegConfig setLogLevel:-8];
             self.mp3url = [NSURL URLWithString:outPath];
@@ -514,15 +506,16 @@ static NSString* currentTitle;
             [session setActive: YES error: nil];
             [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
             
+            break;
          
             
         }
+    
     }
+    
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
+- (void)onLoad {
     UIImage* stopImage = [UIImage systemImageNamed:@"stop.fill"];
     [self.playButton setImage:stopImage forState:UIControlStateNormal];
     
@@ -537,7 +530,6 @@ static NSString* currentTitle;
         [self.forwardButton setEnabled:FALSE];
         [self.playButton setAlpha: 0.5];
         [self.forwardButton setAlpha: 0.5];
-        [self loadSong];
     } else {
         AVAudioPlayer *player = [ViewController audioPlayer];
         if ([player isPlaying]) {
@@ -547,10 +539,6 @@ static NSString* currentTitle;
             UIImage* playImage = [UIImage systemImageNamed:@"play.fill"];
             [self.playButton setImage:playImage forState:UIControlStateNormal];
         }
-        NSString *title = [ViewController currentTitle];
-        _songTitle.text = title;
-      
-        
         
     }
     
@@ -560,6 +548,12 @@ static NSString* currentTitle;
     [self.displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSDefaultRunLoopMode] ;
     
    
+
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self onLoad];
 
     
 }
@@ -645,22 +639,23 @@ static NSString* currentTitle;
 
 - (IBAction)onClickStop:(UIButton *)sender forEvent:(UIEvent *)event {
     
-
- 
-    
     
     AVAudioPlayer *_audioPlayer = [ViewController audioPlayer];
     [_audioPlayer stop];
+    [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
     long _currentIndex = ViewController.currentIndex;
     NSUInteger len = [_songs count];
-    if (_currentIndex < len - 1) {
-        _currentIndex += 1;
+    if (_currentIndex < len) {
+        
+        NSIndexPath* selectedCellIndexPath= [NSIndexPath indexPathForRow:ViewController.currentIndex inSection:0];
+        
+        [[self.tableViewController tableView] selectRowAtIndexPath:selectedCellIndexPath animated:TRUE scrollPosition:0];
+        long _currentIndex = ViewController.currentIndex;
         self.videoId = _songs[_currentIndex];
-        [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
-        NSLog(@"loading in onStop");
         [self.playButton setEnabled:FALSE];
         [self.playButton setAlpha: 0.5];
         [self loadSong];
+        
     }
     
 }
@@ -676,16 +671,34 @@ static NSString* currentTitle;
     NSLog(@"current time %f", cur_time);
     NSLog(@"duration %f", dur);
     
-        _progressView.progress = 0;
+    [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
+    NSIndexPath* selectedCellIndexPath= [NSIndexPath indexPathForRow:ViewController.currentIndex inSection:0];
+    
+    NSUInteger count = self.tableViewController.songs.count;
+    
+    if ([ViewController currentIndex] < count) {
+        [self.playButton setEnabled:FALSE];
+        [self.playButton setAlpha: 0.5];
+        [[self.tableViewController tableView] selectRowAtIndexPath:selectedCellIndexPath animated:TRUE scrollPosition:0];
         long _currentIndex = ViewController.currentIndex;
-        NSUInteger len = [_songs count];
-        if (_currentIndex < len - 1) {
-            _currentIndex += 1;
-            self.videoId = _songs[_currentIndex];
-            [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
-            [self loadSong];
-            
-        }
+        self.videoId = _songs[_currentIndex];
+        [self loadSong];
+    }
+    
+  
+    
+    
+    
+//        _progressView.progress = 0;
+//        long _currentIndex = ViewController.currentIndex;
+//        NSUInteger len = [_songs count];
+//        if (_currentIndex < len - 1) {
+//            _currentIndex += 1;
+//            self.videoId = _songs[_currentIndex];
+//            [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
+//            [self loadSong];
+//
+//        }
   
 }
 
@@ -755,6 +768,10 @@ static NSString* currentTitle;
     NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
     [oResponseData writeToFile:path atomically:TRUE];
     
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"Test");
 }
 
 
