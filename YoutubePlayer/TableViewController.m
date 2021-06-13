@@ -34,12 +34,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"Loaded");
     NSError* error;
     
     NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
     
-    NSEntityDescription* description = [NSEntityDescription entityForName:@"PlayList" inManagedObjectContext:context];
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
     
     NSArray* array =[context executeFetchRequest:request error:&error];
@@ -174,7 +172,7 @@
                         
                         NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                         
-                        NSString *urlString = [responseString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        NSString *urlString = [responseString stringByRemovingPercentEncoding];
                         NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
                         
                         
@@ -194,7 +192,7 @@
                                 if ([jsonObject isKindOfClass:[NSDictionary class]]) {
                                     NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
                                     NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                                    title = [[[videoDetails objectForKey:@"title"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                    title = [[[videoDetails objectForKey:@"title"] stringByRemovingPercentEncoding]
                                              stringByReplacingOccurrencesOfString: @"+" withString:@" "];
                                     
                                     [self.songsMap setValue:title forKey:videoId];
@@ -256,7 +254,6 @@
             NSError *error;
             NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
             
-            NSEntityDescription* description = [NSEntityDescription entityForName:@"PlayList" inManagedObjectContext:context];
             NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
             
             NSArray* array =[context executeFetchRequest:request error:&error];
@@ -297,25 +294,6 @@
     [task resume];
 }
 
-- (NSString *) getDataFrom:(NSString *)url{
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setHTTPMethod:@"GET"];
-    [request setURL:[NSURL URLWithString:url]];
-    
-    
-    [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
-    
-    NSError *error = nil;
-    NSHTTPURLResponse *responseCode = nil;
-    
-    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-    
-    if([responseCode statusCode] != 200){
-        NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
-        return nil;
-    }
-    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
-}
 
 
 

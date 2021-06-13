@@ -22,7 +22,7 @@
     UIViewController *dest = [segue destinationViewController];
     
     if ([dest isKindOfClass:[ViewController class]]) {
-        self.viewController = dest;
+        self.viewController = (ViewController*)dest;
     }
     
     NSLog(@"Test");
