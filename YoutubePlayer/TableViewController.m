@@ -234,7 +234,9 @@
                                     [self.songs addObject:videoId];
                                     
                                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                        NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
                                         [tableView reloadData];
+                                        [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
                                         NSError *error;
                                         NSLog(@"title = %@", title);
                                         NSLog(@"videoId = %@", videoId);
@@ -268,7 +270,9 @@
             
             [self.songsMap removeObjectForKey:videoId];
             [self.songs removeObject:videoId];
+            NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
             [tableView reloadData];
+            [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
             
             NSError *error;
             NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
@@ -600,7 +604,9 @@
 - (void)executeCallback:(long)executionId :(int)rc {
     if (rc == RETURN_CODE_SUCCESS) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
             [self.tableView reloadData];
+            [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
             NSInteger rows =[self.tableView numberOfRowsInSection:0];
             
             for (NSInteger i=0; i<rows; i++) {
