@@ -11,8 +11,9 @@
 #import <mobileffmpeg/MobileFFmpeg.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "TableViewController.h"
+#include "common.h"
 
-@interface ViewController : UIViewController<AVAudioPlayerDelegate,ExecuteDelegate>
+@interface ViewController : UIViewController<AVAudioPlayerDelegate>
 
 //@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 @property (strong, nonatomic) IBOutlet UIButton *playButton;
@@ -37,22 +38,10 @@
 +(NSString*)currentTitle;
 +(void)setCurrentTitle:(NSString*)val;
 -(void)updateProgress;
--(void)loadSong;
+-(void)playSong;
 -(void)onLoad;
 
 @end
-
-
-@interface Mapper : NSObject
-@property (nonatomic, strong) NSRegularExpression *regex;;
-@property (nonatomic, strong) NSString *function;
-
-
-- (id)initWithregex:(NSRegularExpression *)regex function:(NSString *)function;
-
-@end
-
-
 
 
 struct sMappers

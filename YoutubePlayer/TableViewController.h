@@ -11,10 +11,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <mobileffmpeg/MobileFFmpeg.h>
 
 
 
-@interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate>
+@interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate,ExecuteDelegate>
+
 @property (strong) NSMutableArray *songs;
 @property (strong) NSMutableDictionary *songsMap;
 @property (strong) CADisplayLink* displayLink;
