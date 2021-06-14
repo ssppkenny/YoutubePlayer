@@ -140,6 +140,19 @@
     cell.detailTextLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.text = song;
     cell.textLabel.text = title;
+    NSFileManager *manager = [NSFileManager defaultManager];
+    
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                            NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    NSString* outPath = [NSString stringWithFormat:OUT_FILE_PATH_FORMAT, docsDir, song];
+    
+    BOOL fileExists = [manager fileExistsAtPath:outPath];
+    if (!fileExists) {
+        cell.userInteractionEnabled = FALSE;
+        cell.contentView.alpha = 0.3;
+    }
+    
     return cell;
 }
 
@@ -574,6 +587,7 @@
             [MobileFFmpegConfig setLogLevel:-8];
             [MobileFFmpeg executeAsync:command withCallback:self];
             
+           
             return;
          
             
@@ -585,6 +599,22 @@
 
 - (void)executeCallback:(long)executionId :(int)rc {
     if (rc == RETURN_CODE_SUCCESS) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self.tableView reloadData];
+            NSInteger rows =[self.tableView numberOfRowsInSection:0];
+            
+            for (NSInteger i=0; i<rows; i++) {
+                NSIndexPath* selectedCellIndexPath= [NSIndexPath indexPathForRow:i inSection:0];
+                
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:selectedCellIndexPath];
+                cell.userInteractionEnabled = TRUE;
+                cell.contentView.alpha = 1.0;
+                
+            }
+            
+          
+            
+        }];
     } else {
         NSLog(@"Error converting file");
     }
