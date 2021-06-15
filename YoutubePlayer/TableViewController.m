@@ -433,8 +433,6 @@
                     [self songFromData:data response:response error:error transform_map:transform_map transform_plan:transform_plan outpath:outPath];
                 
                 }];
-                
-                
             }];
             
             
@@ -446,13 +444,109 @@
     
 }
 
+- (void)find_format:(NSDictionary **)audio_format formats:(id)formats key:(NSString*)name {
+    if ([formats isKindOfClass:[NSArray class]]) {
+        NSArray* a1 = (NSArray*)formats;
+        for (id e in a1) {
+            NSDictionary* d =  (NSDictionary*)e;
+            NSString* mimeType =[d objectForKey:@"mimeType"];
+            if ([mimeType containsString:name]) {
+                *audio_format = d;
+                return;
+            }
+        }
+    }
+}
+
+- (void)decrypt_url:(NSString **)audio_url signatureCipher:(NSString **)signatureCipher transform_map:(NSMutableDictionary *)transform_map transform_plan:(NSArray *)transform_plan {
+    NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
+    NSArray *urlComponents = [*signatureCipher componentsSeparatedByString:@"&"];
+    
+    for (NSString *keyValuePair in urlComponents) {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
+        NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
+        
+        [queryStringDictionary setObject:value forKey:key];
+    }
+    
+    NSString* s = [queryStringDictionary objectForKey:@"s"];
+    
+    NSArray* signature = convertToArray(s);
+    
+    *signatureCipher = [*signatureCipher stringByRemovingPercentEncoding];
+    queryStringDictionary = [[NSMutableDictionary alloc] init];
+    urlComponents = [*signatureCipher componentsSeparatedByString:@"&"];
+    
+    for (NSString *keyValuePair in urlComponents) {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        
+        NSMutableString *mutableString = [NSMutableString stringWithCapacity:100];
+        NSUInteger size =[pairComponents count];
+        for (int i=1; i<size; i++) {
+            NSString* part = [pairComponents objectAtIndex:i];
+            if (i<size-1) {
+                NSString* s = [NSString stringWithFormat:@"%@=", part];
+                [mutableString appendString:s];
+            } else {
+                NSString* s = [NSString stringWithFormat:@"%@", part];
+                [mutableString appendString:s];
+            }
+            
+        }
+        
+        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
+        NSString *value = [mutableString stringByRemovingPercentEncoding];
+        
+        [queryStringDictionary setObject:value forKey:key];
+    }
+    
+    for (NSString* js_func in transform_plan) {
+        NSArray* farr = parse_function(js_func);
+        NSString* name = [farr objectAtIndex:0];
+        int arg = [[farr objectAtIndex:1] intValue];
+        NSString* transform_key = [transform_map objectForKey:name];
+        
+        if ([transform_key isEqualToString:@"reverse"]) {
+            signature = reverse(signature, arg);
+        } else if ([transform_key isEqualToString:@"swap"]) {
+            signature = swap(signature, arg);
+        } else if ([transform_key isEqualToString:@"splice"]) {
+            signature = splice(signature, arg);
+        }
+    }
+    
+    
+    NSMutableString* sig = get_signature(signature);
+    
+    NSMutableString *mutableString = [NSMutableString stringWithCapacity:[sig length]];
+    
+    NSString *new_url = nil;
+    
+    NSEnumerator *enumerator = [queryStringDictionary keyEnumerator];
+    id key;
+    // extra parens to suppress warning about using = instead of ==
+    while((key = [enumerator nextObject])) {
+        NSString* value = [queryStringDictionary objectForKey:key];
+        if ([key isEqualToString:@"url"]) {
+            new_url = value;
+        } else if(![key isEqualToString:@"url"] && ![key isEqualToString:@"s"]) {
+            NSString* c = [NSString stringWithFormat:@"&%@=%@", key, value];
+            [mutableString appendString:c];
+        }
+    }
+    *audio_url = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
+}
+
 -(void)songFromData: (NSData *) data  response: (NSURLResponse *) response  error: (NSError *) error transform_map: (NSMutableDictionary *) transform_map transform_plan: (NSArray *) transform_plan outpath: (NSString*) outPath {
 
     NSString *response_string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSString *urlString = [response_string stringByRemovingPercentEncoding];
     NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
     
-    NSDictionary* format = nil;
+    NSDictionary* audio_format = nil;
+    
+    
     
     for (id comp in origUrlComponents) {
         
@@ -477,114 +571,25 @@
                     id formats =[jsonDictionary objectForKey:@"formats"];
                     id adaptive_formats =[jsonDictionary objectForKey:@"adaptiveFormats"];
                     
-                    if ([formats isKindOfClass:[NSArray class]]) {
-                        NSArray* a1 = (NSArray*)formats;
-                        for (id e in a1) {
-                            NSDictionary* d =  (NSDictionary*)e;
-                            NSString* mimeType =[d objectForKey:@"mimeType"];
-                            if ([mimeType containsString:@"audio"]) {
-                                format = d;
-                                break;
-                            }
-                        }
-                    }
+                    [self find_format:&audio_format formats:formats key:@"audio"];
                     
-                    if ([adaptive_formats isKindOfClass:[NSArray class]]) {
-                        NSArray* a1 = (NSArray*)adaptive_formats;
-                        for (id e in a1) {
-                            NSDictionary* d =  (NSDictionary*)e;
-                            NSString* mimeType =[d objectForKey:@"mimeType"];
-                            if ([mimeType containsString:@"audio"]) {
-                                format = d;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            
-            NSString* signatureCipher = [format objectForKey:@"signatureCipher"];
-            
-            NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
-            NSArray *urlComponents = [signatureCipher componentsSeparatedByString:@"&"];
-            
-            for (NSString *keyValuePair in urlComponents) {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
-                NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
-                
-                [queryStringDictionary setObject:value forKey:key];
-            }
-            
-            NSString* s = [queryStringDictionary objectForKey:@"s"];
-            
-            NSArray* signature = convertToArray(s);
-            
-            signatureCipher = [signatureCipher stringByRemovingPercentEncoding];
-            queryStringDictionary = [[NSMutableDictionary alloc] init];
-            urlComponents = [signatureCipher componentsSeparatedByString:@"&"];
-            
-            for (NSString *keyValuePair in urlComponents) {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                
-                NSMutableString *mutableString = [NSMutableString stringWithCapacity:100];
-                NSUInteger size =[pairComponents count];
-                for (int i=1; i<size; i++) {
-                    NSString* part = [pairComponents objectAtIndex:i];
-                    if (i<size-1) {
-                        NSString* s = [NSString stringWithFormat:@"%@=", part];
-                        [mutableString appendString:s];
-                    } else {
-                        NSString* s = [NSString stringWithFormat:@"%@", part];
-                        [mutableString appendString:s];
-                    }
+                    [self find_format:&audio_format formats:adaptive_formats key:@"audio"];
                     
-                }
-                
-                NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
-                NSString *value = [mutableString stringByRemovingPercentEncoding];
-                
-                [queryStringDictionary setObject:value forKey:key];
-            }
-            
-            for (NSString* js_func in transform_plan) {
-                NSArray* farr = parse_function(js_func);
-                NSString* name = [farr objectAtIndex:0];
-                int arg = [[farr objectAtIndex:1] intValue];
-                NSString* transform_key = [transform_map objectForKey:name];
-                
-                if ([transform_key isEqualToString:@"reverse"]) {
-                    signature = reverse(signature, arg);
-                } else if ([transform_key isEqualToString:@"swap"]) {
-                    signature = swap(signature, arg);
-                } else if ([transform_key isEqualToString:@"splice"]) {
-                    signature = splice(signature, arg);
-                }
-            }
-
-            
-            NSMutableString* sig = get_signature(signature);
-            
-            NSMutableString *mutableString = [NSMutableString stringWithCapacity:[sig length]];
-            
-            NSString *new_url = nil;
-            
-            NSEnumerator *enumerator = [queryStringDictionary keyEnumerator];
-            id key;
-            // extra parens to suppress warning about using = instead of ==
-            while((key = [enumerator nextObject])) {
-                NSString* value = [queryStringDictionary objectForKey:key];
-                if ([key isEqualToString:@"url"]) {
-                    new_url = value;
-                } else if(![key isEqualToString:@"url"] && ![key isEqualToString:@"s"]) {
-                    NSString* c = [NSString stringWithFormat:@"&%@=%@", key, value];
-                    [mutableString appendString:c];
+                   
                 }
             }
             
+            NSString* audio_url;
             
-            NSString* audio_url = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
+            NSString* signatureCipher = [audio_format objectForKey:@"signatureCipher"];
+            
+            if (signatureCipher != nil) {
+                [self decrypt_url:&audio_url signatureCipher:&signatureCipher transform_map:transform_map transform_plan:transform_plan];
+                
+            } else {
+                audio_url =  [audio_format objectForKey:@"url"];
+            }
+            
             
             NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", audio_url, outPath];
             
