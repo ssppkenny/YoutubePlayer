@@ -195,71 +195,63 @@
                 NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http[s]+://youtu\\.be/(.+)" options:0 error:&error];
                 
                 NSArray* matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
-                for (NSTextCheckingResult *match in matches) {
+                
+                if ([matches count] > 0) {
+                    NSTextCheckingResult* match = [matches objectAtIndex:0];
                     NSRange matchRange = [match rangeAtIndex:1];
                     videoId = [string substringWithRange:matchRange];
                     
-                    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", videoId];
+                    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&html5=1&eurl=https://youtube.googleapis.com&c=TVHTML5&cver=6.20180913", videoId];
                     
                     [self getDataFromUrl:yurl completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
                         
                         NSString *title;
-                        
                         NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                         
                         NSString *urlString = [responseString stringByRemovingPercentEncoding];
                         NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
                         
+                        NSPredicate *bPredicate =
+                            [NSPredicate predicateWithFormat:@"SELF beginswith 'player_response'"];
                         
-                        for (id comp in origUrlComponents) {
-                            
+                        NSArray *hasPrefix =
+                            [origUrlComponents filteredArrayUsingPredicate:bPredicate];
+                        
+                        if ([hasPrefix count] > 0) {
+                            id comp = [hasPrefix objectAtIndex:0];
                             NSString* s = (NSString*)comp;
-                            if ([s hasPrefix:@"player_response="]) {
-                                NSString* player_response =  [s substringFromIndex:16];
-                                //NSLog(player_response);
-                                
-                                NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
-                                NSError *error;
-                                
-                                //    Note that JSONObjectWithData will return either an NSDictionary or an NSArray, depending whether your JSON string represents an a dictionary or an array.
-                                id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-                                
-                                if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                                    NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
-                                    NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                                    title = [[[videoDetails objectForKey:@"title"] stringByRemovingPercentEncoding]
-                                             stringByReplacingOccurrencesOfString: @"+" withString:@" "];
-                                    
-                                    [self.songsMap setValue:title forKey:videoId];
-                                    [self.songs addObject:videoId];
-                                    
-                                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                        NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
-                                        [tableView reloadData];
-                                        [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                                        NSError *error;
-                                        NSLog(@"title = %@", title);
-                                        NSLog(@"videoId = %@", videoId);
-                                        
-                                        
-                                        [self saveContext:&error title:title videoId:videoId];
-                                        
-                                    }];
-                                    
-                                    [self loadSong:videoId];
-                                    
-                                    break;
-                                }
-                                
-                            }
+                            NSString* player_response =  [s substringFromIndex:16];
                             
+                            NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
+                            NSError *error;
+                            
+                            id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+                            
+                            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+                                NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
+                                NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
+                                title = [[[videoDetails objectForKey:@"title"] stringByRemovingPercentEncoding]
+                                         stringByReplacingOccurrencesOfString: @"+" withString:@" "];
+                                
+                                [self.songsMap setValue:title forKey:videoId];
+                                [self.songs addObject:videoId];
+                                
+                                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                    NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
+                                    [tableView reloadData];
+                                    [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                                    NSError *error;
+                            
+                                    [self saveContext:&error title:title videoId:videoId];
+                                    
+                                }];
+                                [self loadSong:videoId playerResponse:jsonDictionary];
+                            }
                         }
                         
-                        
                     }];
-                    
-                    break;
                 }
+               
             }
         }]];
         
@@ -324,7 +316,7 @@
 }
 
 
-- (void)loadSong:(NSString*) videoId {
+- (void)loadSong:(NSString*) videoId playerResponse: (NSDictionary *) jsonDictionary {
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                             NSUserDomainMask, YES);
@@ -351,7 +343,7 @@
                 NSArray *transform_plan = nil;
                 
                 Mapper* mapper1 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.reverse\\(\\)\\}"
-                                                                                                                 options:0 error:&error] function:@"reverse" ];
+                                                                                                                options:0 error:&error] function:@"reverse" ];
                 Mapper* mapper2 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.splice\\(0,\\w\\)\\}"
                                                                                                                  options:0 error:&error] function:@"splice" ];
                 Mapper* mapper3 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\]=\\w\\}"
@@ -359,9 +351,7 @@
                 Mapper* mapper4 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\%\\w.length\\]=\\w\\}"
                                                                                                                  options:0 error:&error] function:@"swap" ];
                 NSArray *mappers = @[ mapper1, mapper2, mapper3, mapper4];
-                
                 NSMutableDictionary *transform_map = [[NSMutableDictionary alloc]initWithCapacity:10];
-                
                 
                 NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"(?:\\b|[^a-zA-Z0-9$])([a-zA-Z0-9$]{2})\\s*=\\s*function\\(\\s*a\\s*\\)\\s*\\{\\s*a\\s*=\\s*a\\.split\\(\\s*\"\"\\s*\\)" options:0 error:&error];
                 
@@ -373,9 +363,7 @@
                     
                     
                     NSString* searchTerm = @"function\\(\\w\\)\\{[a-z=\\.\\(\\\"\\)]*;(.*);(?:.+)\\}";
-                    
                     searchTerm = [NSString stringWithFormat:@"%@=%@", matchString, searchTerm];
-                    
                     regex = [NSRegularExpression regularExpressionWithPattern:searchTerm options:0 error:&error];
                     
                     NSArray* matches = [regex matchesInString:fileContents options:0 range:NSMakeRange(0, [fileContents length])];
@@ -394,7 +382,6 @@
                             NSRange matchRange = [match rangeAtIndex:0];
                             NSString *matchString = [m substringWithRange:matchRange];
                             matchString = [matchString substringToIndex:[matchString length] - 1];
-                            //NSLog(@"%@", matchString);
                             matchString = [NSString stringWithFormat:@"var %@=\\{(.*?)\\};", matchString];
                             
                             regex = [NSRegularExpression regularExpressionWithPattern:matchString options:1 << 3 error:&error];
@@ -402,11 +389,9 @@
                             for (NSTextCheckingResult *match in matches) {
                                 NSRange matchRange = [match rangeAtIndex:1];
                                 NSString *matchString = [fileContents substringWithRange:matchRange];
-                                //NSLog(@"%@", matchString);
                                 
                                 matchString =  [matchString stringByReplacingOccurrencesOfString:@"\n"
                                                                                       withString:@" "];
-                                //NSLog(@"%@", matchString);
                                 
                                 NSArray* components = [matchString componentsSeparatedByString:@", "];
                                 
@@ -425,16 +410,8 @@
                     }
                 }
                 
-                NSString *video_url = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&ps=default&html5=1&eurl=https://youtube.googleapis.com&hl=en_US", videoId];
-                
-                
-                [self getDataFromUrl:video_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
-
-                    [self songFromData:data response:response error:error transform_map:transform_map transform_plan:transform_plan outpath:outPath];
-                
-                }];
+                [self songFromPlayerResponse:jsonDictionary transform_map:transform_map transform_plan:transform_plan outpath:outPath];
             }];
-            
             
             break;
         }
@@ -538,71 +515,38 @@
     *audio_url = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
 }
 
--(void)songFromData: (NSData *) data  response: (NSURLResponse *) response  error: (NSError *) error transform_map: (NSMutableDictionary *) transform_map transform_plan: (NSArray *) transform_plan outpath: (NSString*) outPath {
 
-    NSString *response_string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSString *urlString = [response_string stringByRemovingPercentEncoding];
-    NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
+-(void)songFromPlayerResponse: (NSDictionary*) jsonDictionary transform_map: (NSMutableDictionary *) transform_map transform_plan: (NSArray *) transform_plan outpath: (NSString*) outPath {
     
+    id streamingData =[jsonDictionary objectForKey:@"streamingData"];
     NSDictionary* audio_format = nil;
     
-    
-    
-    for (id comp in origUrlComponents) {
+    if ([streamingData isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *jsonDictionary = (NSDictionary*)streamingData;
+        id formats =[jsonDictionary objectForKey:@"formats"];
+        id adaptive_formats =[jsonDictionary objectForKey:@"adaptiveFormats"];
         
-        NSString* s = (NSString*)comp;
-        if ([s hasPrefix:@"player_response="]) {
-            
-            NSString* player_response =  [s substringFromIndex:16];
-            //NSLog(player_response);
-            
-            NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
-            NSError *error;
-            
-            //    Note that JSONObjectWithData will return either an NSDictionary or an NSArray, depending whether your JSON string represents an a dictionary or an array.
-            id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-            
-            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
-                id streamingData =[jsonDictionary objectForKey:@"streamingData"];
-                
-                if ([streamingData isKindOfClass:[NSDictionary class]]) {
-                    NSDictionary *jsonDictionary = (NSDictionary*)streamingData;
-                    id formats =[jsonDictionary objectForKey:@"formats"];
-                    id adaptive_formats =[jsonDictionary objectForKey:@"adaptiveFormats"];
-                    
-                    [self find_format:&audio_format formats:formats key:@"audio"];
-                    
-                    [self find_format:&audio_format formats:adaptive_formats key:@"audio"];
-                    
-                   
-                }
-            }
-            
-            NSString* audio_url;
-            
-            NSString* signatureCipher = [audio_format objectForKey:@"signatureCipher"];
-            
-            if (signatureCipher != nil) {
-                [self decrypt_url:&audio_url signatureCipher:&signatureCipher transform_map:transform_map transform_plan:transform_plan];
-                
-            } else {
-                audio_url =  [audio_format objectForKey:@"url"];
-            }
-            
-            
-            NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", audio_url, outPath];
-            
-            [MobileFFmpegConfig setLogLevel:-8];
-            [MobileFFmpeg executeAsync:command withCallback:self];
-            
-           
-            return;
-         
-            
-        }
-    
+        [self find_format:&audio_format formats:formats key:@"audio"];
+        
+        [self find_format:&audio_format formats:adaptive_formats key:@"audio"];
     }
+    
+    NSString* audio_url;
+    
+    NSString* signatureCipher = [audio_format objectForKey:@"signatureCipher"];
+    
+    if (signatureCipher != nil) {
+        [self decrypt_url:&audio_url signatureCipher:&signatureCipher transform_map:transform_map transform_plan:transform_plan];
+        
+    } else {
+        audio_url =  [audio_format objectForKey:@"url"];
+    }
+    
+    
+    NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", audio_url, outPath];
+    
+    [MobileFFmpegConfig setLogLevel:-8];
+    [MobileFFmpeg executeAsync:command withCallback:self];
     
 }
 
