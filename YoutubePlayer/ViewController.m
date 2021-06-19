@@ -200,17 +200,28 @@ static NSString* currentTitle;
     [super viewDidLoad];
     [self onLoad];
     
+    [self.slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     
+}
+
+- (IBAction)sliderValueChanged:(UISlider *)sender {
+    AVAudioPlayer *_audioPlayer = [ViewController audioPlayer];
+    if (_audioPlayer.isPlaying) {
+        float value = self.slider.value;
+        _audioPlayer.currentTime = value;
+    }
 }
 
 -(void)updateProgress {
     AVAudioPlayer *_audioPlayer = [ViewController audioPlayer];
     float progress = _audioPlayer.currentTime / _audioPlayer.duration;
-    _progressView.progress = progress;
+    //_progressView.progress = progress;
     int minutes = progress*_audioPlayer.duration / 60;
     int seconds = progress*_audioPlayer.duration - 60 * minutes;
     NSString *progressText = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
     self.progressLabel.text = progressText;
+    self.slider.value = progress * _audioPlayer.duration;
+    self.slider.maximumValue = _audioPlayer.duration;
     minutes = _audioPlayer.duration / 60;
     seconds = _audioPlayer.duration - 60 * minutes;
     NSString *durationText = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];

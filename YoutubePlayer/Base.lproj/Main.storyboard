@@ -95,10 +95,6 @@
                                     <action selector="onClick:forEvent:" destination="gZ2-Pv-dLx" eventType="touchDown" id="hE1-zt-Mi2"/>
                                 </connections>
                             </button>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HzT-XW-wDP">
-                                <rect key="frame" x="20" y="5" width="374" height="5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C3V-jZ-8fZ">
                                 <rect key="frame" x="20" y="18" width="69" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -122,6 +118,10 @@
                                     <action selector="onClickStop:forEvent:" destination="gZ2-Pv-dLx" eventType="touchDown" id="Q6a-Yx-xiT"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="uCe-jB-iV8">
+                                <rect key="frame" x="18" y="0.0" width="376" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </slider>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xcR-JG-yzj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -132,13 +132,13 @@
                         <outlet property="forwardButton" destination="cKb-qr-NCA" id="fo7-00-QtG"/>
                         <outlet property="playButton" destination="7Ls-nu-hlD" id="OkL-6N-lro"/>
                         <outlet property="progressLabel" destination="C3V-jZ-8fZ" id="UfM-7I-7Cf"/>
-                        <outlet property="progressView" destination="HzT-XW-wDP" id="prt-Tz-Wgt"/>
+                        <outlet property="slider" destination="uCe-jB-iV8" id="otu-pW-wt1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P9N-cj-m5x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="bsm-i7-dVN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1387" y="406"/>
+            <point key="canvasLocation" x="-1388.4057971014495" y="405.80357142857139"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="xZR-1T-6ix">

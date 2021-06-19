@@ -20,7 +20,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UILabel *progressLabel;
 @property (strong, nonatomic) IBOutlet UILabel *durationLabel;
-@property (strong, nonatomic) IBOutlet UIProgressView *progressView;
+//@property (strong, nonatomic) IBOutlet UIProgressView *progressView;
+@property (strong, nonatomic) IBOutlet UISlider *slider;
 @property (strong, nonatomic) NSString *videoId;
 @property (strong, nonatomic) NSString *songName;
 @property (strong, nonatomic) NSURL* mp3url;
