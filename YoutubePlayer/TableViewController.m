@@ -32,7 +32,7 @@
 @synthesize songsMap;// = _songsMap;
 
 - (void)reloadPlaylist: (NSString*) title {
-        
+    
     NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
     
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
@@ -45,7 +45,7 @@
     for (PlayList *model in array) {
         NSString *k = model.key;
         NSString *v = model.value;
-
+        
         [dict setObject:v forKey:k];
         [objects addObject:model];
     }
@@ -75,19 +75,17 @@
         self.picker = [UIAlertController alertControllerWithTitle:@"Choose Playlist" message:@"Choose playlist name" preferredStyle:UIAlertControllerStyleActionSheet];
         for (NSString *title in self.playlists) {
             UIAlertAction* item = [UIAlertAction actionWithTitle:title
-                      style:UIAlertActionStyleDefault
-                      handler:^(UIAlertAction *action) {
-                NSLog(@"action = %@", [action title]);
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+
                 self.currentPlaylist = action.title;
                 [self reloadPlaylist: action.title ];
                 
                 [self.picker dismissViewControllerAnimated:YES completion:nil];
-                   }];
+            }];
             
             [self.picker addAction:item];
         }
-        
-        NSLog(@"playlists %d", [self.playlists count]);
         
     }
 }
@@ -106,10 +104,10 @@
     }];
     
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {
+                                                          handler:^(UIAlertAction * action) {
         
     }];
-
+    
     
     [self.dialog addAction:defaultAction];
     
@@ -120,98 +118,69 @@
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
     
     NSArray* array =[context executeFetchRequest:request error:&error];
-//       for (NSManagedObject* o in array) {
-//           [context deleteObject:o];
-//       }
-//      [context save:&error];
-//        array =[context executeFetchRequest:request error:&error];
-//    
-//    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-//                                                            NSUserDomainMask, YES);
-//    NSString *docsDir = [dirPaths objectAtIndex:0];
-//
-//    NSFileManager *fileMgr = [NSFileManager defaultManager];
-//    NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:docsDir error:nil];
-//    for (NSString *filename in fileArray)  {
-//        if ([filename containsString:@".mp3"]) {
-//            [fileMgr removeItemAtPath:[docsDir stringByAppendingPathComponent:filename] error:NULL];
-//        }
-//    }
-//
+    //       for (NSManagedObject* o in array) {
+    //           [context deleteObject:o];
+    //       }
+    //      [context save:&error];
+    //        array =[context executeFetchRequest:request error:&error];
+    //
+    //    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+    //                                                            NSUserDomainMask, YES);
+    //    NSString *docsDir = [dirPaths objectAtIndex:0];
+    //
+    //    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    //    NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:docsDir error:nil];
+    //    for (NSString *filename in fileArray)  {
+    //        if ([filename containsString:@".mp3"]) {
+    //            [fileMgr removeItemAtPath:[docsDir stringByAppendingPathComponent:filename] error:NULL];
+    //        }
+    //    }
+    //
     
     
-    NSUInteger length = [array count];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableArray *objects = [[NSMutableArray alloc] init];
     
-    if (length > 0) {
-        
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        NSMutableArray *objects = [[NSMutableArray alloc] init];
-        
-        self.songs = [[NSMutableArray alloc] init];
-        self.playlists = [[NSMutableSet alloc] init];
-        for (PlayList *model in array) {
-            NSString *k = model.key;
-            NSString *v = model.value;
-            if (model.name == nil) {
-                [self.playlists addObject:@"default"];
-            } else {
-                [self.playlists addObject:model.name];
-            }
-           
-            [dict setObject:v forKey:k];
-            [objects addObject:model];
-        }
-        self.songsMap = [NSMutableDictionary dictionaryWithDictionary: dict];
-        
-        [objects sortUsingComparator:^NSComparisonResult(PlayList* obj1, PlayList* obj2){
-            return [obj1.index compare:obj2.index];
-        }];
-        
-        for (PlayList *p in objects) {
-            if ([p.name isEqualToString:@"default"] ) {
-                [self.songs addObject:p.key];
-            }
-           
+    self.songs = [[NSMutableArray alloc] init];
+    self.playlists = [[NSMutableSet alloc] init];
+    for (PlayList *model in array) {
+        NSString *k = model.key;
+        NSString *v = model.value;
+        if (model.name == nil) {
+            [self.playlists addObject:@"default"];
+        } else {
+            [self.playlists addObject:model.name];
         }
         
-        
-    } else {
-        [self.playlists addObject:@"default"];
-        self.songs = [NSMutableArray arrayWithArray: @[@"unfzfe8f9NI", @"16y1AkoZkmQ", @"HX_j5Ls0PZA"]];
-        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"ABBA Mamma Mia", @"unfzfe8f9NI", @"Boney M Rasputin", @"16y1AkoZkmQ", @"ЗИМНЯЯ РОЗА", @"HX_j5Ls0PZA", nil];
-        self.songsMap = [NSMutableDictionary dictionaryWithDictionary:dictionary];
-        
-        int i = 1;
-        for(NSString* key in self.songsMap) {
-            PlayList *listModel = (PlayList*)[NSEntityDescription insertNewObjectForEntityForName:@"PlayList" inManagedObjectContext:context];
-            listModel.key = key;
-            listModel.value = [self.songsMap objectForKey:key];
-            listModel.index = [NSNumber numberWithInt:i] ;
-            listModel.name = @"default";
-            i++;
+        [dict setObject:v forKey:k];
+        [objects addObject:model];
+    }
+    self.songsMap = [NSMutableDictionary dictionaryWithDictionary: dict];
+    
+    [objects sortUsingComparator:^NSComparisonResult(PlayList* obj1, PlayList* obj2){
+        return [obj1.index compare:obj2.index];
+    }];
+    
+    for (PlayList *p in objects) {
+        if ([p.name isEqualToString:@"default"] ) {
+            [self.songs addObject:p.key];
         }
-        
-        [context save:&error];
-        
     }
     
     self.picker = [UIAlertController alertControllerWithTitle:@"Choose Playlist" message:@"Choose playlist name" preferredStyle:UIAlertControllerStyleActionSheet];
     for (NSString *title in self.playlists) {
         UIAlertAction* item = [UIAlertAction actionWithTitle:title
-                  style:UIAlertActionStyleDefault
-                  handler:^(UIAlertAction *action) {
-            NSLog(@"action = %@", [action title]);
-            
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action) {
+          
             self.currentPlaylist = action.title;
-        
             [self reloadPlaylist: action.title ];
-            
             [self.picker dismissViewControllerAnimated:YES completion:nil];
-               }];
+        }];
         
         [self.picker addAction:item];
     }
-   
+    
 }
 
 - (NSString *)tableView:(UITableView *)tableView
@@ -306,7 +275,7 @@ titleForHeaderInSection:(NSInteger)section {
     
     [context save:error];
 }
-// - (UIContextMenuConfiguration*)tableView:(UITableView*)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath*)indexPath point:(CGPoint)point
+
 - (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location {
     UIContextMenuConfiguration* config = [UIContextMenuConfiguration configurationWithIdentifier:nil
                                                                                  previewProvider:nil
@@ -340,10 +309,10 @@ titleForHeaderInSection:(NSInteger)section {
                         NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
                         
                         NSPredicate *bPredicate =
-                            [NSPredicate predicateWithFormat:@"SELF beginswith 'player_response'"];
+                        [NSPredicate predicateWithFormat:@"SELF beginswith 'player_response'"];
                         
                         NSArray *hasPrefix =
-                            [origUrlComponents filteredArrayUsingPredicate:bPredicate];
+                        [origUrlComponents filteredArrayUsingPredicate:bPredicate];
                         
                         if ([hasPrefix count] > 0) {
                             id comp = [hasPrefix objectAtIndex:0];
@@ -369,7 +338,7 @@ titleForHeaderInSection:(NSInteger)section {
                                     [self.tableView reloadData];
                                     [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
                                     NSError *error;
-                            
+                                    
                                     [self saveContext:&error title:title videoId:videoId];
                                     
                                 }];
@@ -379,7 +348,7 @@ titleForHeaderInSection:(NSInteger)section {
                         
                     }];
                 }
-               
+                
             }
         }]];
         
@@ -403,11 +372,6 @@ titleForHeaderInSection:(NSInteger)section {
     
     return config;
 }
-
-//- (BOOL)tableView:(UITableView *)tableView
-//shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return TRUE;
-//}
 
 - (UIContextMenuConfiguration*)tableView:(UITableView*)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath*)indexPath point:(CGPoint)point {
     
@@ -451,7 +415,7 @@ titleForHeaderInSection:(NSInteger)section {
             
             
         }]];
-         
+        
         UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
         return menu;
         
@@ -489,22 +453,22 @@ titleForHeaderInSection:(NSInteger)section {
         NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSRegularExpression *base_js_regex = [NSRegularExpression regularExpressionWithPattern:@"(/s/player/[\\w\\d]+/[\\w\\d\\_\\-\\.]+/base\\.js)" options:1 << 3 error:&error];
         
-
+        
         NSArray* base_url_matches = [base_js_regex matchesInString:html options:0 range:NSMakeRange(0, [html length])];
         for (NSTextCheckingResult *match in base_url_matches) {
             NSRange matchRange = [match rangeAtIndex:1];
             NSString *matchString = [html substringWithRange:matchRange];
             NSString* my_base_url = [NSString stringWithFormat:@"https://www.youtube.com%@", matchString];
-
+            
             
             [self getDataFromUrl:my_base_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
-
+                
                 NSString *fileContents = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                           
+                
                 NSArray *transform_plan = nil;
                 
                 Mapper* mapper1 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.reverse\\(\\)\\}"
-                                                                                                                options:0 error:&error] function:@"reverse" ];
+                                                                                                                 options:0 error:&error] function:@"reverse" ];
                 Mapper* mapper2 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.splice\\(0,\\w\\)\\}"
                                                                                                                  options:0 error:&error] function:@"splice" ];
                 Mapper* mapper3 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\]=\\w\\}"
@@ -577,7 +541,7 @@ titleForHeaderInSection:(NSInteger)section {
             break;
         }
         
-
+        
     }];
     
 }
@@ -727,14 +691,11 @@ titleForHeaderInSection:(NSInteger)section {
                 cell.contentView.alpha = 1.0;
                 
             }
-            
-          
-            
         }];
     } else {
         NSLog(@"Error converting file");
     }
- 
+    
 }
 
 
