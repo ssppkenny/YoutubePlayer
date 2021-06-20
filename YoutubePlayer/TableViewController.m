@@ -31,8 +31,88 @@
 @synthesize songs;// = _songs;
 @synthesize songsMap;// = _songsMap;
 
+- (void)reloadPlaylist: (NSString*) title {
+        
+    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+    
+    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
+    NSError* error;
+    NSArray* array =[context executeFetchRequest:request error:&error];
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableArray *objects = [[NSMutableArray alloc] init];
+    
+    for (PlayList *model in array) {
+        NSString *k = model.key;
+        NSString *v = model.value;
+
+        [dict setObject:v forKey:k];
+        [objects addObject:model];
+    }
+    self.songsMap = [NSMutableDictionary dictionaryWithDictionary: dict];
+    self.songs = [[NSMutableArray alloc] init];
+    
+    [objects sortUsingComparator:^NSComparisonResult(PlayList* obj1, PlayList* obj2){
+        return [obj1.index compare:obj2.index];
+    }];
+    
+    for (PlayList *p in objects) {
+        if ([p.name isEqualToString:title] ) {
+            [self.songs addObject:p.key];
+        }
+    }
+    
+    [self.tableView reloadData];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSLog(@"added playlist %@", textField.text);
+    if (textField.text != nil) {
+        self.currentPlaylist = textField.text;
+        [self.playlists addObject:textField.text];
+        [self reloadPlaylist : textField.text ];
+        
+        self.picker = [UIAlertController alertControllerWithTitle:@"Choose Playlist" message:@"Choose playlist name" preferredStyle:UIAlertControllerStyleActionSheet];
+        for (NSString *title in self.playlists) {
+            UIAlertAction* item = [UIAlertAction actionWithTitle:title
+                      style:UIAlertActionStyleDefault
+                      handler:^(UIAlertAction *action) {
+                NSLog(@"action = %@", [action title]);
+                self.currentPlaylist = action.title;
+                [self reloadPlaylist: action.title ];
+                
+                [self.picker dismissViewControllerAnimated:YES completion:nil];
+                   }];
+            
+            [self.picker addAction:item];
+        }
+        
+        NSLog(@"playlists %d", [self.playlists count]);
+        
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.currentPlaylist = @"default";
+    
+    UIContextMenuInteraction *interaction =  [[UIContextMenuInteraction alloc] initWithDelegate:self];
+    [self.tableView addInteraction:interaction];
+    
+    __weak typeof(self) weakSelf = self;
+    self.dialog = [UIAlertController alertControllerWithTitle:@"New Playlist" message:@"Enter playlist name" preferredStyle:UIAlertControllerStyleAlert];
+    [self.dialog addTextFieldWithConfigurationHandler:^(UITextField *aTextField) {
+        aTextField.delegate = weakSelf;
+    }];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {
+        
+    }];
+
+    
+    [self.dialog addAction:defaultAction];
+    
     NSError* error;
     
     NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
@@ -40,11 +120,25 @@
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"PlayList"];
     
     NSArray* array =[context executeFetchRequest:request error:&error];
-    //   for (NSManagedObject* o in array) {
-    //       [context deleteObject:o];
-    //   }
-    //  [context save:&error];
-    //    array =[context executeFetchRequest:request error:&error];
+//       for (NSManagedObject* o in array) {
+//           [context deleteObject:o];
+//       }
+//      [context save:&error];
+//        array =[context executeFetchRequest:request error:&error];
+//    
+//    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+//                                                            NSUserDomainMask, YES);
+//    NSString *docsDir = [dirPaths objectAtIndex:0];
+//
+//    NSFileManager *fileMgr = [NSFileManager defaultManager];
+//    NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:docsDir error:nil];
+//    for (NSString *filename in fileArray)  {
+//        if ([filename containsString:@".mp3"]) {
+//            [fileMgr removeItemAtPath:[docsDir stringByAppendingPathComponent:filename] error:NULL];
+//        }
+//    }
+//
+    
     
     NSUInteger length = [array count];
     
@@ -54,9 +148,16 @@
         NSMutableArray *objects = [[NSMutableArray alloc] init];
         
         self.songs = [[NSMutableArray alloc] init];
+        self.playlists = [[NSMutableSet alloc] init];
         for (PlayList *model in array) {
             NSString *k = model.key;
             NSString *v = model.value;
+            if (model.name == nil) {
+                [self.playlists addObject:@"default"];
+            } else {
+                [self.playlists addObject:model.name];
+            }
+           
             [dict setObject:v forKey:k];
             [objects addObject:model];
         }
@@ -67,12 +168,15 @@
         }];
         
         for (PlayList *p in objects) {
-            [self.songs addObject:p.key];
+            if ([p.name isEqualToString:@"default"] ) {
+                [self.songs addObject:p.key];
+            }
+           
         }
         
         
     } else {
-        
+        [self.playlists addObject:@"default"];
         self.songs = [NSMutableArray arrayWithArray: @[@"unfzfe8f9NI", @"16y1AkoZkmQ", @"HX_j5Ls0PZA"]];
         NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"ABBA Mamma Mia", @"unfzfe8f9NI", @"Boney M Rasputin", @"16y1AkoZkmQ", @"ЗИМНЯЯ РОЗА", @"HX_j5Ls0PZA", nil];
         self.songsMap = [NSMutableDictionary dictionaryWithDictionary:dictionary];
@@ -83,6 +187,7 @@
             listModel.key = key;
             listModel.value = [self.songsMap objectForKey:key];
             listModel.index = [NSNumber numberWithInt:i] ;
+            listModel.name = @"default";
             i++;
         }
         
@@ -90,6 +195,29 @@
         
     }
     
+    self.picker = [UIAlertController alertControllerWithTitle:@"Choose Playlist" message:@"Choose playlist name" preferredStyle:UIAlertControllerStyleActionSheet];
+    for (NSString *title in self.playlists) {
+        UIAlertAction* item = [UIAlertAction actionWithTitle:title
+                  style:UIAlertActionStyleDefault
+                  handler:^(UIAlertAction *action) {
+            NSLog(@"action = %@", [action title]);
+            
+            self.currentPlaylist = action.title;
+        
+            [self reloadPlaylist: action.title ];
+            
+            [self.picker dismissViewControllerAnimated:YES completion:nil];
+               }];
+        
+        [self.picker addAction:item];
+    }
+   
+}
+
+- (NSString *)tableView:(UITableView *)tableView
+titleForHeaderInSection:(NSInteger)section {
+    NSString *title = [NSString stringWithFormat:@"Playlist %@", self.currentPlaylist];
+    return title;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -174,12 +302,12 @@
     listModel.key = videoId;
     listModel.value = title;
     listModel.index = [NSNumber numberWithInt:max+1];
+    listModel.name = self.currentPlaylist;
     
     [context save:error];
 }
-
-- (UIContextMenuConfiguration*)tableView:(UITableView*)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath*)indexPath point:(CGPoint)point {
-    
+// - (UIContextMenuConfiguration*)tableView:(UITableView*)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath*)indexPath point:(CGPoint)point
+- (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location {
     UIContextMenuConfiguration* config = [UIContextMenuConfiguration configurationWithIdentifier:nil
                                                                                  previewProvider:nil
                                                                                   actionProvider:^UIMenu* _Nullable(NSArray<UIMenuElement*>* _Nonnull suggestedActions) {
@@ -238,7 +366,7 @@
                                 
                                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                                     NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
-                                    [tableView reloadData];
+                                    [self.tableView reloadData];
                                     [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
                                     NSError *error;
                             
@@ -254,6 +382,39 @@
                
             }
         }]];
+        
+        
+        [actions addObject:[UIAction actionWithTitle:@"New Playlist" image:[UIImage systemImageNamed:@"playlist"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
+            [self presentViewController:self.dialog animated:TRUE completion:nil];
+            
+        }]];
+        
+        [actions addObject:[UIAction actionWithTitle:@"Choose Playlist" image:[UIImage systemImageNamed:@"playlist"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
+            //[self presentViewController:self.dialog animated:TRUE completion:nil];
+            [self presentViewController:self.picker animated:TRUE completion:nil];
+            
+        }]];
+        
+        UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
+        return menu;
+        
+    }];
+    
+    
+    return config;
+}
+
+//- (BOOL)tableView:(UITableView *)tableView
+//shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return TRUE;
+//}
+
+- (UIContextMenuConfiguration*)tableView:(UITableView*)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath*)indexPath point:(CGPoint)point {
+    
+    UIContextMenuConfiguration* config = [UIContextMenuConfiguration configurationWithIdentifier:nil
+                                                                                 previewProvider:nil
+                                                                                  actionProvider:^UIMenu* _Nullable(NSArray<UIMenuElement*>* _Nonnull suggestedActions) {
+        NSMutableArray* actions = [[NSMutableArray alloc] init];
         
         [actions addObject:[UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"delete"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -290,7 +451,7 @@
             
             
         }]];
-        
+         
         UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
         return menu;
         
@@ -545,7 +706,7 @@
     
     NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", audio_url, outPath];
     
-    [MobileFFmpegConfig setLogLevel:-8];
+    //[MobileFFmpegConfig setLogLevel:-8];
     [MobileFFmpeg executeAsync:command withCallback:self];
     
 }

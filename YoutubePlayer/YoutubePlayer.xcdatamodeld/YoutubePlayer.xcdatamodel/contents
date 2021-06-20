@@ -3,9 +3,10 @@
     <entity name="PlayList" representedClassName="" syncable="YES">
         <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="key" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="value" attributeType="String"/>
     </entity>
     <elements>
-        <element name="PlayList" positionX="-54" positionY="-9" width="128" height="74"/>
+        <element name="PlayList" positionX="-54" positionY="-9" width="128" height="89"/>
     </elements>
 </model>

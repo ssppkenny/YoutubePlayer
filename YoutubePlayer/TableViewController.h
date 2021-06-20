@@ -15,11 +15,15 @@
 
 
 
-@interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate,ExecuteDelegate>
+@interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate,ExecuteDelegate,UITextFieldDelegate>
 
 @property (strong) NSMutableArray *songs;
+@property (strong) NSMutableSet *playlists;
+@property (strong) NSString *currentPlaylist;
 @property (strong) NSMutableDictionary *songsMap;
 @property (strong) CADisplayLink* displayLink;
+@property (strong) UIAlertController *dialog;
+@property (strong) UIAlertController *picker;
 @end
 
 @interface SongTuple : NSObject
@@ -33,6 +37,7 @@
 @property  (strong) NSString *key;
 @property  (strong) NSString *value;
 @property  (strong) NSNumber *index;
+@property  (strong) NSString *name;
 @end
 
 

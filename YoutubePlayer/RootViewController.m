@@ -24,8 +24,6 @@
     if ([dest isKindOfClass:[ViewController class]]) {
         self.viewController = (ViewController*)dest;
     }
-    
-    NSLog(@"Test");
 }
 
 /*
