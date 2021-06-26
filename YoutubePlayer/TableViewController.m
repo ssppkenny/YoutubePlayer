@@ -18,6 +18,7 @@
 @synthesize key;
 @synthesize value;
 @synthesize index;
+@synthesize name;
 
 @end
 
@@ -398,8 +399,18 @@ titleForHeaderInSection:(NSInteger)section {
             
             NSArray* array =[context executeFetchRequest:request error:&error];
             
+            NSMutableDictionary *counts = [[NSMutableDictionary alloc] init];
+            
             for (PlayList *p in array) {
-                if ([p.key isEqualToString:videoId]) {
+                id count = [counts objectForKey:p.key];
+                if (count) {
+                    NSNumber *number = (NSNumber*)count;
+                    [counts setObject:[NSNumber numberWithInt:[number intValue] + 1] forKey:p.key];
+                } else {
+                    [counts setObject:[NSNumber numberWithInt:1] forKey:p.key];
+                }
+                
+                if ([p.key isEqualToString:videoId] && [self.currentPlaylist isEqualToString:p.name]) {
                     [context deleteObject:p];
                 }
             }
@@ -411,9 +422,10 @@ titleForHeaderInSection:(NSInteger)section {
             NSString *docsDir = [dirPaths objectAtIndex:0];
             NSString* outPath = [NSString stringWithFormat:OUT_FILE_PATH_FORMAT, docsDir, videoId];
             
-            [[NSFileManager defaultManager] removeItemAtPath:outPath error:&error];
-            
-            
+            if ([[counts objectForKey:videoId] intValue] == 1) {
+                [[NSFileManager defaultManager] removeItemAtPath:outPath error:&error];
+            }
+           
         }]];
         
         UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
@@ -447,6 +459,9 @@ titleForHeaderInSection:(NSInteger)section {
                                                             NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     NSString* outPath = [NSString stringWithFormat:@"%@/%@.mp3", docsDir, videoId];
+    
+    NSFileManager* defaultFileManager = [NSFileManager defaultManager];
+    BOOL videoExists = [defaultFileManager fileExistsAtPath:outPath];
     
     NSString* watch_url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", videoId];
     [self getDataFromUrl:watch_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
@@ -534,8 +549,9 @@ titleForHeaderInSection:(NSInteger)section {
                         }
                     }
                 }
-                
-                [self songFromPlayerResponse:jsonDictionary transform_map:transform_map transform_plan:transform_plan outpath:outPath];
+                if (!videoExists) {
+                    [self songFromPlayerResponse:jsonDictionary transform_map:transform_map transform_plan:transform_plan outpath:outPath];
+                }
             }];
             
             break;
