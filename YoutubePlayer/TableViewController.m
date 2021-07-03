@@ -66,6 +66,33 @@
     [self.tableView reloadData];
 }
 
+-(void)checkData {
+    NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.org.youtubeplayer.group" ] ;
+    NSString* string = (NSString*)[userDefaults objectForKey:@"mykey"];
+    if (string != nil) {
+        NSLog(@"string found");
+        NSString* videoId;
+            
+            //"http[s]+://youtu\\.be/(.+)"
+            
+            NSError *error;
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http[s]+://youtube\\.com/watch\\?v=(.+)&.+" options:0 error:&error];
+            
+            NSArray* matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+            
+            if ([matches count] > 0) {
+                NSTextCheckingResult* match = [matches objectAtIndex:0];
+                NSRange matchRange = [match rangeAtIndex:1];
+                videoId = [string substringWithRange:matchRange];
+                [self addSong:videoId];
+            }
+        
+    }
+    
+    [userDefaults setObject:nil forKey:@"mykey"];
+    
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSLog(@"added playlist %@", textField.text);
     if (textField.text != nil) {
@@ -91,8 +118,24 @@
     }
 }
 
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSArray *items = [self.extensionContext inputItems];
+    NSLog(@"items %d", [items count]);
+    
+
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.displayLink invalidate];
+    self.displayLink = [[UIScreen mainScreen] displayLinkWithTarget:self selector:@selector(checkData)];
+    //self.displayLink.frameInterval = 1;
+    [self.displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSDefaultRunLoopMode] ;
+    
     self.currentPlaylist = @"default";
     
     UIContextMenuInteraction *interaction =  [[UIContextMenuInteraction alloc] initWithDelegate:self];
@@ -277,6 +320,60 @@ titleForHeaderInSection:(NSInteger)section {
     [context save:error];
 }
 
+-(void)addSong:(NSString*)videoId {
+   
+    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&html5=1&eurl=https://youtube.googleapis.com&c=TVHTML5&cver=6.20180913", videoId];
+    
+    [self getDataFromUrl:yurl completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
+        
+        NSString *title;
+        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        NSString *urlString = [responseString stringByRemovingPercentEncoding];
+        NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
+        
+        NSPredicate *bPredicate =
+        [NSPredicate predicateWithFormat:@"SELF beginswith 'player_response'"];
+        
+        NSArray *hasPrefix =
+        [origUrlComponents filteredArrayUsingPredicate:bPredicate];
+        
+        if ([hasPrefix count] > 0) {
+            id comp = [hasPrefix objectAtIndex:0];
+            NSString* s = (NSString*)comp;
+            NSString* player_response =  [s substringFromIndex:16];
+            
+            NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
+            NSError *error;
+            
+            id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+            
+            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
+                NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
+                title = [[[videoDetails objectForKey:@"title"] stringByRemovingPercentEncoding]
+                         stringByReplacingOccurrencesOfString: @"+" withString:@" "];
+                
+                [self.songsMap setValue:title forKey:videoId];
+                [self.songs addObject:videoId];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
+                    [self.tableView reloadData];
+                    [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    NSError *error;
+                    
+                    [self saveContext:&error title:title videoId:videoId];
+                    
+                }];
+                [self loadSong:videoId playerResponse:jsonDictionary];
+            }
+        }
+        
+    }];
+
+}
+
 - (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location {
     UIContextMenuConfiguration* config = [UIContextMenuConfiguration configurationWithIdentifier:nil
                                                                                  previewProvider:nil
@@ -284,6 +381,7 @@ titleForHeaderInSection:(NSInteger)section {
         NSMutableArray* actions = [[NSMutableArray alloc] init];
         
         [actions addObject:[UIAction actionWithTitle:@"Paste" image:[UIImage systemImageNamed:@"paste"] identifier:nil handler:^(__kindof UIAction* _Nonnull action) {
+            
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             NSString *string = pasteboard.string;
             NSString* videoId;
@@ -298,59 +396,8 @@ titleForHeaderInSection:(NSInteger)section {
                     NSTextCheckingResult* match = [matches objectAtIndex:0];
                     NSRange matchRange = [match rangeAtIndex:1];
                     videoId = [string substringWithRange:matchRange];
-                    
-                    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&html5=1&eurl=https://youtube.googleapis.com&c=TVHTML5&cver=6.20180913", videoId];
-                    
-                    [self getDataFromUrl:yurl completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
-                        
-                        NSString *title;
-                        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                        
-                        NSString *urlString = [responseString stringByRemovingPercentEncoding];
-                        NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
-                        
-                        NSPredicate *bPredicate =
-                        [NSPredicate predicateWithFormat:@"SELF beginswith 'player_response'"];
-                        
-                        NSArray *hasPrefix =
-                        [origUrlComponents filteredArrayUsingPredicate:bPredicate];
-                        
-                        if ([hasPrefix count] > 0) {
-                            id comp = [hasPrefix objectAtIndex:0];
-                            NSString* s = (NSString*)comp;
-                            NSString* player_response =  [s substringFromIndex:16];
-                            
-                            NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
-                            NSError *error;
-                            
-                            id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-                            
-                            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                                NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
-                                NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                                title = [[[videoDetails objectForKey:@"title"] stringByRemovingPercentEncoding]
-                                         stringByReplacingOccurrencesOfString: @"+" withString:@" "];
-                                
-                                [self.songsMap setValue:title forKey:videoId];
-                                [self.songs addObject:videoId];
-                                
-                                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                    NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
-                                    [self.tableView reloadData];
-                                    [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                                    NSError *error;
-                                    
-                                    [self saveContext:&error title:title videoId:videoId];
-                                    
-                                }];
-                                [self loadSong:videoId playerResponse:jsonDictionary];
-                            }
-                        }
-                        
-                    }];
-                }
-                
-            }
+                    [self addSong:videoId];
+                }}
         }]];
         
         
