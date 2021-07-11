@@ -13,8 +13,6 @@
 #import <CoreData/CoreData.h>
 #import <mobileffmpeg/MobileFFmpeg.h>
 
-
-
 @interface TableViewController : UITableViewController<UIContextMenuInteractionDelegate,ExecuteDelegate,UITextFieldDelegate>
 
 @property (strong) NSMutableArray *songs;

@@ -84,7 +84,11 @@
                 NSTextCheckingResult* match = [matches objectAtIndex:0];
                 NSRange matchRange = [match rangeAtIndex:1];
                 videoId = [string substringWithRange:matchRange];
-                [self addSong:videoId];
+                
+                BOOL videoExists = [self checkVideo:videoId];
+                if (!videoExists) {
+                    [self addSong:videoId];
+                }
             }
         
     }
@@ -123,9 +127,6 @@
     [super viewDidAppear:animated];
     NSArray *items = [self.extensionContext inputItems];
     NSLog(@"items %d", [items count]);
-    
-
-    
 }
 
 - (void)viewDidLoad {
@@ -396,7 +397,10 @@ titleForHeaderInSection:(NSInteger)section {
                     NSTextCheckingResult* match = [matches objectAtIndex:0];
                     NSRange matchRange = [match rangeAtIndex:1];
                     videoId = [string substringWithRange:matchRange];
-                    [self addSong:videoId];
+                    BOOL videoExists = [self checkVideo:videoId];
+                    if (!videoExists) {
+                        [self addSong:videoId];
+                    }
                 }}
         }]];
         
@@ -500,15 +504,23 @@ titleForHeaderInSection:(NSInteger)section {
 }
 
 
-- (void)loadSong:(NSString*) videoId playerResponse: (NSDictionary *) jsonDictionary {
-    
+- (NSString *)getOutPath:(NSString *)videoId {
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                             NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
-    NSString* outPath = [NSString stringWithFormat:@"%@/%@.mp3", docsDir, videoId];
-    
-    NSFileManager* defaultFileManager = [NSFileManager defaultManager];
-    BOOL videoExists = [defaultFileManager fileExistsAtPath:outPath];
+    NSString *outPath = [NSString stringWithFormat:@"%@/%@.mp3", docsDir, videoId];
+    return outPath;
+}
+
+- (BOOL)checkVideo:(NSString *)videoId {
+    id object = [self.songsMap objectForKey:videoId];
+    return object != nil;
+  //  NSString * outPath = [self getOutPath:videoId];
+  //  NSFileManager* defaultFileManager = [NSFileManager defaultManager];
+  //  return [defaultFileManager fileExistsAtPath:outPath];
+}
+
+- (void)loadSong:(NSString*) videoId playerResponse: (NSDictionary *) jsonDictionary {
     
     NSString* watch_url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", videoId];
     [self getDataFromUrl:watch_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
@@ -596,9 +608,9 @@ titleForHeaderInSection:(NSInteger)section {
                         }
                     }
                 }
-                if (!videoExists) {
-                    [self songFromPlayerResponse:jsonDictionary transform_map:transform_map transform_plan:transform_plan outpath:outPath];
-                }
+                
+                [self songFromPlayerResponse:jsonDictionary transform_map:transform_map transform_plan:transform_plan for:videoId];
+                
             }];
             
             break;
@@ -704,7 +716,9 @@ titleForHeaderInSection:(NSInteger)section {
 }
 
 
--(void)songFromPlayerResponse: (NSDictionary*) jsonDictionary transform_map: (NSMutableDictionary *) transform_map transform_plan: (NSArray *) transform_plan outpath: (NSString*) outPath {
+-(void)songFromPlayerResponse: (NSDictionary*) jsonDictionary transform_map: (NSMutableDictionary *) transform_map transform_plan: (NSArray *) transform_plan for:(NSString*)videoId {
+    
+    NSString* outPath = [self getOutPath:videoId];
     
     id streamingData =[jsonDictionary objectForKey:@"streamingData"];
     NSDictionary* audio_format = nil;
@@ -754,6 +768,7 @@ titleForHeaderInSection:(NSInteger)section {
                 cell.contentView.alpha = 1.0;
                 
             }
+            
         }];
     } else {
         NSLog(@"Error converting file");

@@ -5,7 +5,7 @@
 //  Created by Sergey Mikhno on 03.07.21.
 //
 
-import UIKit
+
 import Social
 import MobileCoreServices
 

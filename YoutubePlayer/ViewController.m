@@ -78,9 +78,7 @@ static NSString* currentTitle;
     
     self.duration = [NSNumber numberWithFloat:outDataSize];
     
-    
     [info setValue:self.songName forKey:MPMediaItemPropertyTitle];
-    
     
     [info setValue:[NSNumber numberWithFloat:0.0] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
     [info setValue:[NSNumber numberWithFloat:outDataSize] forKey:MPMediaItemPropertyPlaybackDuration];
@@ -130,6 +128,7 @@ static NSString* currentTitle;
     audioPlayer.delegate = self;
     [audioPlayer prepareToPlay];
     [audioPlayer play];
+    
 }
 
 - (NSString *)getSongPath {
@@ -189,7 +188,7 @@ static NSString* currentTitle;
     
     [self.displayLink invalidate];
     self.displayLink = [[UIScreen mainScreen] displayLinkWithTarget:self selector:@selector(updateProgress)];
-    //self.displayLink.frameInterval = 1;
+    self.displayLink.frameInterval = 1;
     [self.displayLink addToRunLoop:NSRunLoop.currentRunLoop forMode:NSDefaultRunLoopMode] ;
     
     
@@ -226,7 +225,6 @@ static NSString* currentTitle;
     seconds = _audioPlayer.duration - 60 * minutes;
     NSString *durationText = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
     self.durationLabel.text = durationText;
-    //NSLog(@"%d:%d:%f", minutes, seconds, progress);
     
 }
 - (IBAction)onClick:(UIButton *)sender forEvent:(UIEvent *)event {
@@ -322,10 +320,14 @@ static NSString* currentTitle;
     
 }
 
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player {
+    NSLog(@"audioPlayerBeginInterruption");
+}
+
 -(void)audioPlayerDidFinishPlaying:
 (AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    
+  //  NSLog(@"did finish playing %i", flag);
     [ViewController setCurrentIndex:([ViewController currentIndex] + 1)];
     NSIndexPath* selectedCellIndexPath= [NSIndexPath indexPathForRow:ViewController.currentIndex inSection:0];
     
@@ -346,6 +348,15 @@ static NSString* currentTitle;
 (AVAudioPlayer *)player error:(NSError *)error
 {
     NSLog(@"decode error");
+}
+
+- (void)beginInterruption {
+    NSLog(@"begin interruption");
+}
+
+
+- (void)endInterruption {
+    NSLog(@"end interruption");
 }
 
 

@@ -13,7 +13,7 @@
 #import "TableViewController.h"
 #include "common.h"
 
-@interface ViewController : UIViewController<AVAudioPlayerDelegate>
+@interface ViewController : UIViewController<AVAudioPlayerDelegate,AVAudioSessionDelegate>
 
 //@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 @property (strong, nonatomic) IBOutlet UIButton *playButton;

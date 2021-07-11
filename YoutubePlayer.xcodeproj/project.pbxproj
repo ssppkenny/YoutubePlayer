@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A5180EED266CAD6200268095 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5180EEC266CAD6200268095 /* LaunchScreen.storyboard */; };
+		A51A6D8D26997B3500C24C90 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51A6D8C26997B3500C24C90 /* AudioToolbox.framework */; };
 		A538DF102674AE560080AFBA /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A538DF0F2674AE560080AFBA /* RootViewController.m */; };
 		A542AE4F26777A1600B8456B /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = A542AE4E26777A1600B8456B /* common.m */; };
 		A574107A26623BF40054C445 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A574107926623BF40054C445 /* TableViewController.m */; };
@@ -74,6 +75,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A51A6D9026999C0B00C24C90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A584BBBF26592A180068C290 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5C90D6826907BE1006DA359;
+			remoteInfo = MyShareExtension;
+		};
 		A584BBE626592A190068C290 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A584BBBF26592A180068C290 /* Project object */;
@@ -94,13 +102,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 01DD203BAEF6ADA6C993E024748D1977;
 			remoteInfo = "Pods-YoutubePlayer";
-		};
-		A5C90D7126907BE2006DA359 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A584BBBF26592A180068C290 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A5C90D6826907BE1006DA359;
-			remoteInfo = MyShareExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -135,6 +136,7 @@
 		A51013A8265A50FD0034C5AF /* SBJson5StreamParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBJson5StreamParser.m; sourceTree = "<group>"; };
 		A51013A9265A50FD0034C5AF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A5180EEC266CAD6200268095 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A51A6D8C26997B3500C24C90 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A538DF0E2674AE560080AFBA /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		A538DF0F2674AE560080AFBA /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		A542AE4B267778FB00B8456B /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A51A6D8D26997B3500C24C90 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,6 +552,7 @@
 		312A21C4F4A139AEB57335CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A51A6D8C26997B3500C24C90 /* AudioToolbox.framework */,
 				A510139B265A50FD0034C5AF /* SBJson */,
 				A584BDF72659303E0068C290 /* AVFoundation.framework */,
 				A584BD3826592C6C0068C290 /* mobile-ffmpeg-full */,
@@ -1093,7 +1097,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A5C90D7226907BE2006DA359 /* PBXTargetDependency */,
+				A51A6D9126999C0B00C24C90 /* PBXTargetDependency */,
 			);
 			name = YoutubePlayer;
 			productName = YoutubePlayer;
@@ -1319,6 +1323,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A51A6D9126999C0B00C24C90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A5C90D6826907BE1006DA359 /* MyShareExtension */;
+			targetProxy = A51A6D9026999C0B00C24C90 /* PBXContainerItemProxy */;
+		};
 		A584BBE726592A190068C290 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A584BBC626592A180068C290 /* YoutubePlayer */;
@@ -1328,11 +1337,6 @@
 			isa = PBXTargetDependency;
 			target = A584BBC626592A180068C290 /* YoutubePlayer */;
 			targetProxy = A584BBF126592A190068C290 /* PBXContainerItemProxy */;
-		};
-		A5C90D7226907BE2006DA359 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A5C90D6826907BE1006DA359 /* MyShareExtension */;
-			targetProxy = A5C90D7126907BE2006DA359 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
