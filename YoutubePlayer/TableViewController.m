@@ -88,7 +88,7 @@
             BOOL videoExists = [self checkVideo:videoId];
             if (!videoExists) {
                 
-                NSString *title_url = [NSString stringWithFormat:@"http://whispering-ocean-22620.herokuapp.com/title/%@", videoId];
+                NSString *title_url = [NSString stringWithFormat:@"https://whispering-ocean-22620.herokuapp.com/title/%@", videoId];
                 
                 [self getDataFromUrl:title_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
                     NSString *title = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -402,7 +402,7 @@ titleForHeaderInSection:(NSInteger)section {
                     videoId = [string substringWithRange:matchRange];
                     BOOL videoExists = [self checkVideo:videoId];
                     if (!videoExists) {
-                        NSString *title_url = [NSString stringWithFormat:@"http://whispering-ocean-22620.herokuapp.com/title/%@", videoId];
+                        NSString *title_url = [NSString stringWithFormat:@"https://whispering-ocean-22620.herokuapp.com/title/%@", videoId];
                         
                         [self getDataFromUrl:title_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
                             NSString *title = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
