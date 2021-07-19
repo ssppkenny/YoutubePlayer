@@ -72,24 +72,33 @@
     if (string != nil) {
         NSLog(@"string found");
         NSString* videoId;
+        
+        //"http[s]+://youtu\\.be/(.+)"
+        
+        NSError *error;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http[s]+://youtube\\.com/watch\\?v=(.+)&.+" options:0 error:&error];
+        
+        NSArray* matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+        
+        if ([matches count] > 0) {
+            NSTextCheckingResult* match = [matches objectAtIndex:0];
+            NSRange matchRange = [match rangeAtIndex:1];
+            videoId = [string substringWithRange:matchRange];
             
-            //"http[s]+://youtu\\.be/(.+)"
-            
-            NSError *error;
-            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http[s]+://youtube\\.com/watch\\?v=(.+)&.+" options:0 error:&error];
-            
-            NSArray* matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
-            
-            if ([matches count] > 0) {
-                NSTextCheckingResult* match = [matches objectAtIndex:0];
-                NSRange matchRange = [match rangeAtIndex:1];
-                videoId = [string substringWithRange:matchRange];
+            BOOL videoExists = [self checkVideo:videoId];
+            if (!videoExists) {
                 
-                BOOL videoExists = [self checkVideo:videoId];
-                if (!videoExists) {
-                    [self addSong:videoId];
-                }
+                NSString *title_url = [NSString stringWithFormat:@"http://whispering-ocean-22620.herokuapp.com/title/%@", videoId];
+                
+                [self getDataFromUrl:title_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
+                    NSString *title = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    [self addSong:videoId with:title];
+                }];
+                
+                
+               
             }
+        }
         
     }
     
@@ -109,7 +118,7 @@
             UIAlertAction* item = [UIAlertAction actionWithTitle:title
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction *action) {
-
+                
                 self.currentPlaylist = action.title;
                 [self reloadPlaylist: action.title ];
                 
@@ -217,7 +226,7 @@
         UIAlertAction* item = [UIAlertAction actionWithTitle:title
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction *action) {
-          
+            
             self.currentPlaylist = action.title;
             [self reloadPlaylist: action.title ];
             [self.picker dismissViewControllerAnimated:YES completion:nil];
@@ -321,58 +330,53 @@ titleForHeaderInSection:(NSInteger)section {
     [context save:error];
 }
 
--(void)addSong:(NSString*)videoId {
-   
-    NSString *yurl = [NSString stringWithFormat:@"https://youtube.com/get_video_info?video_id=%@&html5=1&eurl=https://youtube.googleapis.com&c=TVHTML5&cver=6.20180913", videoId];
+- (void) getDataFromUrl:(NSString*) url completionHandler:(void (^)(NSData * data, NSURLResponse * response, NSError * error))paramCompletionHandlerBlock{
     
-    [self getDataFromUrl:yurl completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionDataTask *task  = [session dataTaskWithRequest:request completionHandler:paramCompletionHandlerBlock];
+    
+    [task resume];
+}
+
+-(void)addSong:(NSString*)videoId with:(NSString*) title {
+    
+    // add song new code
+    
+    NSString *audio_url = [NSString stringWithFormat:@"http://whispering-ocean-22620.herokuapp.com/download/%@", videoId];
+    
+        [self.songsMap setValue:title forKey:videoId];
+        [self.songs addObject:videoId];
         
-        NSString *title;
-        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        NSString *urlString = [responseString stringByRemovingPercentEncoding];
-        NSArray *origUrlComponents = [urlString componentsSeparatedByString:@"&"];
-        
-        NSPredicate *bPredicate =
-        [NSPredicate predicateWithFormat:@"SELF beginswith 'player_response'"];
-        
-        NSArray *hasPrefix =
-        [origUrlComponents filteredArrayUsingPredicate:bPredicate];
-        
-        if ([hasPrefix count] > 0) {
-            id comp = [hasPrefix objectAtIndex:0];
-            NSString* s = (NSString*)comp;
-            NSString* player_response =  [s substringFromIndex:16];
-            
-            NSData *jsonData = [player_response dataUsingEncoding:NSUTF8StringEncoding];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
+            [self.tableView reloadData];
+            [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
             NSError *error;
             
-            id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+            [self saveContext:&error title:title videoId:videoId];
             
-            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
-                NSDictionary* videoDetails = [jsonDictionary objectForKey:@"videoDetails"];
-                title = [[[videoDetails objectForKey:@"title"] stringByRemovingPercentEncoding]
-                         stringByReplacingOccurrencesOfString: @"+" withString:@" "];
-                
-                [self.songsMap setValue:title forKey:videoId];
-                [self.songs addObject:videoId];
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    NSIndexPath *ipath = [self.tableView indexPathForSelectedRow];
-                    [self.tableView reloadData];
-                    [self.tableView selectRowAtIndexPath:ipath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                    NSError *error;
-                    
-                    [self saveContext:&error title:title videoId:videoId];
-                    
-                }];
-                [self loadSong:videoId playerResponse:jsonDictionary];
-            }
-        }
+        }];
         
-    }];
-
+        
+        NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                NSUserDomainMask, YES);
+        NSString *docsDir = [dirPaths objectAtIndex:0];
+        NSString* outPath = [NSString stringWithFormat:OUT_FILE_PATH_FORMAT, docsDir, videoId];
+        
+        NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", audio_url, outPath];
+        
+        //[MobileFFmpegConfig setLogLevel:-8];
+        [MobileFFmpeg executeAsync:command withCallback:self];
+    
+    
+    // add song new code
+    
 }
 
 - (UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location {
@@ -387,7 +391,6 @@ titleForHeaderInSection:(NSInteger)section {
             NSString *string = pasteboard.string;
             NSString* videoId;
             if (string!=nil) {
-                
                 NSError *error;
                 NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http[s]+://youtu\\.be/(.+)" options:0 error:&error];
                 
@@ -399,7 +402,13 @@ titleForHeaderInSection:(NSInteger)section {
                     videoId = [string substringWithRange:matchRange];
                     BOOL videoExists = [self checkVideo:videoId];
                     if (!videoExists) {
-                        [self addSong:videoId];
+                        NSString *title_url = [NSString stringWithFormat:@"http://whispering-ocean-22620.herokuapp.com/title/%@", videoId];
+                        
+                        [self getDataFromUrl:title_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
+                            NSString *title = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                            [self addSong:videoId with:title];
+                        }];
+                        
                     }
                 }}
         }]];
@@ -476,7 +485,7 @@ titleForHeaderInSection:(NSInteger)section {
             if ([[counts objectForKey:videoId] intValue] == 1) {
                 [[NSFileManager defaultManager] removeItemAtPath:outPath error:&error];
             }
-           
+            
         }]];
         
         UIMenu* menu = [UIMenu menuWithTitle:@"" children:actions];
@@ -484,23 +493,7 @@ titleForHeaderInSection:(NSInteger)section {
         
     }];
     
-    
     return config;
-    
-}
-
-- (void) getDataFromUrl:(NSString*) url completionHandler:(void (^)(NSData * data, NSURLResponse * response, NSError * error))paramCompletionHandlerBlock{
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setHTTPMethod:@"GET"];
-    [request setURL:[NSURL URLWithString:url]];
-    [request setValue:[NSString stringWithFormat:@"%@=%@", @"CONSENT", @"YES+42"] forHTTPHeaderField:@"Cookie"];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSURLSessionDataTask *task  = [session dataTaskWithRequest:request completionHandler:paramCompletionHandlerBlock];
-    
-    [task resume];
 }
 
 
@@ -515,242 +508,11 @@ titleForHeaderInSection:(NSInteger)section {
 - (BOOL)checkVideo:(NSString *)videoId {
     id object = [self.songsMap objectForKey:videoId];
     return object != nil;
-  //  NSString * outPath = [self getOutPath:videoId];
-  //  NSFileManager* defaultFileManager = [NSFileManager defaultManager];
-  //  return [defaultFileManager fileExistsAtPath:outPath];
+    //  NSString * outPath = [self getOutPath:videoId];
+    //  NSFileManager* defaultFileManager = [NSFileManager defaultManager];
+    //  return [defaultFileManager fileExistsAtPath:outPath];
 }
 
-- (void)loadSong:(NSString*) videoId playerResponse: (NSDictionary *) jsonDictionary {
-    
-    NSString* watch_url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", videoId];
-    [self getDataFromUrl:watch_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
-        NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSRegularExpression *base_js_regex = [NSRegularExpression regularExpressionWithPattern:@"(/s/player/[\\w\\d]+/[\\w\\d\\_\\-\\.]+/base\\.js)" options:1 << 3 error:&error];
-        
-        
-        NSArray* base_url_matches = [base_js_regex matchesInString:html options:0 range:NSMakeRange(0, [html length])];
-        for (NSTextCheckingResult *match in base_url_matches) {
-            NSRange matchRange = [match rangeAtIndex:1];
-            NSString *matchString = [html substringWithRange:matchRange];
-            NSString* my_base_url = [NSString stringWithFormat:@"https://www.youtube.com%@", matchString];
-            
-            
-            [self getDataFromUrl:my_base_url completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
-                
-                NSString *fileContents = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                
-                NSArray *transform_plan = nil;
-                
-                Mapper* mapper1 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.reverse\\(\\)\\}"
-                                                                                                                 options:0 error:&error] function:@"reverse" ];
-                Mapper* mapper2 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{\\w\\.splice\\(0,\\w\\)\\}"
-                                                                                                                 options:0 error:&error] function:@"splice" ];
-                Mapper* mapper3 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\]=\\w\\}"
-                                                                                                                 options:0 error:&error] function:@"swap" ];
-                Mapper* mapper4 = [[[Mapper alloc] init] initWithregex:[NSRegularExpression regularExpressionWithPattern:@"\\{var\\s\\w=\\w\\[0\\];\\w\\[0\\]=\\w\\[\\w\\%\\w.length\\];\\w\\[\\w\\%\\w.length\\]=\\w\\}"
-                                                                                                                 options:0 error:&error] function:@"swap" ];
-                NSArray *mappers = @[ mapper1, mapper2, mapper3, mapper4];
-                NSMutableDictionary *transform_map = [[NSMutableDictionary alloc]initWithCapacity:10];
-                
-                NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"(?:\\b|[^a-zA-Z0-9$])([a-zA-Z0-9$]{2})\\s*=\\s*function\\(\\s*a\\s*\\)\\s*\\{\\s*a\\s*=\\s*a\\.split\\(\\s*\"\"\\s*\\)" options:0 error:&error];
-                
-                NSArray* matches = [regex matchesInString:fileContents options:0 range:NSMakeRange(0, [fileContents length])];
-                
-                for (NSTextCheckingResult *match in matches) {
-                    NSRange matchRange = [match rangeAtIndex:1];
-                    NSString *matchString = [fileContents substringWithRange:matchRange];
-                    
-                    
-                    NSString* searchTerm = @"function\\(\\w\\)\\{[a-z=\\.\\(\\\"\\)]*;(.*);(?:.+)\\}";
-                    searchTerm = [NSString stringWithFormat:@"%@=%@", matchString, searchTerm];
-                    regex = [NSRegularExpression regularExpressionWithPattern:searchTerm options:0 error:&error];
-                    
-                    NSArray* matches = [regex matchesInString:fileContents options:0 range:NSMakeRange(0, [fileContents length])];
-                    for (NSTextCheckingResult *match in matches) {
-                        NSRange matchRange = [match rangeAtIndex:1];
-                        NSString *matchString = [fileContents substringWithRange:matchRange];
-                        //NSLog(@"%@", matchString);
-                        transform_plan = [matchString componentsSeparatedByString:@";"];
-                        
-                        regex = [NSRegularExpression regularExpressionWithPattern:@"^\\w+\\W" options:0 error:&error];
-                        
-                        NSString* m = [transform_plan objectAtIndex:0];
-                        
-                        NSArray* matches = [regex matchesInString:m options:0 range:NSMakeRange(0, [transform_plan[0] length])];
-                        for (NSTextCheckingResult *match in matches) {
-                            NSRange matchRange = [match rangeAtIndex:0];
-                            NSString *matchString = [m substringWithRange:matchRange];
-                            matchString = [matchString substringToIndex:[matchString length] - 1];
-                            matchString = [NSString stringWithFormat:@"var %@=\\{(.*?)\\};", matchString];
-                            
-                            regex = [NSRegularExpression regularExpressionWithPattern:matchString options:1 << 3 error:&error];
-                            NSArray* matches = [regex matchesInString:fileContents options:0 range:NSMakeRange(0, [fileContents length])];
-                            for (NSTextCheckingResult *match in matches) {
-                                NSRange matchRange = [match rangeAtIndex:1];
-                                NSString *matchString = [fileContents substringWithRange:matchRange];
-                                
-                                matchString =  [matchString stringByReplacingOccurrencesOfString:@"\n"
-                                                                                      withString:@" "];
-                                
-                                NSArray* components = [matchString componentsSeparatedByString:@", "];
-                                
-                                for (NSString* s in components) {
-                                    NSArray* mapparts = [s componentsSeparatedByString:@":"];
-                                    NSString* value = [mapparts objectAtIndex:1];
-                                    NSString* key = [mapparts objectAtIndex:0];
-                                    
-                                    for (Mapper* mapper in mappers) {
-                                        find_function(mapper, transform_map, key, value);
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
-                }
-                
-                [self songFromPlayerResponse:jsonDictionary transform_map:transform_map transform_plan:transform_plan for:videoId];
-                
-            }];
-            
-            break;
-        }
-        
-        
-    }];
-    
-}
-
-- (void)find_format:(NSDictionary **)audio_format formats:(id)formats key:(NSString*)name {
-    if ([formats isKindOfClass:[NSArray class]]) {
-        NSArray* a1 = (NSArray*)formats;
-        for (id e in a1) {
-            NSDictionary* d =  (NSDictionary*)e;
-            NSString* mimeType =[d objectForKey:@"mimeType"];
-            if ([mimeType containsString:name]) {
-                *audio_format = d;
-                return;
-            }
-        }
-    }
-}
-
-- (void)decrypt_url:(NSString **)audio_url signatureCipher:(NSString **)signatureCipher transform_map:(NSMutableDictionary *)transform_map transform_plan:(NSArray *)transform_plan {
-    NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
-    NSArray *urlComponents = [*signatureCipher componentsSeparatedByString:@"&"];
-    
-    for (NSString *keyValuePair in urlComponents) {
-        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
-        NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
-        
-        [queryStringDictionary setObject:value forKey:key];
-    }
-    
-    NSString* s = [queryStringDictionary objectForKey:@"s"];
-    
-    NSArray* signature = convertToArray(s);
-    
-    *signatureCipher = [*signatureCipher stringByRemovingPercentEncoding];
-    queryStringDictionary = [[NSMutableDictionary alloc] init];
-    urlComponents = [*signatureCipher componentsSeparatedByString:@"&"];
-    
-    for (NSString *keyValuePair in urlComponents) {
-        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-        
-        NSMutableString *mutableString = [NSMutableString stringWithCapacity:100];
-        NSUInteger size =[pairComponents count];
-        for (int i=1; i<size; i++) {
-            NSString* part = [pairComponents objectAtIndex:i];
-            if (i<size-1) {
-                NSString* s = [NSString stringWithFormat:@"%@=", part];
-                [mutableString appendString:s];
-            } else {
-                NSString* s = [NSString stringWithFormat:@"%@", part];
-                [mutableString appendString:s];
-            }
-            
-        }
-        
-        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
-        NSString *value = [mutableString stringByRemovingPercentEncoding];
-        
-        [queryStringDictionary setObject:value forKey:key];
-    }
-    
-    for (NSString* js_func in transform_plan) {
-        NSArray* farr = parse_function(js_func);
-        NSString* name = [farr objectAtIndex:0];
-        int arg = [[farr objectAtIndex:1] intValue];
-        NSString* transform_key = [transform_map objectForKey:name];
-        
-        if ([transform_key isEqualToString:@"reverse"]) {
-            signature = reverse(signature, arg);
-        } else if ([transform_key isEqualToString:@"swap"]) {
-            signature = swap(signature, arg);
-        } else if ([transform_key isEqualToString:@"splice"]) {
-            signature = splice(signature, arg);
-        }
-    }
-    
-    
-    NSMutableString* sig = get_signature(signature);
-    
-    NSMutableString *mutableString = [NSMutableString stringWithCapacity:[sig length]];
-    
-    NSString *new_url = nil;
-    
-    NSEnumerator *enumerator = [queryStringDictionary keyEnumerator];
-    id key;
-    // extra parens to suppress warning about using = instead of ==
-    while((key = [enumerator nextObject])) {
-        NSString* value = [queryStringDictionary objectForKey:key];
-        if ([key isEqualToString:@"url"]) {
-            new_url = value;
-        } else if(![key isEqualToString:@"url"] && ![key isEqualToString:@"s"]) {
-            NSString* c = [NSString stringWithFormat:@"&%@=%@", key, value];
-            [mutableString appendString:c];
-        }
-    }
-    *audio_url = [NSString stringWithFormat:@"%@&sig=%@&%@", new_url, sig, mutableString];
-}
-
-
--(void)songFromPlayerResponse: (NSDictionary*) jsonDictionary transform_map: (NSMutableDictionary *) transform_map transform_plan: (NSArray *) transform_plan for:(NSString*)videoId {
-    
-    NSString* outPath = [self getOutPath:videoId];
-    
-    id streamingData =[jsonDictionary objectForKey:@"streamingData"];
-    NSDictionary* audio_format = nil;
-    
-    if ([streamingData isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *jsonDictionary = (NSDictionary*)streamingData;
-        id formats =[jsonDictionary objectForKey:@"formats"];
-        id adaptive_formats =[jsonDictionary objectForKey:@"adaptiveFormats"];
-        
-        [self find_format:&audio_format formats:formats key:@"audio"];
-        
-        [self find_format:&audio_format formats:adaptive_formats key:@"audio"];
-    }
-    
-    NSString* audio_url;
-    
-    NSString* signatureCipher = [audio_format objectForKey:@"signatureCipher"];
-    
-    if (signatureCipher != nil) {
-        [self decrypt_url:&audio_url signatureCipher:&signatureCipher transform_map:transform_map transform_plan:transform_plan];
-        
-    } else {
-        audio_url =  [audio_format objectForKey:@"url"];
-    }
-    
-    
-    NSString* command = [NSString stringWithFormat:@"-y -i \"%@\" \"%@\"", audio_url, outPath];
-    
-    //[MobileFFmpegConfig setLogLevel:-8];
-    [MobileFFmpeg executeAsync:command withCallback:self];
-    
-}
 
 - (void)executeCallback:(long)executionId :(int)rc {
     if (rc == RETURN_CODE_SUCCESS) {
